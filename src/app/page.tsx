@@ -1,65 +1,91 @@
 import Image from "next/image";
+import Link from "next/link";
+
+const CATEGORIES = [
+  { label: "Abstracts", href: "/abstracts", image: "/Abstracts/spark.jpg" },
+  { label: "Fine Art", href: "/fine-art", image: "/Fine%20Art/DSC01961.jpg" },
+  { label: "Reflections", href: "/reflections", image: "/Reflections/_NZP3268.jpg" },
+  { label: "Textures", href: "/textures", image: "/Textures/DSC05392.jpg" },
+  { label: "Waves", href: "/waves", image: "/Waves/lines2.jpg" },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <>
+      <header className="hero">
+        <Image src="/Waves/_NZP1305.jpg" alt="" fill priority className="hero-bg" />
+        <div className="hero-overlay" />
+        <div className="wrap">
+          <div className="eyebrow">Ocean &amp; Water Photography — Auckland, NZ</div>
+          <h1>
+            Deep water, held in <em>light</em>.
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="sub">
+            Fine-art ocean and water photography, shot around Auckland, New
+            Zealand — available as limited-edition prints, and open to
+            commissions and collaborations.
           </p>
+          <div className="tag-row mt-10">
+            <Link href="/contact" className="btn btn-primary">
+              Enquire about a print
+            </Link>
+            <Link href="/fine-art" className="btn btn-outline-light">
+              View the gallery
+            </Link>
+          </div>
+          <div className="meta">
+            <div>
+              Location
+              <strong>Auckland, NZ</strong>
+            </div>
+            <div>
+              Focus
+              <strong>Ocean &amp; Water</strong>
+            </div>
+            <div>
+              Prints
+              <strong>Limited Edition</strong>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </header>
+
+      <section className="tight">
+        <div className="wrap">
+          <div className="eyebrow">About</div>
+          <p className="lede">
+            Nick Whittaker is an ocean and water photographer based in
+            Auckland, New Zealand. His work holds still what the sea rarely
+            offers twice — light, tide, and timing, caught in a single frame
+            and printed as fine art.
+          </p>
+          <Link href="/biography" className="btn btn-link mt-5 inline-block">
+            Read the story →
+          </Link>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <section className="border-t border-line">
+        <div className="wrap">
+          <div className="section-head">
+            <h2>Explore the work</h2>
+            <p>Five bodies of work, from abstract water studies to fine-art prints ready for the wall.</p>
+          </div>
+          <div className="category-grid">
+            {CATEGORIES.map((category) => (
+              <Link key={category.href} href={category.href} className="category-tile">
+                <Image
+                  src={category.image}
+                  alt={category.label}
+                  fill
+                  sizes="(max-width: 560px) 100vw, (max-width: 900px) 50vw, 33vw"
+                />
+                <span className="tile-label">{category.label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

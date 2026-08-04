@@ -1,0 +1,563 @@
+/*
+  Nick Whittaker Imagery — Brand & Web Style Guide (v3)
+  Source: deep abyss-navy water, silver foam, one warm copper accent —
+  sourced from @nickwhittaker.oceanimagery (Ocean | Water photography, Auckland, NZ).
+
+  This is the single source of truth for brand tokens and shared UI
+  patterns. Reference the CSS variables and classes below when building
+  pages instead of hard-coding colors/type. Swap Geist for these fonts
+  in layout.tsx (via next/font) when wiring up the real pages.
+*/
+
+/* Fraunces + Jost are imported from app/globals.css (must be the first rule in the bundle). */
+
+:root {
+  /* Color palette */
+  --foam: #f5f2ea;
+  --paper: #ece6d8;
+  --ink: #1a1d1e;
+  --abyss: #0a1620;
+  --abyss-2: #0f2530;
+  --teal: #1d4e5c;
+  --tide: #3e7e8c;
+  --copper: #d69a52;
+  --copper-dark: #b87b36;
+  --silver: #c7cfcc;
+  --line: #dcd5c4;
+
+  /* Type */
+  --font-display: "Fraunces", serif;
+  --font-body: "Jost", sans-serif;
+
+  /* Spacing scale (4px base unit) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 64px;
+}
+
+/* Expose brand tokens to Tailwind v4 utilities, e.g. bg-abyss, text-copper, font-display */
+@theme inline {
+  --color-foam: var(--foam);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-abyss: var(--abyss);
+  --color-abyss-2: var(--abyss-2);
+  --color-teal: var(--teal);
+  --color-tide: var(--tide);
+  --color-copper: var(--copper);
+  --color-copper-dark: var(--copper-dark);
+  --color-silver: var(--silver);
+  --color-line: var(--line);
+  --font-display: "Fraunces", serif;
+  --font-body: "Jost", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--foam);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Base typography — every page inherits this unless overridden */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+em {
+  font-style: italic;
+  color: var(--copper-dark);
+}
+
+/* Layout primitives */
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+section {
+  padding: 120px 0;
+}
+
+section.tight {
+  padding: 80px 0;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 56px;
+  flex-wrap: wrap;
+  gap: 20px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 36px;
+}
+
+.section-head h2 {
+  font-size: clamp(26px, 3.5vw, 36px);
+  font-weight: 400;
+}
+
+.section-head p {
+  color: var(--teal);
+  max-width: 400px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--tide);
+  font-weight: 400;
+  margin-bottom: 22px;
+}
+
+.note {
+  font-size: 13px;
+  color: var(--tide);
+  max-width: 520px;
+  margin-top: 14px;
+}
+
+.lede {
+  font-size: 17px;
+  max-width: 620px;
+}
+
+/* Hero — dark abyss gradient with a thin copper horizon line */
+.hero {
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(62, 126, 140, 0.35), transparent 55%),
+    linear-gradient(180deg, #0a1620 0%, #0f2530 55%, #163b47 100%);
+  color: var(--foam);
+  padding: 150px 0 130px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 62%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--copper) 35%, var(--copper) 65%, transparent);
+  opacity: 0.8;
+}
+
+.hero .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-bg {
+  object-fit: cover;
+  z-index: 0;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(10, 22, 32, 0.5), rgba(10, 22, 32, 0.75) 55%),
+    linear-gradient(180deg, rgba(10, 22, 32, 0.55) 0%, rgba(15, 37, 48, 0.65) 55%, rgba(22, 59, 71, 0.7) 100%);
+}
+
+.hero .eyebrow {
+  color: var(--copper);
+}
+
+.hero h1 {
+  font-size: clamp(38px, 6vw, 66px);
+  font-weight: 300;
+  line-height: 1.1;
+  max-width: 760px;
+  color: var(--foam);
+}
+
+.hero h1 em {
+  color: var(--copper);
+}
+
+.hero p.sub {
+  margin-top: 30px;
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--silver);
+  max-width: 480px;
+}
+
+.hero .meta {
+  margin-top: 64px;
+  display: flex;
+  gap: 56px;
+  flex-wrap: wrap;
+}
+
+.hero .meta div {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--silver);
+  opacity: 0.65;
+}
+
+.hero .meta div strong {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--foam);
+  font-size: 17px;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-top: 8px;
+  opacity: 1;
+}
+
+/* Buttons */
+.btn {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  padding: 14px 30px;
+  border-radius: 2px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  background: var(--abyss);
+  color: var(--foam);
+  border: 1px solid var(--abyss);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+}
+
+.btn-outline-light {
+  background: transparent;
+  border: 1px solid var(--foam);
+  color: var(--foam);
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--teal);
+  padding: 14px 0;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 1px;
+}
+
+/* Tags / status pills */
+.tag-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 8px 16px;
+  border: 1px solid var(--silver);
+  color: var(--teal);
+}
+
+.pill.on {
+  background: var(--copper);
+  border-color: var(--copper);
+  color: var(--abyss);
+}
+
+/* Form fields */
+.field {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid var(--silver);
+  background: transparent;
+  padding: 14px 2px;
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.field::placeholder {
+  color: var(--teal);
+}
+
+.field:focus {
+  outline: none;
+  border-bottom-color: var(--copper);
+}
+
+/* Feature card — abyss-to-teal gradient with a soft copper glow */
+.card-feature {
+  background: linear-gradient(150deg, #0a1620 0%, #123443 55%, #1d4e5c 85%);
+  color: var(--foam);
+  padding: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-feature::after {
+  content: "";
+  position: absolute;
+  right: -40px;
+  bottom: -60px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(214, 154, 82, 0.55), transparent 70%);
+}
+
+.card-feature .eyebrow {
+  color: var(--copper);
+  position: relative;
+  z-index: 1;
+}
+
+.card-feature h3 {
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-feature p {
+  color: var(--silver);
+  font-size: 14px;
+  margin-bottom: 28px;
+  max-width: 320px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-feature .link {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  color: var(--copper);
+  position: relative;
+  z-index: 1;
+}
+
+/* Site footer */
+.site-footer {
+  background: var(--abyss);
+  color: var(--silver);
+  padding: 56px 0;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.site-footer strong {
+  color: var(--foam);
+  font-family: var(--font-display);
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.site-footer .social {
+  margin: 24px 0;
+  display: inline-flex;
+}
+
+.site-footer address {
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+/* Site header / navigation */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--foam);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  gap: 24px;
+}
+
+.site-header__logo {
+  display: block;
+  flex-shrink: 0;
+}
+
+.site-header__logo img {
+  height: 34px;
+  width: auto;
+  display: block;
+}
+
+.site-nav {
+  display: none;
+}
+
+.site-nav ul {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.site-nav a {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-weight: 400;
+}
+
+.site-nav a:hover {
+  color: var(--copper-dark);
+}
+
+.nav-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background: var(--ink);
+}
+
+.mobile-nav {
+  border-top: 1px solid var(--line);
+  background: var(--foam);
+}
+
+.mobile-nav ul {
+  list-style: none;
+  padding: 8px 0;
+}
+
+.mobile-nav a {
+  display: block;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--ink);
+}
+
+@media (min-width: 1024px) {
+  .site-nav {
+    display: block;
+  }
+
+  .nav-toggle,
+  .mobile-nav {
+    display: none;
+  }
+}
+
+/* Category grid */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.category-tile {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--abyss);
+}
+
+.category-tile img {
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.category-tile:hover img {
+  transform: scale(1.04);
+}
+
+.category-tile .tile-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20px;
+  color: var(--foam);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, transparent, rgba(10, 22, 32, 0.75));
+}
