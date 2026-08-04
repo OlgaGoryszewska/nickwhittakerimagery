@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getAllPhotos } from "@/app/lib/categories";
+import PrintGrid from "@/app/components/PrintGrid";
 
 const CATEGORIES = [
   { label: "Abstracts", href: "/abstracts", image: "/Abstracts/spark.jpg" },
@@ -7,9 +9,13 @@ const CATEGORIES = [
   { label: "Reflections", href: "/reflections", image: "/Reflections/_NZP3268.jpg" },
   { label: "Textures", href: "/textures", image: "/Textures/DSC05392.jpg" },
   { label: "Waves", href: "/waves", image: "/Waves/lines2.jpg" },
+  { label: "Limited Edition", href: "/limited-edition", image: "/Fine%20Art/DSC07842.jpg" },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const allPhotos = await getAllPhotos();
+  const mostPopular = allPhotos.filter((photo) => photo.tags.includes("most-popular"));
+
   return (
     <>
       <header className="hero">
@@ -26,10 +32,10 @@ export default function Home() {
             commissions and collaborations.
           </p>
           <div className="tag-row mt-10">
-            <Link href="/contact" className="btn btn-primary">
-              Enquire about a print
+            <Link href="#upcoming-events" className="btn btn-primary">
+              See Upcoming Events
             </Link>
-            <Link href="/fine-art" className="btn btn-outline-light">
+            <Link href="/gallery" className="btn btn-outline-light">
               View the gallery
             </Link>
           </div>
@@ -52,6 +58,47 @@ export default function Home() {
 
       <section className="tight">
         <div className="wrap">
+          <div className="section-head">
+            <h2>Most Popular</h2>
+            <p>The prints readers come back for most — click a photo for a closer look.</p>
+          </div>
+          <PrintGrid photos={mostPopular} />
+        </div>
+      </section>
+
+      <section id="upcoming-events" className="tight border-t border-line">
+        <div className="wrap">
+          <div className="section-head">
+            <h2>Upcoming Events</h2>
+            <p>Exhibitions and print showings — where to see the work in person.</p>
+          </div>
+          <div className="event-card">
+            <Image
+              src="/Fine%20Art/_NZP1310.jpg"
+              alt="Ocean & Water exhibition, Paris"
+              fill
+              sizes="100vw"
+            />
+            <div className="event-card__overlay" />
+            <div className="event-card__content">
+              <div className="eyebrow">Upcoming Exhibition</div>
+              <h3>Ocean &amp; Water — Paris</h3>
+              <div className="event-date">23–26 November · Paris, France</div>
+              <p>
+                A four-day gallery exhibition of fine-art ocean and water
+                photography, showing a curated selection of prints in
+                central Paris.
+              </p>
+              <Link href="/events" className="btn btn-outline-light">
+                Event Details
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="tight border-t border-line">
+        <div className="wrap">
           <div className="eyebrow">About</div>
           <p className="lede">
             Nick Whittaker is an ocean and water photographer based in
@@ -69,7 +116,7 @@ export default function Home() {
         <div className="wrap">
           <div className="section-head">
             <h2>Explore the work</h2>
-            <p>Five bodies of work, from abstract water studies to fine-art prints ready for the wall.</p>
+            <p>Six bodies of work, from abstract water studies to fine-art prints ready for the wall — browse the gallery by category.</p>
           </div>
           <div className="category-grid">
             {CATEGORIES.map((category) => (

@@ -5,11 +5,13 @@ import Link from "next/link";
 import { useState } from "react";
 
 const NAV_ITEMS = [
+  { label: "Gallery", href: "/gallery" },
   { label: "Abstracts", href: "/abstracts" },
   { label: "Fine Art", href: "/fine-art" },
   { label: "Reflections", href: "/reflections" },
   { label: "Textures", href: "/textures" },
   { label: "Waves", href: "/waves" },
+  { label: "Limited Edition", href: "/limited-edition" },
   { label: "Biography", href: "/biography" },
   { label: "Contact", href: "/contact" },
   { label: "Shop", href: "/shop" },
@@ -29,21 +31,11 @@ export default function Header() {
           <Image
             src="/nick_logo_full.svg"
             alt="Nick Whittaker Imagery"
-            width={220}
-            height={79}
+            width={343}
+            height={124}
             priority
           />
         </Link>
-
-        <nav className="site-nav" aria-label="Primary">
-          <ul>
-            {NAV_ITEMS.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href}>{item.label}</Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
 
         <button
           type="button"
@@ -54,12 +46,11 @@ export default function Header() {
         >
           <span />
           <span />
-          <span />
         </button>
       </div>
 
       {open && (
-        <nav className="mobile-nav" aria-label="Mobile">
+        <nav className="mobile-nav" aria-label="Primary">
           <div className="wrap">
             <ul>
               {NAV_ITEMS.map((item) => (
