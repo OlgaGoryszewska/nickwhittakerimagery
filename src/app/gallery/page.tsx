@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getAllPhotos } from "@/app/lib/categories";
-import GalleryClient from "./GalleryClient";
+import GalleryBrowser from "@/app/components/GalleryBrowser";
 
 export const metadata: Metadata = {
   title: "Gallery — Nick Whittaker Imagery",
@@ -23,7 +23,7 @@ export default async function GalleryPage({
           <h2>Gallery</h2>
           <p>The full catalogue — filter by mood, light or subject to find the print you&apos;re after.</p>
         </div>
-        <GalleryClient photos={photos} initialTag={tag} />
+        <GalleryBrowser photos={photos} initialTag={tag} />
       </div>
     </section>
   );

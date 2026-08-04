@@ -55,7 +55,7 @@ const LIMITED_EDITION_SLUG = "limited-edition";
 const LIMITED_EDITION_LABEL = "Limited Edition";
 const LIMITED_EDITION_DESCRIPTION =
   "A small, numbered selection from across the catalogue — each print released in a run of 25.";
-const LIMITED_EDITION_RUN = "Edition of 25";
+const LIMITED_EDITION_RUN = "Limited Edition · Edition of 25";
 
 const LIMITED_EDITION_PICKS: { dir: string; file: string; width: number; height: number }[] = [
   { dir: "Waves", file: "_NZP4237.jpg", width: 7555, height: 5037 },

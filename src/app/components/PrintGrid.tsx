@@ -29,18 +29,21 @@ export default function PrintGrid({ photos }: { photos: Photo[] }) {
               />
             </button>
             <div className="print-card__info">
-              {photo.edition && <span className="pill on print-card__edition">{photo.edition}</span>}
               <h3>{photo.title}</h3>
               <p className="print-card__location">{photo.location}</p>
-              <ul className="print-card__sizes">
-                {SIZE_OPTIONS.map((option) => (
-                  <li key={option.size}>
-                    <span className="print-card__size-name">{option.size}</span>
-                    <span className="print-card__size-dims">{option.dimensions}</span>
-                    <span className="print-card__size-price">{option.price}</span>
-                  </li>
-                ))}
-              </ul>
+              {photo.edition && <p className="print-card__edition">{photo.edition}</p>}
+              <details className="print-card__sizes-accordion">
+                <summary>Sizes &amp; Pricing</summary>
+                <ul className="print-card__sizes">
+                  {SIZE_OPTIONS.map((option) => (
+                    <li key={option.size}>
+                      <span className="print-card__size-name">{option.size}</span>
+                      <span className="print-card__size-dims">{option.dimensions}</span>
+                      <span className="print-card__size-price">{option.price}</span>
+                    </li>
+                  ))}
+                </ul>
+              </details>
               <Link href="/shop" className="btn btn-outline">
                 Add to Cart
               </Link>

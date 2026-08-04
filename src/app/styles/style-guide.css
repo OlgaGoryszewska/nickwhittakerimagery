@@ -90,6 +90,12 @@ em {
   padding: 0 48px;
 }
 
+@media (max-width: 640px) {
+  .wrap {
+    padding: 0 20px;
+  }
+}
+
 section {
   padding: 120px 0;
   scroll-margin-top: 100px;
@@ -316,6 +322,11 @@ section.tight {
   margin-bottom: 32px;
 }
 
+.gallery-more {
+  margin-top: 40px;
+  text-align: center;
+}
+
 /* Form fields */
 .field {
   width: 100%;
@@ -497,8 +508,8 @@ section.tight {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   gap: 24px;
 }
 
@@ -508,7 +519,7 @@ section.tight {
 }
 
 .site-header__logo img {
-  height: 53px;
+  height: 68px;
   width: auto;
   display: block;
 }
@@ -551,55 +562,6 @@ section.tight {
   font-family: var(--font-display);
   font-size: 18px;
   color: var(--ink);
-}
-
-/* Category grid */
-.category-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-@media (max-width: 900px) {
-  .category-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 560px) {
-  .category-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.category-tile {
-  position: relative;
-  display: block;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  background: var(--abyss);
-}
-
-.category-tile img {
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.category-tile:hover img {
-  transform: scale(1.04);
-}
-
-.category-tile .tile-label {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 20px;
-  color: var(--foam);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  background: linear-gradient(180deg, transparent, rgba(10, 22, 32, 0.75));
 }
 
 /* Print shop grid (category pages) */
@@ -650,12 +612,49 @@ section.tight {
 }
 
 .print-card__edition {
-  margin-bottom: 12px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--copper-dark);
+  margin-top: -8px;
+  margin-bottom: 14px;
+}
+
+.print-card__sizes-accordion {
+  margin-bottom: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.print-card__sizes-accordion summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 12px 0;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  position: relative;
+  padding-right: 20px;
+}
+
+.print-card__sizes-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.print-card__sizes-accordion summary::after {
+  content: "+";
+  position: absolute;
+  right: 0;
+  top: 12px;
+  font-size: 14px;
+  color: var(--copper-dark);
+}
+
+.print-card__sizes-accordion[open] summary::after {
+  content: "–";
 }
 
 .print-card__sizes {
   list-style: none;
-  margin-bottom: 20px;
 }
 
 .print-card__sizes li {

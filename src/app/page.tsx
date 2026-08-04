@@ -2,15 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getAllPhotos } from "@/app/lib/categories";
 import PrintGrid from "@/app/components/PrintGrid";
-
-const CATEGORIES = [
-  { label: "Abstracts", href: "/abstracts", image: "/Abstracts/spark.jpg" },
-  { label: "Fine Art", href: "/fine-art", image: "/Fine%20Art/DSC01961.jpg" },
-  { label: "Reflections", href: "/reflections", image: "/Reflections/_NZP3268.jpg" },
-  { label: "Textures", href: "/textures", image: "/Textures/DSC05392.jpg" },
-  { label: "Waves", href: "/waves", image: "/Waves/lines2.jpg" },
-  { label: "Limited Edition", href: "/limited-edition", image: "/Fine%20Art/DSC07842.jpg" },
-];
+import GalleryBrowser from "@/app/components/GalleryBrowser";
 
 export default async function Home() {
   const allPhotos = await getAllPhotos();
@@ -36,22 +28,8 @@ export default async function Home() {
               See Upcoming Events
             </Link>
             <Link href="/gallery" className="btn btn-outline-light">
-              View the gallery
+              View gallery
             </Link>
-          </div>
-          <div className="meta">
-            <div>
-              Location
-              <strong>Auckland, NZ</strong>
-            </div>
-            <div>
-              Focus
-              <strong>Ocean &amp; Water</strong>
-            </div>
-            <div>
-              Prints
-              <strong>Limited Edition</strong>
-            </div>
           </div>
         </div>
       </header>
@@ -63,6 +41,16 @@ export default async function Home() {
             <p>The prints readers come back for most — click a photo for a closer look.</p>
           </div>
           <PrintGrid photos={mostPopular} />
+        </div>
+      </section>
+
+      <section className="border-t border-line">
+        <div className="wrap">
+          <div className="section-head">
+            <h2>Explore the work</h2>
+            <p>Six bodies of work, from abstract water studies to fine-art prints ready for the wall — filter to find what you&apos;re after.</p>
+          </div>
+          <GalleryBrowser photos={allPhotos} limit={10} />
         </div>
       </section>
 
@@ -109,28 +97,6 @@ export default async function Home() {
           <Link href="/biography" className="btn btn-link mt-5 inline-block">
             Read the story →
           </Link>
-        </div>
-      </section>
-
-      <section className="border-t border-line">
-        <div className="wrap">
-          <div className="section-head">
-            <h2>Explore the work</h2>
-            <p>Six bodies of work, from abstract water studies to fine-art prints ready for the wall — browse the gallery by category.</p>
-          </div>
-          <div className="category-grid">
-            {CATEGORIES.map((category) => (
-              <Link key={category.href} href={category.href} className="category-tile">
-                <Image
-                  src={category.image}
-                  alt={category.label}
-                  fill
-                  sizes="(max-width: 560px) 100vw, (max-width: 900px) 50vw, 33vw"
-                />
-                <span className="tile-label">{category.label}</span>
-              </Link>
-            ))}
-          </div>
         </div>
       </section>
     </>

@@ -29,10 +29,10 @@ export default function Header() {
       <div className="wrap site-header__bar">
         <Link href="/" className="site-header__logo" onClick={() => setOpen(false)}>
           <Image
-            src="/nick_logo_full.svg"
+            src="/nick-logo.svg"
             alt="Nick Whittaker Imagery"
-            width={343}
-            height={124}
+            width={440}
+            height={159}
             priority
           />
         </Link>

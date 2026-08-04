@@ -1,15 +1,18 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { TAGS, type Photo } from "@/app/lib/catalog";
 import PrintGrid from "@/app/components/PrintGrid";
 
-export default function GalleryClient({
+export default function GalleryBrowser({
   photos,
   initialTag,
+  limit,
 }: {
   photos: Photo[];
   initialTag?: string;
+  limit?: number;
 }) {
   const [activeTags, setActiveTags] = useState<string[]>(
     initialTag && TAGS.some((t) => t.slug === initialTag) ? [initialTag] : []
@@ -25,6 +28,9 @@ export default function GalleryClient({
     if (activeTags.length === 0) return photos;
     return photos.filter((photo) => photo.tags.some((tag) => activeTags.includes(tag)));
   }, [photos, activeTags]);
+
+  const visible = limit ? filtered.slice(0, limit) : filtered;
+  const moreHref = activeTags.length === 1 ? `/gallery?tag=${activeTags[0]}` : "/gallery";
 
   return (
     <>
@@ -52,7 +58,15 @@ export default function GalleryClient({
         {filtered.length} of {photos.length} photos
       </p>
 
-      <PrintGrid photos={filtered} />
+      <PrintGrid photos={visible} />
+
+      {limit && filtered.length > limit && (
+        <div className="gallery-more">
+          <Link href={moreHref} className="btn btn-outline">
+            See More
+          </Link>
+        </div>
+      )}
     </>
   );
 }
