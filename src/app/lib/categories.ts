@@ -4,9 +4,16 @@ import { imageSizeFromFile } from "image-size/fromFile";
 import type { Photo, Category } from "@/app/lib/catalog";
 
 export type { Photo, Category } from "@/app/lib/catalog";
-export { TAGS, SIZE_OPTIONS } from "@/app/lib/catalog";
+export { TAGS, SIZE_OPTIONS, ROOM_PREVIEW_WIDTH, ROOM_PREVIEW_HEIGHT } from "@/app/lib/catalog";
 
 const IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png"]);
+
+// Room mockups are pre-generated (scripts/gen_mockups.py) into public/mockups/,
+// mirroring the source folder structure, always saved as .jpg.
+function roomPreviewSrc(dir: string, file: string): string {
+  const base = file.replace(/\.[^.]+$/, "");
+  return `/mockups/${encodeURIComponent(dir)}/${encodeURIComponent(base)}.jpg`;
+}
 
 const CATEGORY_DEFS: { slug: string; dir: string; label: string; description: string; tag?: string }[] = [
   {
@@ -153,6 +160,13 @@ function resolveTags(file: string, categoryTag?: string, extraTag?: string): str
   return [...tags];
 }
 
+function slugify(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export function getAllCategorySlugs(): string[] {
   return [...CATEGORY_DEFS.map((c) => c.slug), LIMITED_EDITION_SLUG];
 }
@@ -161,16 +175,19 @@ export async function getCategory(slug: string): Promise<Category | null> {
   if (slug === LIMITED_EDITION_SLUG) {
     const photos: Photo[] = LIMITED_EDITION_PICKS.map((pick, index) => {
       const sourceDef = CATEGORY_DEFS.find((c) => c.dir === pick.dir);
+      const title = `Limited Edition No. ${String(index + 1).padStart(2, "0")}`;
       return {
+        slug: slugify(title),
         src: `/${encodeURIComponent(pick.dir)}/${encodeURIComponent(pick.file)}`,
         width: pick.width,
         height: pick.height,
-        title: `Limited Edition No. ${String(index + 1).padStart(2, "0")}`,
+        title,
         location: LOCATION_OVERRIDES[pick.file] ?? DEFAULT_LOCATION,
         edition: LIMITED_EDITION_RUN,
         tags: resolveTags(pick.file, sourceDef?.tag, "limited-edition"),
         categorySlug: LIMITED_EDITION_SLUG,
         categoryLabel: LIMITED_EDITION_LABEL,
+        roomPreview: roomPreviewSrc(pick.dir, pick.file),
       };
     });
 
@@ -194,15 +211,18 @@ export async function getCategory(slug: string): Promise<Category | null> {
   const photos: Photo[] = await Promise.all(
     files.map(async (file, index) => {
       const { width, height } = await imageSizeFromFile(path.join(dirPath, file));
+      const title = `${def.label} Study ${String(index + 1).padStart(2, "0")}`;
       return {
+        slug: slugify(title),
         src: `/${encodeURIComponent(def.dir)}/${encodeURIComponent(file)}`,
         width,
         height,
-        title: `${def.label} Study ${String(index + 1).padStart(2, "0")}`,
+        title,
         location: LOCATION_OVERRIDES[file] ?? DEFAULT_LOCATION,
         tags: resolveTags(file, def.tag),
         categorySlug: def.slug,
         categoryLabel: def.label,
+        roomPreview: roomPreviewSrc(def.dir, file),
       };
     })
   );

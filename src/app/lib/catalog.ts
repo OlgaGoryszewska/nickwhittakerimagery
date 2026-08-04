@@ -4,6 +4,7 @@
 // to bundle for the browser.
 
 export type Photo = {
+  slug: string;
   src: string;
   width: number;
   height: number;
@@ -13,7 +14,13 @@ export type Photo = {
   tags: string[];
   categorySlug: string;
   categoryLabel: string;
+  roomPreview: string;
 };
+
+// Every room mockup is composited onto the same base photo (public/room01.png),
+// so they all share its pixel dimensions.
+export const ROOM_PREVIEW_WIDTH = 1536;
+export const ROOM_PREVIEW_HEIGHT = 1024;
 
 export type Category = {
   slug: string;

@@ -29,7 +29,9 @@ export default function PrintGrid({ photos }: { photos: Photo[] }) {
               />
             </button>
             <div className="print-card__info">
-              <h3>{photo.title}</h3>
+              <h3>
+                <Link href={`/${photo.categorySlug}/${photo.slug}`}>{photo.title}</Link>
+              </h3>
               <p className="print-card__location">{photo.location}</p>
               {photo.edition && <p className="print-card__edition">{photo.edition}</p>}
               <details className="print-card__sizes-accordion">
