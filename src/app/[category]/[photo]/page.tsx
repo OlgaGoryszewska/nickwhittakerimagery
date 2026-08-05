@@ -1,10 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllCategorySlugs, getCategory } from "@/app/lib/categories";
 import { SIZE_OPTIONS, TAGS, ROOM_PREVIEW_WIDTH, ROOM_PREVIEW_HEIGHT } from "@/app/lib/catalog";
 import PrintGrid from "@/app/components/PrintGrid";
+import DetailGallery from "@/app/components/DetailGallery";
 
 export const dynamicParams = false;
 
@@ -23,11 +23,9 @@ async function findPhoto(categorySlug: string, photoSlug: string) {
   if (index === -1) return null;
 
   const photo = category.photos[index];
-  const prev = category.photos[(index - 1 + category.photos.length) % category.photos.length];
-  const next = category.photos[(index + 1) % category.photos.length];
   const related = category.photos.filter((p) => p.slug !== photoSlug).slice(0, 3);
 
-  return { category, photo, prev, next, related };
+  return { category, photo, related };
 }
 
 export async function generateMetadata({
@@ -62,7 +60,12 @@ export default async function PhotoPage({
   const result = await findPhoto(categorySlug, photoSlug);
   if (!result) notFound();
 
-  const { category, photo, prev, next, related } = result;
+  const { category, photo, related } = result;
+
+  const galleryImages = [
+    { src: photo.src, width: photo.width, height: photo.height, label: "Original" },
+    { src: photo.roomPreview, width: ROOM_PREVIEW_WIDTH, height: ROOM_PREVIEW_HEIGHT, label: "On Your Wall" },
+  ];
 
   return (
     <>
@@ -78,20 +81,7 @@ export default async function PhotoPage({
 
           <div className="detail-layout">
             <div className="detail-media">
-              <div className="print-card__mat">
-                <Image
-                  src={photo.src}
-                  alt={photo.title}
-                  width={photo.width}
-                  height={photo.height}
-                  sizes="(max-width: 860px) 100vw, 60vw"
-                  priority
-                />
-              </div>
-              <div className="detail-nav">
-                <Link href={`/${category.slug}/${prev.slug}`}>‹ {prev.title}</Link>
-                <Link href={`/${category.slug}/${next.slug}`}>{next.title} ›</Link>
-              </div>
+              <DetailGallery images={galleryImages} alt={photo.title} />
             </div>
 
             <div className="detail-info">
@@ -127,24 +117,6 @@ export default async function PhotoPage({
                 Add to Cart
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="tight border-t border-line">
-        <div className="wrap">
-          <div className="section-head">
-            <h2>See It On Your Wall</h2>
-            <p>A preview of {photo.title} framed and hung — actual scale varies by print size.</p>
-          </div>
-          <div className="detail-room-preview">
-            <Image
-              src={photo.roomPreview}
-              alt={`${photo.title} framed on a wall`}
-              width={ROOM_PREVIEW_WIDTH}
-              height={ROOM_PREVIEW_HEIGHT}
-              sizes="(max-width: 1080px) 100vw, 1080px"
-            />
           </div>
         </div>
       </section>

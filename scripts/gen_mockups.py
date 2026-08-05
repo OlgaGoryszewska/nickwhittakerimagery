@@ -51,12 +51,14 @@ def main():
     base = Image.open(BASE_PATH).convert("RGB")
     frame_crop = base.crop(FRAME_BOX)
 
-    # Light map: normalize the original frame's luminance around a mid gray so we
-    # can multiply it onto each pasted photo and keep the mockup's natural light/shadow
-    # (there's a soft diagonal light streak across the frame in room01.png).
+    # Light map: normalize the original frame's luminance so its average maps to a
+    # near-white neutral (not mid-gray) — multiply blending against mid-gray halves
+    # brightness everywhere, which made the first pass look muddy. Anchoring near
+    # white keeps most of the print at full brightness and only lets the frame's
+    # subtle shading (the diagonal light streak, soft corner falloff) show through.
     light_map = frame_crop.convert("L")
     mean = sum(light_map.getdata()) / (FRAME_W * FRAME_H)
-    light_map = light_map.point(lambda p: max(0, min(255, int(p * 128 / mean))))
+    light_map = light_map.point(lambda p: max(0, min(255, int(p * 240 / mean))))
     light_rgb = Image.merge("RGB", (light_map, light_map, light_map))
 
     count = 0
@@ -70,9 +72,9 @@ def main():
             photo = Image.open(os.path.join(src_dir, fname)).convert("RGB")
             fitted = cover_fit(photo, FRAME_W, FRAME_H)
             lit = ImageChops.multiply(fitted, light_rgb)
-            # Blend back a little of the original so the mockup's shading doesn't
-            # over-darken the print.
-            lit = Image.blend(fitted, lit, 0.75)
+            # Mostly the original print, with just a light wash of the mockup's
+            # shading for realism — not enough to noticeably darken the artwork.
+            lit = Image.blend(fitted, lit, 0.35)
 
             composite = base.copy()
             composite.paste(lit, (FRAME_BOX[0], FRAME_BOX[1]))
