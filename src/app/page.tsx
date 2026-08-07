@@ -44,7 +44,7 @@ export default async function Home() {
         <div className="wrap">
           <div className="section-head">
             <h2>Most Popular</h2>
-            <p>The prints readers come back for most — click a photo for a closer look.</p>
+            <p>The prints people come back for most — click a photo for a closer look.</p>
           </div>
           <PrintGrid photos={mostPopular} />
         </div>
