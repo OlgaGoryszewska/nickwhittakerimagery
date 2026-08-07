@@ -2,9 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllCategorySlugs, getCategory, getPhotoMockups } from "@/app/lib/categories";
-import { SIZE_OPTIONS, TAGS } from "@/app/lib/catalog";
 import PrintGrid from "@/app/components/PrintGrid";
 import DetailGallery from "@/app/components/DetailGallery";
+import PhotoPurchasePanel from "@/app/components/PhotoPurchasePanel";
 
 export const dynamicParams = false;
 
@@ -89,32 +89,12 @@ export default async function PhotoPage({
               <h1>{photo.title}</h1>
               <p className="print-card__location">{photo.location}</p>
 
-              <div className="tag-row detail-tags">
-                {photo.tags.map((tagSlug) => {
-                  const tag = TAGS.find((t) => t.slug === tagSlug);
-                  if (!tag) return null;
-                  return (
-                    <Link key={tagSlug} href={`/gallery?tag=${tagSlug}`} className="pill">
-                      {tag.label}
-                    </Link>
-                  );
-                })}
-              </div>
-
               <p className="lede">{category.description}</p>
 
-              <ul className="print-card__sizes detail-sizes">
-                {SIZE_OPTIONS.map((option) => (
-                  <li key={option.size}>
-                    <span className="print-card__size-name">{option.size}</span>
-                    <span className="print-card__size-dims">{option.dimensions}</span>
-                    <span className="print-card__size-price">{option.price}</span>
-                  </li>
-                ))}
-              </ul>
+              <PhotoPurchasePanel photo={photo} />
 
-              <Link href="/shop" className="btn btn-primary detail-cta">
-                Add to Cart
+              <Link href="/framing-information" className="btn-link detail-framing-link">
+                More on framing options &amp; other styles
               </Link>
             </div>
           </div>
