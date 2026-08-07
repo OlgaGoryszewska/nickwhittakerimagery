@@ -318,9 +318,11 @@ export type PhotoMockup = {
 // caption still reads cleanly (the file on disk is left as-is).
 const LABEL_WORD_FIXES: Record<string, string> = {
   moder: "modern",
+  moodern: "modern",
   minimalistik: "minimalistic",
   bedrooom: "bedroom",
   vobrant: "vibrant",
+  livingrom: "livingroom",
 };
 
 function mockupLabel(descriptor: string): string {
