@@ -298,3 +298,56 @@ export async function getAllPhotos(): Promise<Photo[]> {
   const categories = await Promise.all(getAllCategorySlugs().map((slug) => getCategory(slug)));
   return categories.flatMap((category) => category?.photos ?? []);
 }
+
+// "See it on your wall" room mockups. Drop a file named
+// `{photo-base-filename}-{room-descriptor}.jpg` into public/mockup/ and it
+// will automatically show up in that photo's carousel — no code changes
+// needed. e.g. nick-whittaker-ocean-photography-cream-foam-texture-modern-bedroom.jpg
+// attaches to nick-whittaker-ocean-photography-cream-foam-texture.jpg.
+const MOCKUP_DIR_NAME = "mockup";
+
+export type PhotoMockup = {
+  src: string;
+  width: number;
+  height: number;
+  label: string;
+  alt: string;
+};
+
+function mockupLabel(descriptor: string): string {
+  return descriptor
+    .split("-")
+    .flatMap((word) => (word === "livingroom" ? ["living", "room"] : [word]))
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+export async function getPhotoMockups(photo: Photo): Promise<PhotoMockup[]> {
+  const mockupDir = path.join(process.cwd(), "public", MOCKUP_DIR_NAME);
+  let entries: string[];
+  try {
+    entries = await readdir(mockupDir);
+  } catch {
+    return [];
+  }
+
+  const baseName = path.parse(decodeURIComponent(photo.src)).name;
+  const prefix = `${baseName}-`;
+  const matches = entries
+    .filter((file) => file.startsWith(prefix) && IMAGE_EXTENSIONS.has(path.extname(file).toLowerCase()))
+    .sort((a, b) => a.localeCompare(b));
+
+  return Promise.all(
+    matches.map(async (file) => {
+      const { width, height } = await imageSizeFromFile(path.join(mockupDir, file));
+      const label = mockupLabel(path.parse(file).name.slice(prefix.length));
+      return {
+        src: `/${MOCKUP_DIR_NAME}/${encodeURIComponent(file)}`,
+        width,
+        height,
+        label,
+        alt: `${photo.title} shown as a framed print in a ${label.toLowerCase()} — Nick Whittaker Imagery.`,
+      };
+    })
+  );
+}

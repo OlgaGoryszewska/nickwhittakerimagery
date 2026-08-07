@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAllCategorySlugs, getCategory } from "@/app/lib/categories";
+import { getAllCategorySlugs, getCategory, getPhotoMockups } from "@/app/lib/categories";
 import { SIZE_OPTIONS, TAGS } from "@/app/lib/catalog";
 import PrintGrid from "@/app/components/PrintGrid";
 import DetailGallery from "@/app/components/DetailGallery";
@@ -62,8 +62,10 @@ export default async function PhotoPage({
 
   const { category, photo, related } = result;
 
+  const mockups = await getPhotoMockups(photo);
   const galleryImages = [
     { src: photo.src, width: photo.width, height: photo.height, label: "Original", alt: photo.alt },
+    ...mockups.map((m) => ({ src: m.src, width: m.width, height: m.height, label: m.label, alt: m.alt })),
   ];
 
   return (
