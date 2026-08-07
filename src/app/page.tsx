@@ -11,7 +11,13 @@ export default async function Home() {
   return (
     <>
       <header className="hero">
-        <Image src="/Waves/_NZP1305.jpg" alt="" fill priority className="hero-bg" />
+        <Image
+          src="/Waves/nick-whittaker-ocean-photography-azure-breaking-wave.jpg"
+          alt=""
+          fill
+          priority
+          className="hero-bg"
+        />
         <div className="hero-overlay" />
         <div className="wrap">
           <div className="eyebrow">Ocean &amp; Water Photography — Auckland, NZ</div>
@@ -20,8 +26,8 @@ export default async function Home() {
           </h1>
           <p className="sub">
             Fine-art ocean and water photography, shot around Auckland, New
-            Zealand — available as limited-edition prints, and open to
-            commissions and collaborations.
+            Zealand — available as fine-art prints, and open to commissions
+            and collaborations.
           </p>
           <div className="tag-row mt-10">
             <Link href="#upcoming-events" className="btn btn-primary">
@@ -62,7 +68,7 @@ export default async function Home() {
           </div>
           <div className="event-card">
             <Image
-              src="/Fine%20Art/_NZP1310.jpg"
+              src="/Fine%20Art/nick-whittaker-ocean-photography-fisherman-light-trail.jpg"
               alt="Ocean & Water exhibition, Paris"
               fill
               sizes="100vw"

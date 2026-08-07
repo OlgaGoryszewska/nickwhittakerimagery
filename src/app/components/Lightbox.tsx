@@ -2,20 +2,30 @@
 
 import Image from "next/image";
 import { useEffect } from "react";
-import type { Photo } from "@/app/lib/catalog";
+
+export type LightboxImage = {
+  key: string;
+  src: string;
+  width: number;
+  height: number;
+  title: string;
+  /** Rich SEO/accessibility text for the <img alt>; falls back to `title` if omitted. */
+  alt?: string;
+  caption?: string;
+};
 
 export default function Lightbox({
-  photos,
+  images,
   index,
   onClose,
   onNavigate,
 }: {
-  photos: Photo[];
+  images: LightboxImage[];
   index: number;
   onClose: () => void;
   onNavigate: (index: number) => void;
 }) {
-  const photo = photos[index];
+  const image = images[index];
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -23,8 +33,8 @@ export default function Lightbox({
 
     function handleKey(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowRight") onNavigate((index + 1) % photos.length);
-      if (e.key === "ArrowLeft") onNavigate((index - 1 + photos.length) % photos.length);
+      if (e.key === "ArrowRight") onNavigate((index + 1) % images.length);
+      if (e.key === "ArrowLeft") onNavigate((index - 1 + images.length) % images.length);
     }
     window.addEventListener("keydown", handleKey);
 
@@ -32,16 +42,16 @@ export default function Lightbox({
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKey);
     };
-  }, [index, photos.length, onClose, onNavigate]);
+  }, [index, images.length, onClose, onNavigate]);
 
-  if (!photo) return null;
+  if (!image) return null;
 
   return (
     <div
       className="lightbox"
       role="dialog"
       aria-modal="true"
-      aria-label={photo.title}
+      aria-label={image.title}
       onClick={onClose}
     >
       <button type="button" className="lightbox__close" aria-label="Close" onClick={onClose}>
@@ -54,7 +64,7 @@ export default function Lightbox({
         aria-label="Previous image"
         onClick={(e) => {
           e.stopPropagation();
-          onNavigate((index - 1 + photos.length) % photos.length);
+          onNavigate((index - 1 + images.length) % images.length);
         }}
       >
         ‹
@@ -62,18 +72,18 @@ export default function Lightbox({
 
       <div className="lightbox__stage" onClick={(e) => e.stopPropagation()}>
         <Image
-          key={`${photo.categorySlug}-${photo.src}`}
-          src={photo.src}
-          alt={photo.title}
-          width={photo.width}
-          height={photo.height}
+          key={image.key}
+          src={image.src}
+          alt={image.alt ?? image.title}
+          width={image.width}
+          height={image.height}
           sizes="90vw"
           priority
           className="lightbox__image"
         />
         <div className="lightbox__caption">
-          <div className="lightbox__caption-title">{photo.title}</div>
-          <div className="lightbox__caption-location">{photo.location}</div>
+          <div className="lightbox__caption-title">{image.title}</div>
+          {image.caption && <div className="lightbox__caption-location">{image.caption}</div>}
         </div>
       </div>
 
@@ -83,7 +93,7 @@ export default function Lightbox({
         aria-label="Next image"
         onClick={(e) => {
           e.stopPropagation();
-          onNavigate((index + 1) % photos.length);
+          onNavigate((index + 1) % images.length);
         }}
       >
         ›

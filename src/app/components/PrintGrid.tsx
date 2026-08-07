@@ -22,7 +22,7 @@ export default function PrintGrid({ photos }: { photos: Photo[] }) {
             >
               <Image
                 src={photo.src}
-                alt={photo.title}
+                alt={photo.alt}
                 width={photo.width}
                 height={photo.height}
                 sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
@@ -33,7 +33,6 @@ export default function PrintGrid({ photos }: { photos: Photo[] }) {
                 <Link href={`/${photo.categorySlug}/${photo.slug}`}>{photo.title}</Link>
               </h3>
               <p className="print-card__location">{photo.location}</p>
-              {photo.edition && <p className="print-card__edition">{photo.edition}</p>}
               <details className="print-card__sizes-accordion">
                 <summary>Sizes &amp; Pricing</summary>
                 <ul className="print-card__sizes">
@@ -56,7 +55,15 @@ export default function PrintGrid({ photos }: { photos: Photo[] }) {
 
       {lightboxIndex !== null && (
         <Lightbox
-          photos={photos}
+          images={photos.map((photo) => ({
+            key: `${photo.categorySlug}-${photo.src}`,
+            src: photo.src,
+            width: photo.width,
+            height: photo.height,
+            title: photo.title,
+            alt: photo.alt,
+            caption: photo.location,
+          }))}
           index={lightboxIndex}
           onClose={() => setLightboxIndex(null)}
           onNavigate={setLightboxIndex}

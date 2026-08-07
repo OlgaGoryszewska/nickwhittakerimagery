@@ -11,7 +11,6 @@ const NAV_ITEMS = [
   { label: "Reflections", href: "/reflections" },
   { label: "Textures", href: "/textures" },
   { label: "Waves", href: "/waves" },
-  { label: "Limited Edition", href: "/limited-edition" },
   { label: "Biography", href: "/biography" },
   { label: "Contact", href: "/contact" },
   { label: "Shop", href: "/shop" },

@@ -2,37 +2,56 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import Lightbox from "./Lightbox";
 
 export type DetailGalleryImage = {
   src: string;
   width: number;
   height: number;
   label: string;
+  /** Rich SEO/accessibility text for the <img alt>. */
+  alt: string;
 };
 
 export default function DetailGallery({
   images,
-  alt,
+  title,
 }: {
   images: DetailGalleryImage[];
-  alt: string;
+  title: string;
 }) {
   const [index, setIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const current = images[index];
+
+  const lightboxImages = images.map((img, i) => ({
+    key: `${i}-${img.src}`,
+    src: img.src,
+    width: img.width,
+    height: img.height,
+    title,
+    alt: img.alt,
+    caption: img.label,
+  }));
 
   return (
     <div className="detail-gallery">
-      <div className="print-card__mat">
+      <button
+        type="button"
+        className="print-card__mat"
+        onClick={() => setLightboxOpen(true)}
+        aria-label={`View ${title} — ${current.label} larger`}
+      >
         <Image
           key={current.src}
           src={current.src}
-          alt={`${alt} — ${current.label}`}
+          alt={current.alt}
           width={current.width}
           height={current.height}
           sizes="(max-width: 860px) 100vw, 60vw"
           priority
         />
-      </div>
+      </button>
 
       {images.length > 1 && (
         <div className="detail-gallery__nav">
@@ -54,6 +73,15 @@ export default function DetailGallery({
             ›
           </button>
         </div>
+      )}
+
+      {lightboxOpen && (
+        <Lightbox
+          images={lightboxImages}
+          index={index}
+          onClose={() => setLightboxOpen(false)}
+          onNavigate={setIndex}
+        />
       )}
     </div>
   );

@@ -4,16 +4,9 @@ import { imageSizeFromFile } from "image-size/fromFile";
 import type { Photo, Category } from "@/app/lib/catalog";
 
 export type { Photo, Category } from "@/app/lib/catalog";
-export { TAGS, SIZE_OPTIONS, ROOM_PREVIEW_WIDTH, ROOM_PREVIEW_HEIGHT } from "@/app/lib/catalog";
+export { TAGS, SIZE_OPTIONS } from "@/app/lib/catalog";
 
 const IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png"]);
-
-// Room mockups are pre-generated (scripts/gen_mockups.py) into public/mockups/,
-// mirroring the source folder structure, always saved as .jpg.
-function roomPreviewSrc(dir: string, file: string): string {
-  const base = file.replace(/\.[^.]+$/, "");
-  return `/mockups/${encodeURIComponent(dir)}/${encodeURIComponent(base)}.jpg`;
-}
 
 const CATEGORY_DEFS: { slug: string; dir: string; label: string; description: string; tag?: string }[] = [
   {
@@ -56,22 +49,6 @@ const CATEGORY_DEFS: { slug: string; dir: string; label: string; description: st
   },
 ];
 
-// A curated selection, not a photo folder — one flagship image pulled from each
-// body of work and offered as a restricted print run.
-const LIMITED_EDITION_SLUG = "limited-edition";
-const LIMITED_EDITION_LABEL = "Limited Edition";
-const LIMITED_EDITION_DESCRIPTION =
-  "A small, numbered selection from across the catalogue — each print released in a run of 25.";
-const LIMITED_EDITION_RUN = "Limited Edition · Edition of 25";
-
-const LIMITED_EDITION_PICKS: { dir: string; file: string; width: number; height: number }[] = [
-  { dir: "Waves", file: "_NZP4237.jpg", width: 7555, height: 5037 },
-  { dir: "Fine Art", file: "DSC07842.jpg", width: 5262, height: 3508 },
-  { dir: "Abstracts", file: "_NZP6894.jpg", width: 7687, height: 5125 },
-  { dir: "Reflections", file: "_NZP5491.jpg", width: 6880, height: 4587 },
-  { dir: "Textures", file: "_NZP8113.jpg", width: 6267, height: 4178 },
-];
-
 // Every photo was shot at Whangamata for now. Add a `"filename.jpg": "Place, New Zealand"`
 // entry here to override the location for individual photos as more shoot locations come in.
 const DEFAULT_LOCATION = "Whangamata, New Zealand";
@@ -82,82 +59,190 @@ const LOCATION_OVERRIDES: Record<string, string> = {};
 // in getCategory(). Add entries here for any new photo dropped into public/.
 const TAG_OVERRIDES: Record<string, string[]> = {
   // Abstracts
-  "DSC03143.jpg": ["moody", "mystery"],
-  "_NZP2338.jpg": ["positive-vibe"],
-  "_NZP2681.jpg": ["positive-vibe"],
-  "_NZP4848.jpg": ["positive-vibe"],
-  "_NZP5441.jpg": ["moody", "mystery"],
-  "_NZP5490.jpg": ["moody", "mystery"],
-  "_NZP5492.jpg": ["positive-vibe"],
-  "_NZP6370.jpg": ["positive-vibe"],
-  "_NZP6846.jpg": ["sunset", "moody"],
-  "_NZP6894.jpg": ["sunset", "moody"],
-  "_NZP7758.jpg": ["positive-vibe"],
-  "_NZP9148.jpg": ["sunset", "positive-vibe"],
-  "_NZP9694.jpg": ["moody"],
-  "spark.jpg": ["sunset", "positive-vibe", "most-popular"],
+  "nick-whittaker-ocean-photography-golden-sand-foam.jpg": ["positive-vibe"],
+  "nick-whittaker-ocean-photography-midnight-blue-ripple.jpg": ["positive-vibe"],
+  "nick-whittaker-ocean-photography-turquoise-water-texture.jpg": ["positive-vibe", "most-popular"],
+  "nick-whittaker-ocean-photography-golden-flecked-water.jpg": ["moody", "mystery", "most-popular"],
+  "nick-whittaker-ocean-photography-motion-blur-abstract.jpg": ["moody", "mystery"],
+  "nick-whittaker-ocean-photography-blue-pebble-texture.jpg": ["positive-vibe"],
+  "nick-whittaker-ocean-photography-stone-mosaic-texture.jpg": ["positive-vibe", "most-popular"],
+  "nick-whittaker-ocean-photography-copper-reflection-lines.jpg": ["sunset", "moody"],
+  "nick-whittaker-ocean-photography-crimson-wave-abstract.jpg": ["sunset", "moody"],
+  "nick-whittaker-ocean-photography-cream-foam-texture.jpg": ["positive-vibe"],
+  "nick-whittaker-ocean-photography-slate-blue-lines.jpg": ["moody"],
+  "nick-whittaker-ocean-photography-golden-grass-silhouette.jpg": ["sunset", "positive-vibe"],
+  "nick-whittaker-ocean-photography-fiery-sunset-shoreline.jpg": ["sunset", "positive-vibe"],
 
   // Fine Art
-  "DSC01961.jpg": ["wave", "positive-vibe", "most-popular"],
-  "DSC07842.jpg": ["sunrise", "moody", "mystery"],
-  "_NZP0948.jpg": ["sunrise", "moody"],
-  "_NZP1062.jpg": ["sunrise", "moody"],
-  "_NZP1310.jpg": ["sunrise", "mystery", "most-popular"],
-  "_NZP3952.jpg": ["sunset", "moody"],
-  "_NZP4112.jpg": ["mystery", "moody"],
-  "_NZP5310.jpg": ["abstract", "mystery"],
-  "_NZP6339.jpg": ["mystery", "moody"],
-  "_NZP6713.jpg": ["sunset", "positive-vibe"],
-  "_NZP7323.jpg": ["moody", "mystery"],
-  "_NZP7572.jpg": ["moody", "positive-vibe"],
-  "_NZP7618.jpg": ["sunset", "positive-vibe"],
-  "_NZP7745.jpg": ["mystery", "moody"],
-  "_NZP8205.jpg": ["mystery", "moody"],
+  "nick-whittaker-ocean-photography-dusk-silhouette-figures.jpg": ["sunrise", "moody", "mystery"],
+  "nick-whittaker-ocean-photography-golden-sunrise-fisherman.jpg": ["sunrise", "moody"],
+  "nick-whittaker-ocean-photography-sunrise-fishing-boats.jpg": ["sunrise", "moody"],
+  "nick-whittaker-ocean-photography-fisherman-light-trail.jpg": ["sunrise", "mystery"],
+  "nick-whittaker-ocean-photography-palm-tree-silhouette.jpg": ["sunset", "moody"],
+  "nick-whittaker-ocean-photography-fisheye-palm-canopy.jpg": ["abstract", "mystery"],
+  "nick-whittaker-ocean-photography-amber-palm-sunset.jpg": ["sunset", "positive-vibe"],
+  "nick-whittaker-ocean-photography-coastal-palm-treeline.jpg": ["moody", "mystery"],
+  "nick-whittaker-ocean-photography-twilight-palm-silhouette.jpg": ["moody", "positive-vibe"],
 
   // Reflections
-  "_NZP3268.jpg": ["sunset", "moody"],
-  "_NZP3571.jpg": ["sunset", "positive-vibe"],
-  "_NZP4151.jpg": ["moody", "mystery"],
-  "_NZP5372.jpg": ["sunset", "positive-vibe"],
-  "_NZP5434.jpg": ["sunset", "positive-vibe"],
-  "_NZP5491.jpg": ["sunset", "moody"],
-  "_NZP7255.jpg": ["sunset", "positive-vibe"],
-  "_NZP7291.jpg": ["moody", "mystery"],
-  "_NZP9224.jpg": ["moody"],
-  "_NZP9636.jpg": ["moody", "mystery"],
+  "nick-whittaker-ocean-photography-amber-ripple-reflection.jpg": ["sunset", "moody"],
+  "nick-whittaker-ocean-photography-hazy-gold-horizon.jpg": ["sunset", "positive-vibe"],
+  "nick-whittaker-ocean-photography-cobalt-ripple-reflection.jpg": ["moody", "mystery"],
+  "nick-whittaker-ocean-photography-sunburst-water-reflection.jpg": ["sunset", "positive-vibe"],
+  "nick-whittaker-ocean-photography-fire-ripple-reflection.jpg": ["sunset", "positive-vibe"],
+  "nick-whittaker-ocean-photography-golden-streak-wave.jpg": ["sunset", "positive-vibe"],
+  "nick-whittaker-ocean-photography-golden-mesh-reflection.jpg": ["moody", "most-popular"],
+  "nick-whittaker-ocean-photography-muted-blue-reflection.jpg": ["moody", "mystery"],
 
   // Textures
-  "DSC05392.jpg": ["moody", "mystery"],
-  "_NZP2238.jpg": ["sunset", "moody"],
-  "_NZP2436.jpg": ["positive-vibe"],
-  "_NZP4566.jpg": ["sunset", "positive-vibe"],
-  "_NZP5009.jpg": ["sunset", "positive-vibe"],
-  "_NZP8113.jpg": ["mystery", "positive-vibe"],
+  "nick-whittaker-ocean-photography-amber-horizon-blur.jpg": ["sunset", "moody", "most-popular"],
+  "nick-whittaker-ocean-photography-minimalist-wave-line.jpg": ["positive-vibe"],
+  "nick-whittaker-ocean-photography-underwater-light-rays.jpg": ["mystery", "positive-vibe"],
 
   // Waves
-  "DSC05261.jpg": ["sunset", "positive-vibe"],
-  "DSC06780.jpg": ["moody"],
-  "NZP03216.jpg": ["moody", "mystery"],
-  "_NZP0620.jpg": ["sunset", "positive-vibe"],
-  "_NZP0919.jpg": ["abstract", "positive-vibe"],
-  "_NZP1305.jpg": ["positive-vibe", "most-popular"],
-  "_NZP1353.jpg": ["moody"],
-  "_NZP3081.jpg": ["positive-vibe"],
-  "_NZP3509.jpg": ["sunset", "positive-vibe"],
-  "_NZP3519.jpg": ["sunset", "positive-vibe"],
-  "_NZP4237.jpg": ["positive-vibe", "most-popular"],
-  "_NZP6130.jpg": ["sunset", "moody", "mystery"],
-  "_NZP6229.jpg": ["moody"],
-  "_NZP8293.jpg": ["moody"],
-  "lines2-2.jpg": ["abstract", "sunset", "positive-vibe"],
-  "lines2.jpg": ["abstract", "sunset", "positive-vibe", "most-popular"],
+  "nick-whittaker-ocean-photography-pastel-dawn-wave.jpg": ["sunset", "positive-vibe"],
+  "nick-whittaker-ocean-photography-emerald-storm-break.jpg": ["moody"],
+  "nick-whittaker-ocean-photography-misty-teal-barrel.jpg": ["moody", "mystery"],
+  "nick-whittaker-ocean-photography-soft-pastel-swell.jpg": ["sunset", "positive-vibe"],
+  "nick-whittaker-ocean-photography-golden-spray-burst.jpg": ["abstract", "positive-vibe"],
+  "nick-whittaker-ocean-photography-azure-breaking-wave.jpg": ["positive-vibe"],
+  "nick-whittaker-ocean-photography-deep-teal-curl.jpg": ["moody", "most-popular"],
+  "nick-whittaker-ocean-photography-forest-coast-wave.jpg": ["positive-vibe"],
+  "nick-whittaker-ocean-photography-sunset-shore-swell.jpg": ["sunset", "positive-vibe", "most-popular"],
+  "nick-whittaker-ocean-photography-dreamy-sunset-horizon.jpg": ["sunset", "positive-vibe", "most-popular"],
+  "nick-whittaker-ocean-photography-dynamic-spray-splash.jpg": ["positive-vibe", "most-popular"],
+  "nick-whittaker-ocean-photography-stormy-golden-break.jpg": ["sunset", "moody", "mystery"],
+  "nick-whittaker-ocean-photography-twilight-curl-wave.jpg": ["moody"],
+  "nick-whittaker-ocean-photography-dark-teal-barrel.jpg": ["moody"],
+  "nick-whittaker-ocean-photography-abstract-sunset-lines.jpg": ["abstract", "sunset", "positive-vibe", "most-popular"],
+  "nick-whittaker-ocean-photography-sunset-wave-lines.jpg": ["abstract", "sunset", "positive-vibe"],
 };
 
-function resolveTags(file: string, categoryTag?: string, extraTag?: string): string[] {
+// Rich, unique SEO/accessibility alt text per photo — distinct from the short
+// display `title` ("Waves Study 01"). Keyed by filename; falls back to a
+// generic description built from category + location if a photo has none yet
+// (e.g. a brand-new file dropped in before someone writes its alt text).
+const ALT_TEXT: Record<string, string> = {
+  // Abstracts
+  "nick-whittaker-ocean-photography-golden-sand-foam.jpg":
+    "Golden sea foam breaking over amber sand — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-midnight-blue-ripple.jpg":
+    "Dark indigo water rippling in soft abstract bands — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-turquoise-water-texture.jpg":
+    "Bright turquoise ripples across the ocean surface — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-golden-flecked-water.jpg":
+    "Dark water flecked with warm golden light — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-motion-blur-abstract.jpg":
+    "Monochrome motion-blur study of moving water — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-blue-pebble-texture.jpg":
+    "Cobalt blue water with a pebbled, textured surface — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-stone-mosaic-texture.jpg":
+    "Sand and pebbles forming a natural stone mosaic — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-copper-reflection-lines.jpg":
+    "Copper sunset light streaked across still water — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-crimson-wave-abstract.jpg":
+    "Deep crimson and black abstract wave study — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-cream-foam-texture.jpg":
+    "Soft cream sea foam dissolving on pale sand — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-slate-blue-lines.jpg":
+    "Slate blue horizontal lines of moving water — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-golden-grass-silhouette.jpg":
+    "Golden dune grass backlit against deep blue sky — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-fiery-sunset-shoreline.jpg":
+    "Fiery orange sunset light along the shoreline — fine art ocean photography print, Whangamata NZ.",
+
+  // Fine Art
+  "nick-whittaker-ocean-photography-dusk-silhouette-figures.jpg":
+    "Two figures silhouetted on still water at dusk — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-golden-sunrise-fisherman.jpg":
+    "Traditional fisherman silhouetted against a golden sunrise — fine art photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-sunrise-fishing-boats.jpg":
+    "Fishing boats and fishermen silhouetted at sunrise — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-fisherman-light-trail.jpg":
+    "Fisherman in silhouette with a golden light trail on the water, Whangamata NZ — fine art photography print.",
+  "nick-whittaker-ocean-photography-palm-tree-silhouette.jpg":
+    "Single palm tree silhouetted against a pale sky — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-fisheye-palm-canopy.jpg":
+    "Fisheye view looking up through a palm tree canopy — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-amber-palm-sunset.jpg":
+    "Palm tree silhouette against an amber sunset sky — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-coastal-palm-treeline.jpg":
+    "Moody coastal palm treeline under a grey sky — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-twilight-palm-silhouette.jpg":
+    "Palm trees silhouetted against dramatic twilight clouds — fine art photography print, Whangamata NZ.",
+
+  // Reflections
+  "nick-whittaker-ocean-photography-amber-ripple-reflection.jpg":
+    "Amber light rippling across dark water — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-hazy-gold-horizon.jpg":
+    "Hazy gold horizon reflected on calm water — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-cobalt-ripple-reflection.jpg":
+    "Cobalt blue ripples reflecting soft light — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-sunburst-water-reflection.jpg":
+    "Bright sunburst reflection dancing on the water — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-fire-ripple-reflection.jpg":
+    "Fiery orange ripples reflected across the surface — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-golden-streak-wave.jpg":
+    "A single golden light streak across a blue wave — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-golden-mesh-reflection.jpg":
+    "Golden light forming a mesh-like reflection pattern — fine art photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-muted-blue-reflection.jpg":
+    "Soft muted blue reflection with a faint gold line — fine art ocean photography print, Whangamata NZ.",
+
+  // Textures
+  "nick-whittaker-ocean-photography-amber-horizon-blur.jpg":
+    "Amber and blue motion-blurred water horizon — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-minimalist-wave-line.jpg":
+    "Minimalist wave line against a pale blue sky — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-underwater-light-rays.jpg":
+    "Underwater light rays filtering through teal water — fine art ocean photography print, Whangamata NZ.",
+
+  // Waves
+  "nick-whittaker-ocean-photography-pastel-dawn-wave.jpg":
+    "A breaking wave under a soft pastel dawn sky — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-emerald-storm-break.jpg":
+    "Emerald wave breaking under a stormy sky — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-misty-teal-barrel.jpg":
+    "Teal barrel wave curling under a misty grey sky — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-soft-pastel-swell.jpg":
+    "Gentle swell rolling under soft pastel clouds — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-golden-spray-burst.jpg":
+    "Golden backlit spray bursting into a blue sky — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-azure-breaking-wave.jpg":
+    "Clean azure wave breaking under bright daylight — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-deep-teal-curl.jpg":
+    "A deep teal wave curling into a dramatic barrel — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-forest-coast-wave.jpg":
+    "Breaking wave with a forested coastline behind it — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-sunset-shore-swell.jpg":
+    "Soft swell rolling onto the shore at sunset — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-dreamy-sunset-horizon.jpg":
+    "Dreamy pastel sunset horizon over gentle waves — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-dynamic-spray-splash.jpg":
+    "Dynamic spray bursting from a breaking wave — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-stormy-golden-break.jpg":
+    "Golden light breaking through stormy clouds over the point — fine art photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-twilight-curl-wave.jpg":
+    "A curling wave under a dramatic twilight sky — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-dark-teal-barrel.jpg":
+    "A dark teal wave curling into a barrel — fine art ocean photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-abstract-sunset-lines.jpg":
+    "Abstract horizontal lines of pink sunset light on water — fine art photography print, Whangamata NZ.",
+  "nick-whittaker-ocean-photography-sunset-wave-lines.jpg":
+    "Sunset light forming abstract lines across the water — fine art ocean photography print, Whangamata NZ.",
+};
+
+function resolveTags(file: string, categoryTag?: string): string[] {
   const tags = new Set(TAG_OVERRIDES[file] ?? []);
   if (categoryTag) tags.add(categoryTag);
-  if (extraTag) tags.add(extraTag);
   return [...tags];
+}
+
+function resolveAlt(file: string, categoryLabel: string, location: string): string {
+  return (
+    ALT_TEXT[file] ??
+    `Fine art ${categoryLabel.toLowerCase()} ocean photography print by Nick Whittaker, ${location}.`
+  );
 }
 
 function slugify(title: string): string {
@@ -168,37 +253,10 @@ function slugify(title: string): string {
 }
 
 export function getAllCategorySlugs(): string[] {
-  return [...CATEGORY_DEFS.map((c) => c.slug), LIMITED_EDITION_SLUG];
+  return CATEGORY_DEFS.map((c) => c.slug);
 }
 
 export async function getCategory(slug: string): Promise<Category | null> {
-  if (slug === LIMITED_EDITION_SLUG) {
-    const photos: Photo[] = LIMITED_EDITION_PICKS.map((pick, index) => {
-      const sourceDef = CATEGORY_DEFS.find((c) => c.dir === pick.dir);
-      const title = `Limited Edition No. ${String(index + 1).padStart(2, "0")}`;
-      return {
-        slug: slugify(title),
-        src: `/${encodeURIComponent(pick.dir)}/${encodeURIComponent(pick.file)}`,
-        width: pick.width,
-        height: pick.height,
-        title,
-        location: LOCATION_OVERRIDES[pick.file] ?? DEFAULT_LOCATION,
-        edition: LIMITED_EDITION_RUN,
-        tags: resolveTags(pick.file, sourceDef?.tag, "limited-edition"),
-        categorySlug: LIMITED_EDITION_SLUG,
-        categoryLabel: LIMITED_EDITION_LABEL,
-        roomPreview: roomPreviewSrc(pick.dir, pick.file),
-      };
-    });
-
-    return {
-      slug: LIMITED_EDITION_SLUG,
-      label: LIMITED_EDITION_LABEL,
-      description: LIMITED_EDITION_DESCRIPTION,
-      photos,
-    };
-  }
-
   const def = CATEGORY_DEFS.find((c) => c.slug === slug);
   if (!def) return null;
 
@@ -212,17 +270,18 @@ export async function getCategory(slug: string): Promise<Category | null> {
     files.map(async (file, index) => {
       const { width, height } = await imageSizeFromFile(path.join(dirPath, file));
       const title = `${def.label} Study ${String(index + 1).padStart(2, "0")}`;
+      const location = LOCATION_OVERRIDES[file] ?? DEFAULT_LOCATION;
       return {
         slug: slugify(title),
         src: `/${encodeURIComponent(def.dir)}/${encodeURIComponent(file)}`,
         width,
         height,
         title,
-        location: LOCATION_OVERRIDES[file] ?? DEFAULT_LOCATION,
+        alt: resolveAlt(file, def.label, location),
+        location,
         tags: resolveTags(file, def.tag),
         categorySlug: def.slug,
         categoryLabel: def.label,
-        roomPreview: roomPreviewSrc(def.dir, file),
       };
     })
   );

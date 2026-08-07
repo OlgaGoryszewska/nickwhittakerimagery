@@ -620,14 +620,6 @@ section.tight {
   margin-bottom: 14px;
 }
 
-.print-card__edition {
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  color: var(--copper-dark);
-  margin-top: -8px;
-  margin-bottom: 14px;
-}
-
 .print-card__sizes-accordion {
   margin-bottom: 20px;
   border-top: 1px solid var(--line);
@@ -760,10 +752,6 @@ section.tight {
   color: var(--teal);
   min-width: 140px;
   text-align: center;
-}
-
-.detail-gallery .print-card__mat {
-  cursor: default;
 }
 
 .detail-info h1 {

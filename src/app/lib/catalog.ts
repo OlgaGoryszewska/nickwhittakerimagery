@@ -9,18 +9,13 @@ export type Photo = {
   width: number;
   height: number;
   title: string;
+  /** Rich, unique SEO/accessibility description — distinct from the short display `title`. */
+  alt: string;
   location: string;
-  edition?: string;
   tags: string[];
   categorySlug: string;
   categoryLabel: string;
-  roomPreview: string;
 };
-
-// Every room mockup is composited onto the same base photo (public/room01.png),
-// so they all share its pixel dimensions.
-export const ROOM_PREVIEW_WIDTH = 1536;
-export const ROOM_PREVIEW_HEIGHT = 1024;
 
 export type Category = {
   slug: string;
@@ -31,7 +26,6 @@ export type Category = {
 
 export const TAGS: { slug: string; label: string }[] = [
   { slug: "most-popular", label: "Most Popular" },
-  { slug: "limited-edition", label: "Limited Edition" },
   { slug: "sunset", label: "Sunsets" },
   { slug: "sunrise", label: "Sunrise" },
   { slug: "wave", label: "Wave" },

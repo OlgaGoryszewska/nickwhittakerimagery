@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllCategorySlugs, getCategory } from "@/app/lib/categories";
-import { SIZE_OPTIONS, TAGS, ROOM_PREVIEW_WIDTH, ROOM_PREVIEW_HEIGHT } from "@/app/lib/catalog";
+import { SIZE_OPTIONS, TAGS } from "@/app/lib/catalog";
 import PrintGrid from "@/app/components/PrintGrid";
 import DetailGallery from "@/app/components/DetailGallery";
 
@@ -37,8 +37,8 @@ export async function generateMetadata({
   const result = await findPhoto(categorySlug, photoSlug);
   if (!result) return {};
 
-  const { category, photo } = result;
-  const description = `${photo.title} — ${photo.location}. ${category.description}`;
+  const { photo } = result;
+  const description = photo.alt;
 
   return {
     title: `${photo.title} — Nick Whittaker Imagery`,
@@ -63,8 +63,7 @@ export default async function PhotoPage({
   const { category, photo, related } = result;
 
   const galleryImages = [
-    { src: photo.src, width: photo.width, height: photo.height, label: "Original" },
-    { src: photo.roomPreview, width: ROOM_PREVIEW_WIDTH, height: ROOM_PREVIEW_HEIGHT, label: "On Your Wall" },
+    { src: photo.src, width: photo.width, height: photo.height, label: "Original", alt: photo.alt },
   ];
 
   return (
@@ -81,13 +80,12 @@ export default async function PhotoPage({
 
           <div className="detail-layout">
             <div className="detail-media">
-              <DetailGallery images={galleryImages} alt={photo.title} />
+              <DetailGallery images={galleryImages} title={photo.title} />
             </div>
 
             <div className="detail-info">
               <h1>{photo.title}</h1>
               <p className="print-card__location">{photo.location}</p>
-              {photo.edition && <p className="print-card__edition">{photo.edition}</p>}
 
               <div className="tag-row detail-tags">
                 {photo.tags.map((tagSlug) => {
