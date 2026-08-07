@@ -314,9 +314,19 @@ export type PhotoMockup = {
   alt: string;
 };
 
+// Corrects known typos from hand-typed mockup filenames so the carousel
+// caption still reads cleanly (the file on disk is left as-is).
+const LABEL_WORD_FIXES: Record<string, string> = {
+  moder: "modern",
+  minimalistik: "minimalistic",
+  bedrooom: "bedroom",
+  vobrant: "vibrant",
+};
+
 function mockupLabel(descriptor: string): string {
   return descriptor
     .split("-")
+    .map((word) => LABEL_WORD_FIXES[word] ?? word)
     .flatMap((word) => (word === "livingroom" ? ["living", "room"] : [word]))
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
