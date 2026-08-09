@@ -1,17 +1,37 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import TradePricingBlock from "@/app/components/TradePricingBlock";
+import { BASE_URL, breadcrumbJsonLd } from "@/app/lib/seo";
+
+const TITLE = "Trade Program for Interior Designers — Nick Whittaker Imagery";
+const DESCRIPTION =
+  "Trade pricing on fine-art ocean and water photography prints for interior designers and decorators — framing handled, fast turnaround, a dedicated contact.";
 
 export const metadata: Metadata = {
-  title: "Trade Program for Interior Designers — Nick Whittaker Imagery",
-  description:
-    "Trade pricing on fine-art ocean and water photography prints for interior designers and decorators — framing handled, fast turnaround, a dedicated contact.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/trade/interior-design" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: `${BASE_URL}/trade/interior-design`,
+    images: [`${BASE_URL}/Waves/nick-whittaker-ocean-photography-azure-breaking-wave.jpg`],
+  },
 };
+
+const breadcrumb = breadcrumbJsonLd([
+  { name: "Home", url: BASE_URL },
+  { name: "Trade", url: `${BASE_URL}/trade` },
+  { name: "Interior Designers", url: `${BASE_URL}/trade/interior-design` },
+]);
 
 export default function InteriorDesignTradePage() {
   return (
     <section className="tight">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
       <div className="wrap">
         <nav className="detail-breadcrumb" aria-label="Breadcrumb">
           <Link href="/">Home</Link>
@@ -22,7 +42,7 @@ export default function InteriorDesignTradePage() {
         </nav>
 
         <div className="section-head">
-          <h2>For Interior Designers</h2>
+          <h1>For Interior Designers</h1>
           <p>
             Specify original ocean and water photography for your clients at trade pricing —
             order across projects, have framing and mounting handled for you, and work with a

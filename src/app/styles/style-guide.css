@@ -116,6 +116,7 @@ section.tight {
   padding-bottom: 36px;
 }
 
+.section-head h1,
 .section-head h2 {
   font-size: clamp(26px, 3.5vw, 36px);
   font-weight: 400;
@@ -1572,4 +1573,28 @@ a.journal-card__segment {
   color: var(--teal);
   max-width: 56ch;
   margin-bottom: 18px;
+}
+
+/* 404 */
+.not-found {
+  padding: 60px 0 120px;
+}
+
+.not-found h1 {
+  font-size: clamp(28px, 4vw, 42px);
+  margin: 14px 0 16px;
+  max-width: 26ch;
+}
+
+.not-found .lede {
+  margin-bottom: 8px;
+}
+
+/* Focus visibility */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--copper-dark);
+  outline-offset: 2px;
+  border-radius: 2px;
 }

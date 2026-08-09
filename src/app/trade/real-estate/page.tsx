@@ -1,17 +1,37 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import TradePricingBlock from "@/app/components/TradePricingBlock";
+import { BASE_URL, breadcrumbJsonLd } from "@/app/lib/seo";
+
+const TITLE = "Art for Real Estate Staging — Nick Whittaker Imagery";
+const DESCRIPTION =
+  "Framed ocean and water photography prints for real estate staging and listings — neutral, room-ready pieces, fast turnaround, reorder the same print across every listing.";
 
 export const metadata: Metadata = {
-  title: "Art for Real Estate Staging — Nick Whittaker Imagery",
-  description:
-    "Framed ocean and water photography prints for real estate staging and listings — neutral, room-ready pieces, fast turnaround, reorder the same print across every listing.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/trade/real-estate" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: `${BASE_URL}/trade/real-estate`,
+    images: [`${BASE_URL}/Waves/nick-whittaker-ocean-photography-dreamy-sunset-horizon.jpg`],
+  },
 };
+
+const breadcrumb = breadcrumbJsonLd([
+  { name: "Home", url: BASE_URL },
+  { name: "Trade", url: `${BASE_URL}/trade` },
+  { name: "Real Estate & Staging", url: `${BASE_URL}/trade/real-estate` },
+]);
 
 export default function RealEstateTradePage() {
   return (
     <section className="tight">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
       <div className="wrap">
         <nav className="detail-breadcrumb" aria-label="Breadcrumb">
           <Link href="/">Home</Link>
@@ -22,7 +42,7 @@ export default function RealEstateTradePage() {
         </nav>
 
         <div className="section-head">
-          <h2>For Real Estate &amp; Staging</h2>
+          <h1>For Real Estate &amp; Staging</h1>
           <p>
             Staged listings sell faster, and the right art is one of the quickest ways to make a
             room feel finished. Order the same print in the same size across every listing you

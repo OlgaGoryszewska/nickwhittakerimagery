@@ -7,8 +7,7 @@ import PrintGrid from "@/app/components/PrintGrid";
 import DetailGallery from "@/app/components/DetailGallery";
 import PhotoPurchasePanel from "@/app/components/PhotoPurchasePanel";
 import BackButton from "@/app/components/BackButton";
-
-const BASE_URL = "https://www.nickwhittakerimagery.com";
+import { BASE_URL, breadcrumbJsonLd } from "@/app/lib/seo";
 
 export const dynamicParams = false;
 
@@ -93,11 +92,21 @@ export default async function PhotoPage({
     ...mockups.map((m) => ({ src: m.src, width: m.width, height: m.height, label: m.label, alt: m.alt })),
   ];
 
+  const breadcrumb = breadcrumbJsonLd([
+    { name: "Home", url: BASE_URL },
+    { name: category.label, url: `${BASE_URL}/${category.slug}` },
+    { name: photo.title, url: `${BASE_URL}/${category.slug}/${photo.slug}` },
+  ]);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd(photo)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
       <section className="tight">
         <div className="wrap">

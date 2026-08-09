@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllCategorySlugs, getCategory } from "@/app/lib/categories";
 import PrintGrid from "@/app/components/PrintGrid";
+import { BASE_URL } from "@/app/lib/seo";
 
 export const dynamicParams = false;
 
@@ -18,10 +19,19 @@ export async function generateMetadata({
   const category = await getCategory(slug);
   if (!category) return {};
 
+  const title = `${category.label} — Nick Whittaker Imagery`;
+  const firstPhoto = category.photos[0];
+
   return {
-    title: `${category.label} — Nick Whittaker Imagery`,
+    title,
     description: category.description,
     alternates: { canonical: `/${category.slug}` },
+    openGraph: {
+      title,
+      description: category.description,
+      url: `${BASE_URL}/${category.slug}`,
+      images: firstPhoto ? [`${BASE_URL}${firstPhoto.src}`] : undefined,
+    },
   };
 }
 
@@ -38,7 +48,7 @@ export default async function CategoryPage({
     <section className="tight">
       <div className="wrap">
         <div className="section-head">
-          <h2>{category.label}</h2>
+          <h1>{category.label}</h1>
           <p>{category.description}</p>
         </div>
 

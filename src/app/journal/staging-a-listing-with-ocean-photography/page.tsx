@@ -1,18 +1,38 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JOURNAL_POSTS } from "@/app/lib/journal";
+import { BASE_URL, breadcrumbJsonLd } from "@/app/lib/seo";
 
 const post = JOURNAL_POSTS.find((p) => p.slug === "staging-a-listing-with-ocean-photography")!;
+const OG_IMAGE = `${BASE_URL}/Waves/nick-whittaker-ocean-photography-dreamy-sunset-horizon.jpg`;
 
 export const metadata: Metadata = {
   title: `${post.title} — Nick Whittaker Imagery`,
   description: post.dek,
   alternates: { canonical: `/journal/${post.slug}` },
+  openGraph: {
+    title: post.title,
+    description: post.dek,
+    url: `${BASE_URL}/journal/${post.slug}`,
+    type: "article",
+    publishedTime: post.date,
+    images: [OG_IMAGE],
+  },
 };
+
+const breadcrumb = breadcrumbJsonLd([
+  { name: "Home", url: BASE_URL },
+  { name: "Journal", url: `${BASE_URL}/journal` },
+  { name: post.title, url: `${BASE_URL}/journal/${post.slug}` },
+]);
 
 export default function StagingPost() {
   return (
     <article className="tight">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
       <div className="wrap journal-article">
         <nav className="detail-breadcrumb" aria-label="Breadcrumb">
           <Link href="/">Home</Link>

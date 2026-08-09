@@ -1,12 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JOURNAL_POSTS } from "@/app/lib/journal";
+import { BASE_URL } from "@/app/lib/seo";
+
+const TITLE = "Journal — Nick Whittaker Imagery";
+const DESCRIPTION =
+  "Notes on sourcing and specifying fine-art ocean and water photography for hospitality, real estate, and trade projects.";
 
 export const metadata: Metadata = {
-  title: "Journal — Nick Whittaker Imagery",
-  description:
-    "Notes on sourcing and specifying fine-art ocean and water photography for hospitality, real estate, and trade projects.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/journal" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: `${BASE_URL}/journal`,
+    images: [`${BASE_URL}/Waves/nick-whittaker-ocean-photography-azure-breaking-wave.jpg`],
+  },
 };
 
 function formatDate(iso: string): string {
@@ -18,7 +28,7 @@ export default function JournalPage() {
     <section className="tight">
       <div className="wrap">
         <div className="section-head">
-          <h2>Journal</h2>
+          <h1>Journal</h1>
           <p>Notes on sourcing and specifying fine-art prints for real projects — hospitality, staging and trade.</p>
         </div>
 

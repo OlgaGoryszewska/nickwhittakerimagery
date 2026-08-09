@@ -1,11 +1,21 @@
 import type { Metadata } from "next";
 import { FRAMING_STYLES, FRAME_MOULDINGS } from "@/app/lib/framing";
+import { BASE_URL } from "@/app/lib/seo";
+
+const TITLE = "Framing Information — Nick Whittaker Imagery";
+const DESCRIPTION =
+  "Framing options for fine-art ocean and water photography prints — simple, mat, setback, float and canvas framing, plus available frame mouldings.";
 
 export const metadata: Metadata = {
-  title: "Framing Information — Nick Whittaker Imagery",
-  description:
-    "Framing options for fine-art ocean and water photography prints — simple, mat, setback, float and canvas framing, plus available frame mouldings.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/framing-information" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: `${BASE_URL}/framing-information`,
+    images: [`${BASE_URL}/Waves/nick-whittaker-ocean-photography-azure-breaking-wave.jpg`],
+  },
 };
 
 export default function FramingInformationPage() {
@@ -13,7 +23,7 @@ export default function FramingInformationPage() {
     <section className="tight">
       <div className="wrap">
         <div className="section-head">
-          <h2>Framing Information</h2>
+          <h1>Framing Information</h1>
           <p>Every print can be framed to order — choose the style that best suits the piece.</p>
         </div>
 

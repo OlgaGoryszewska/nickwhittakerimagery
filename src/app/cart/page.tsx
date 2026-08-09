@@ -15,7 +15,7 @@ export default function CartPage() {
     <section className="tight">
       <div className="wrap">
         <div className="section-head">
-          <h2>Cart</h2>
+          <h1>Cart</h1>
           <p>
             {totalCount > 0
               ? `${totalCount} print${totalCount === 1 ? "" : "s"} ready for checkout.`

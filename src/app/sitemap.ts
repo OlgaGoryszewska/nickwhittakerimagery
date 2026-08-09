@@ -2,8 +2,7 @@ import type { MetadataRoute } from "next";
 import { getAllCategorySlugs, getCategory } from "@/app/lib/categories";
 import { TRADE_SEGMENTS } from "@/app/lib/trade";
 import { JOURNAL_POSTS } from "@/app/lib/journal";
-
-const BASE_URL = "https://www.nickwhittakerimagery.com";
+import { BASE_URL } from "@/app/lib/seo";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const categories = await Promise.all(getAllCategorySlugs().map((slug) => getCategory(slug)));
