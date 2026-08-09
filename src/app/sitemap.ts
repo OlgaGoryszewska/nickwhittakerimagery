@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllCategorySlugs, getCategory } from "@/app/lib/categories";
 import { TRADE_SEGMENTS } from "@/app/lib/trade";
+import { JOURNAL_POSTS } from "@/app/lib/journal";
 
 const BASE_URL = "https://www.nickwhittakerimagery.com";
 
@@ -31,11 +32,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.75,
   }));
 
+  const journalRoutes: MetadataRoute.Sitemap = JOURNAL_POSTS.map((post) => ({
+    url: `${BASE_URL}/journal/${post.slug}`,
+    lastModified: post.date,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
   return [
     { url: BASE_URL, changeFrequency: "weekly", priority: 1 },
     { url: `${BASE_URL}/gallery`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE_URL}/trade`, changeFrequency: "monthly", priority: 0.8 },
     ...tradeSegmentRoutes,
+    { url: `${BASE_URL}/journal`, changeFrequency: "weekly", priority: 0.6 },
+    ...journalRoutes,
     { url: `${BASE_URL}/framing-information`, changeFrequency: "monthly", priority: 0.5 },
     ...categoryRoutes,
     ...photoRoutes,

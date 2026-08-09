@@ -8,6 +8,7 @@ import { useCart } from "./CartContext";
 const NAV_ITEMS = [
   { label: "Gallery", href: "/gallery" },
   { label: "Trade", href: "/trade" },
+  { label: "Journal", href: "/journal" },
   { label: "Framing Information", href: "/framing-information" },
   { label: "Biography", href: "/biography" },
   { label: "Contact", href: "/contact" },

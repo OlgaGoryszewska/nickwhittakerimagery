@@ -1429,6 +1429,12 @@ section.tight {
   border-top: 1px solid var(--line);
 }
 
+.trade-cta__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
 /* Trade segment pages */
 .trade-links {
   display: flex;
@@ -1461,4 +1467,109 @@ section.tight {
   display: block;
   margin-bottom: 3px;
   font-size: 16px;
+}
+
+/* Journal */
+.journal-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.journal-card {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 24px 26px 26px;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+
+.journal-card:hover {
+  border-color: var(--copper-dark);
+}
+
+.journal-card h3 {
+  font-size: 20px;
+  font-weight: 400;
+  margin: 10px 0 8px;
+}
+
+.journal-card p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--teal);
+  margin-bottom: 14px;
+}
+
+.journal-card__segment {
+  display: inline-block;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--copper-dark);
+}
+
+a.journal-card__segment {
+  text-decoration: none;
+}
+
+.journal-card__meta {
+  font-size: 11.5px;
+  color: var(--tide);
+}
+
+/* Journal article */
+.journal-article {
+  max-width: 720px;
+}
+
+.journal-article__header {
+  margin-bottom: 40px;
+}
+
+.journal-article__header h1 {
+  font-size: clamp(28px, 4vw, 40px);
+  margin: 14px 0 12px;
+}
+
+.journal-article__header .lede {
+  color: var(--teal);
+  max-width: none;
+  margin-bottom: 14px;
+}
+
+.journal-body p {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--ink);
+  margin-bottom: 22px;
+  max-width: 66ch;
+}
+
+.journal-body h2 {
+  font-size: 21px;
+  font-weight: 400;
+  margin: 40px 0 14px;
+}
+
+.journal-body a {
+  color: var(--copper-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.journal-cta {
+  margin-top: 48px;
+  padding: 28px 30px;
+  background: var(--paper);
+  border-radius: 2px;
+}
+
+.journal-cta p {
+  font-size: 14.5px;
+  color: var(--teal);
+  max-width: 56ch;
+  margin-bottom: 18px;
 }

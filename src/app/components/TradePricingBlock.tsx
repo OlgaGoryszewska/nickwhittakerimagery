@@ -28,12 +28,24 @@ export default function TradePricingBlock({ ctaSubject }: { ctaSubject: string }
       </div>
 
       <div className="trade-cta">
-        <a
-          href={`mailto:nickjwhittaker@gmail.com?subject=${encodeURIComponent(ctaSubject)}`}
-          className="btn btn-primary"
-        >
-          Enquire about trade pricing
-        </a>
+        <div className="trade-cta__row">
+          <a
+            href={`mailto:nickjwhittaker@gmail.com?subject=${encodeURIComponent(ctaSubject)}`}
+            className="btn btn-primary"
+          >
+            Enquire about trade pricing
+          </a>
+          <a
+            href={`mailto:nickjwhittaker@gmail.com?subject=${encodeURIComponent(
+              "Trade Lookbook Request"
+            )}&body=${encodeURIComponent(
+              "Hi Nick,\n\nCould you send over the trade lookbook?\n\nCompany:\nProject type:\n"
+            )}`}
+            className="btn btn-outline"
+          >
+            Request the trade lookbook
+          </a>
+        </div>
       </div>
     </>
   );
