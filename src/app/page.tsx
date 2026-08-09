@@ -23,7 +23,7 @@ export default async function Home() {
           alt=""
           fill
           priority
-          
+
           className="hero-bg"
         />
         <div className="hero-overlay" />
@@ -33,7 +33,7 @@ export default async function Home() {
             Unique <em>light</em>.
           </h1>
           <p className="sub">
-            Fine-art ocean and water photography, shot around Auckland, New
+            Fine-art ocean and water photography, shot around New
             Zealand — available as fine-art prints, and open to commissions
             and collaborations.
           </p>
