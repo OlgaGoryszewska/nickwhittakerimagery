@@ -7,13 +7,12 @@ import { useCart } from "./CartContext";
 
 const NAV_ITEMS = [
   { label: "Gallery", href: "/gallery" },
+  { label: "Trade", href: "/trade" },
   { label: "Framing Information", href: "/framing-information" },
   { label: "Biography", href: "/biography" },
   { label: "Contact", href: "/contact" },
   { label: "Shop", href: "/shop" },
   { label: "Events", href: "/events" },
-  { label: "Trading", href: "/trading" },
-  { label: "Interior Design", href: "/interior-design" },
   { label: "Interactive Room", href: "/interactive-room" },
 ];
 

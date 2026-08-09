@@ -321,6 +321,7 @@ const LABEL_WORD_FIXES: Record<string, string> = {
   moodern: "modern",
   minimalistik: "minimalistic",
   bedrooom: "bedroom",
+  dedrooom: "bedroom",
   vobrant: "vibrant",
   livingrom: "livingroom",
 };

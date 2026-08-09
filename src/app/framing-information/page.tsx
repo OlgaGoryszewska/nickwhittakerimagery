@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Framing Information — Nick Whittaker Imagery",
   description:
     "Framing options for fine-art ocean and water photography prints — simple, mat, setback, float and canvas framing, plus available frame mouldings.",
+  alternates: { canonical: "/framing-information" },
 };
 
 export default function FramingInformationPage() {

@@ -1,8 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { getAllPhotos } from "@/app/lib/categories";
 import PrintGrid from "@/app/components/PrintGrid";
 import GalleryBrowser from "@/app/components/GalleryBrowser";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default async function Home() {
   const allPhotos = await getAllPhotos();
@@ -20,23 +25,16 @@ export default async function Home() {
         />
         <div className="hero-overlay" />
         <div className="wrap">
-          <div className="eyebrow">Ocean &amp; Water Photography — Auckland, NZ</div>
+          <div className="eyebrow">Ocean &amp; Water Photography — New Zealand</div>
           <h1>
-            Deep water, held in <em>light</em>.
+            Unique <em>light</em>.
           </h1>
           <p className="sub">
             Fine-art ocean and water photography, shot around Auckland, New
             Zealand — available as fine-art prints, and open to commissions
             and collaborations.
           </p>
-          <div className="tag-row mt-10">
-            <Link href="#upcoming-events" className="btn btn-primary">
-              See Upcoming Events
-            </Link>
-            <Link href="/gallery" className="btn btn-outline-light">
-              View gallery
-            </Link>
-          </div>
+         
         </div>
       </header>
 

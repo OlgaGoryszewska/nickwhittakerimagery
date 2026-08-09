@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Gallery — Nick Whittaker Imagery",
   description:
     "The full catalogue of fine-art ocean and water photography, filterable by mood, light and subject.",
+  alternates: { canonical: "/gallery" },
 };
 
 export default async function GalleryPage({

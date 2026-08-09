@@ -2,9 +2,13 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllCategorySlugs, getCategory, getPhotoMockups } from "@/app/lib/categories";
+import { SIZE_OPTIONS } from "@/app/lib/catalog";
 import PrintGrid from "@/app/components/PrintGrid";
 import DetailGallery from "@/app/components/DetailGallery";
 import PhotoPurchasePanel from "@/app/components/PhotoPurchasePanel";
+import BackButton from "@/app/components/BackButton";
+
+const BASE_URL = "https://www.nickwhittakerimagery.com";
 
 export const dynamicParams = false;
 
@@ -43,10 +47,31 @@ export async function generateMetadata({
   return {
     title: `${photo.title} — Nick Whittaker Imagery`,
     description,
+    alternates: { canonical: `/${categorySlug}/${photoSlug}` },
     openGraph: {
       title: photo.title,
       description,
       images: [{ url: photo.src, width: photo.width, height: photo.height }],
+    },
+  };
+}
+
+function productJsonLd(photo: { title: string; alt: string; src: string }) {
+  const prices = SIZE_OPTIONS.map((option) => parseFloat(option.price.replace(/[^0-9.]/g, "")));
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: photo.title,
+    description: photo.alt,
+    image: `${BASE_URL}${photo.src}`,
+    brand: { "@type": "Brand", name: "Nick Whittaker Imagery" },
+    offers: {
+      "@type": "AggregateOffer",
+      priceCurrency: "NZD",
+      lowPrice: Math.min(...prices),
+      highPrice: Math.max(...prices),
+      offerCount: SIZE_OPTIONS.length,
+      availability: "https://schema.org/InStock",
     },
   };
 }
@@ -70,8 +95,14 @@ export default async function PhotoPage({
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd(photo)) }}
+      />
       <section className="tight">
         <div className="wrap">
+          <BackButton />
+
           <nav className="detail-breadcrumb" aria-label="Breadcrumb">
             <Link href="/">Home</Link>
             <span>/</span>

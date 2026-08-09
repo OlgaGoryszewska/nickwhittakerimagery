@@ -21,6 +21,7 @@ export async function generateMetadata({
   return {
     title: `${category.label} — Nick Whittaker Imagery`,
     description: category.description,
+    alternates: { canonical: `/${category.slug}` },
   };
 }
 

@@ -3,7 +3,7 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="wrap">
         <div className="site-footer__brand">
-          <strong>Nick Whittaker Imagery</strong>
+          
 
           <a
             href="https://www.instagram.com/nickwhittaker.oceanimagery/"
