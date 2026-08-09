@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Reveal from "@/app/components/Reveal";
 import { BASE_URL } from "@/app/lib/seo";
 
 const TITLE = "Biography — Nick Whittaker Imagery";
@@ -22,9 +23,9 @@ export default function BiographyPage() {
   return (
     <section className="tight">
       <div className="wrap journal-article">
-        <div className="section-head">
+        <Reveal className="section-head">
           <h1>Biography</h1>
-        </div>
+        </Reveal>
 
         <div className="journal-body">
           <p>
@@ -51,14 +52,14 @@ export default function BiographyPage() {
           </p>
         </div>
 
-        <div className="trade-links">
+        <Reveal className="trade-links">
           <Link href="/gallery" className="btn-link">
             Browse the full catalogue
           </Link>
           <Link href="/trade" className="btn-link">
             Trade &amp; commercial enquiries
           </Link>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

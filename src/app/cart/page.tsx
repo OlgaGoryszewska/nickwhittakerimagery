@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCart, type CartItem } from "@/app/components/CartContext";
+import Reveal from "@/app/components/Reveal";
 
 function formatNzd(value: number): string {
   return `$${value.toFixed(0)} NZD`;
@@ -39,25 +40,25 @@ export default function CartPage() {
   return (
     <section className="tight">
       <div className="wrap">
-        <div className="section-head">
+        <Reveal className="section-head">
           <h1>Cart</h1>
           <p>
             {totalCount > 0
               ? `${totalCount} print${totalCount === 1 ? "" : "s"} ready for checkout.`
               : "Your cart is currently empty."}
           </p>
-        </div>
+        </Reveal>
 
         {items.length === 0 ? (
-          <div className="cart-empty">
+          <Reveal className="cart-empty">
             <p>You haven&rsquo;t added any prints yet.</p>
             <Link href="/gallery" className="btn btn-outline">
               Browse the Gallery
             </Link>
-          </div>
+          </Reveal>
         ) : (
           <div className="cart-layout">
-            <ul className="cart-items">
+            <Reveal as="ul" className="cart-items">
               {items.map((item) => (
                 <li key={item.id} className="cart-item">
                   <Link
@@ -117,9 +118,9 @@ export default function CartPage() {
                   </div>
                 </li>
               ))}
-            </ul>
+            </Reveal>
 
-            <div className="cart-summary">
+            <Reveal className="cart-summary" delay={120}>
               <div className="cart-summary__row">
                 <span>Subtotal</span>
                 <span>{formatNzd(totalPrice)}</span>
@@ -133,7 +134,7 @@ export default function CartPage() {
               <Link href="/gallery" className="btn-link">
                 Continue Shopping
               </Link>
-            </div>
+            </Reveal>
           </div>
         )}
       </div>

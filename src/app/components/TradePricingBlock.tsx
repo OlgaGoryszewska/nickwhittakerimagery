@@ -1,16 +1,17 @@
 import { TRADE_TIERS, TRADE_VALUE_ADDS } from "@/app/lib/trade";
+import Reveal from "./Reveal";
 
 export default function TradePricingBlock({ ctaSubject }: { ctaSubject: string }) {
   return (
     <>
       <h3 className="trade-subhead">Trade Pricing</h3>
       <div className="trade-tiers">
-        {TRADE_TIERS.map((tier) => (
-          <div key={tier.band} className="trade-tier">
+        {TRADE_TIERS.map((tier, index) => (
+          <Reveal key={tier.band} className="trade-tier" delay={index * 90}>
             <div className="trade-tier__band">{tier.band}</div>
             <div className="trade-tier__pct">{tier.pct}</div>
             <div className="trade-tier__note">{tier.note}</div>
-          </div>
+          </Reveal>
         ))}
       </div>
       <p className="trade-tiers-note">
@@ -27,7 +28,7 @@ export default function TradePricingBlock({ ctaSubject }: { ctaSubject: string }
         ))}
       </div>
 
-      <div className="trade-cta">
+      <Reveal className="trade-cta">
         <div className="trade-cta__row">
           <a
             href={`mailto:nickjwhittaker@gmail.com?subject=${encodeURIComponent(ctaSubject)}`}
@@ -46,7 +47,7 @@ export default function TradePricingBlock({ ctaSubject }: { ctaSubject: string }
             Request the trade lookbook
           </a>
         </div>
-      </div>
+      </Reveal>
     </>
   );
 }

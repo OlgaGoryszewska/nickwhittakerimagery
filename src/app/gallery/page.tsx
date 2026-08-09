@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getAllPhotos } from "@/app/lib/categories";
 import GalleryBrowser from "@/app/components/GalleryBrowser";
+import Reveal from "@/app/components/Reveal";
 import { BASE_URL } from "@/app/lib/seo";
 
 const TITLE = "Gallery — Nick Whittaker Imagery";
@@ -30,10 +31,10 @@ export default async function GalleryPage({
   return (
     <section className="tight">
       <div className="wrap">
-        <div className="section-head">
+        <Reveal className="section-head">
           <h1>Gallery</h1>
           <p>The full catalogue — filter by mood, light or subject to find the print you&apos;re after.</p>
-        </div>
+        </Reveal>
         <GalleryBrowser photos={photos} initialTag={tag} />
       </div>
     </section>

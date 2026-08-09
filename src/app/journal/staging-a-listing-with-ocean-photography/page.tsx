@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JOURNAL_POSTS } from "@/app/lib/journal";
+import Reveal from "@/app/components/Reveal";
 import { BASE_URL, breadcrumbJsonLd } from "@/app/lib/seo";
 
 const post = JOURNAL_POSTS.find((p) => p.slug === "staging-a-listing-with-ocean-photography")!;
@@ -42,7 +43,7 @@ export default function StagingPost() {
           <span>{post.title}</span>
         </nav>
 
-        <div className="journal-article__header">
+        <Reveal className="journal-article__header">
           <Link href={post.segmentHref} className="journal-card__segment">
             {post.segment}
           </Link>
@@ -56,7 +57,7 @@ export default function StagingPost() {
             })}{" "}
             · {post.readTime}
           </div>
-        </div>
+        </Reveal>
 
         <div className="journal-body">
           <p>
@@ -112,7 +113,7 @@ export default function StagingPost() {
           </p>
         </div>
 
-        <div className="journal-cta">
+        <Reveal className="journal-cta">
           <p>
             Nick Whittaker Imagery supports real estate and staging accounts with trade pricing,
             fast turnaround, and reorders on the same print and size, every time.
@@ -120,7 +121,7 @@ export default function StagingPost() {
           <Link href="/trade/real-estate" className="btn btn-primary">
             See real estate &amp; staging trade pricing
           </Link>
-        </div>
+        </Reveal>
       </div>
     </article>
   );

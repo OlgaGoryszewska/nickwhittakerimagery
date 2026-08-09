@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { EVENTS } from "@/app/lib/events";
+import Reveal from "@/app/components/Reveal";
 import { BASE_URL } from "@/app/lib/seo";
 
 const TITLE = "Upcoming Events — Nick Whittaker Imagery";
@@ -44,17 +45,17 @@ export default function EventsPage() {
   return (
     <section className="tight">
       <div className="wrap">
-        <div className="section-head">
+        <Reveal className="section-head">
           <h1>Upcoming Events</h1>
           <p>Exhibitions and print showings — where to see the work in person.</p>
-        </div>
+        </Reveal>
 
         {EVENTS.length === 0 ? (
           <p className="lede">No upcoming events right now — check back soon.</p>
         ) : (
           <div className="events-list">
-            {EVENTS.map((event) => (
-              <div key={event.slug} className="event-card event-card--full">
+            {EVENTS.map((event, index) => (
+              <Reveal key={event.slug} className="event-card event-card--full" delay={index * 100}>
                 <script
                   type="application/ld+json"
                   dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd(event)) }}
@@ -77,7 +78,7 @@ export default function EventsPage() {
                     Enquire About This Event
                   </a>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         )}

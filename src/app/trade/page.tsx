@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { TRADE_SEGMENTS } from "@/app/lib/trade";
 import TradePricingBlock from "@/app/components/TradePricingBlock";
+import Reveal from "@/app/components/Reveal";
 import { BASE_URL } from "@/app/lib/seo";
 
 const TITLE = "Trade & Commercial Prints — Nick Whittaker Imagery";
@@ -24,21 +25,23 @@ export default function TradePage() {
   return (
     <section className="tight">
       <div className="wrap">
-        <div className="section-head">
+        <Reveal className="section-head">
           <h1>Trade &amp; Commercial</h1>
           <p>
             Fine-art ocean and water photography for projects, not just single walls — trade
             pricing, framed to order, and shipped as a programme.
           </p>
-        </div>
+        </Reveal>
 
         <div className="trade-segments">
-          {TRADE_SEGMENTS.map((segment) => (
-            <Link key={segment.slug} href={segment.href} className="trade-segment">
-              <h3>{segment.label}</h3>
-              <p>{segment.summary}</p>
-              <span className="trade-segment__link">Read more →</span>
-            </Link>
+          {TRADE_SEGMENTS.map((segment, index) => (
+            <Reveal key={segment.slug} delay={index * 80}>
+              <Link href={segment.href} className="trade-segment">
+                <h3>{segment.label}</h3>
+                <p>{segment.summary}</p>
+                <span className="trade-segment__link">Read more →</span>
+              </Link>
+            </Reveal>
           ))}
         </div>
 

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FRAMING_STYLES, FRAME_MOULDINGS } from "@/app/lib/framing";
+import Reveal from "@/app/components/Reveal";
 import { BASE_URL } from "@/app/lib/seo";
 
 const TITLE = "Framing Information — Nick Whittaker Imagery";
@@ -22,14 +23,14 @@ export default function FramingInformationPage() {
   return (
     <section className="tight">
       <div className="wrap">
-        <div className="section-head">
+        <Reveal className="section-head">
           <h1>Framing Information</h1>
           <p>Every print can be framed to order — choose the style that best suits the piece.</p>
-        </div>
+        </Reveal>
 
         <div className="framing-styles">
-          {FRAMING_STYLES.map((style) => (
-            <div key={style.name} className="framing-style-card">
+          {FRAMING_STYLES.map((style, index) => (
+            <Reveal key={style.name} className="framing-style-card" delay={index * 80}>
               <h3>{style.name}</h3>
               <p className="framing-style-card__desc">{style.description}</p>
               <p className="framing-style-card__turnaround">Turnaround: {style.turnaround}</p>
@@ -42,22 +43,22 @@ export default function FramingInformationPage() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </Reveal>
           ))}
         </div>
 
-        <div className="section-head framing-section-head">
+        <Reveal className="section-head framing-section-head">
           <h2>Frame Mouldings</h2>
           <p>Each framing style is available in a choice of moulding profiles.</p>
-        </div>
+        </Reveal>
 
         <div className="framing-mouldings">
-          {FRAME_MOULDINGS.map((moulding) => (
-            <div key={moulding.name} className="framing-moulding-card">
+          {FRAME_MOULDINGS.map((moulding, index) => (
+            <Reveal key={moulding.name} className="framing-moulding-card" delay={index * 80}>
               <h3>{moulding.name}</h3>
               <p>{moulding.description}</p>
               <p className="framing-moulding-card__dims">{moulding.dimensions}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
 

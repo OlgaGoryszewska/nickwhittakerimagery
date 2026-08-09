@@ -105,6 +105,42 @@ section.tight {
   padding: 80px 0;
 }
 
+/* Motion — scroll reveal + CTA micro-interactions. Subtle, elegant, and
+   fully disabled for anyone who has asked their OS for reduced motion. */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  /* Universal safety net — collapses every other transition/animation on the
+     site to effectively instant, regardless of which selector added it. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 .section-head {
   display: flex;
   justify-content: space-between;
@@ -196,6 +232,49 @@ section.tight {
   color: var(--copper);
 }
 
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero .eyebrow,
+.hero h1,
+.hero .sub,
+.hero .tag-row {
+  animation: hero-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero .eyebrow {
+  animation-delay: 0.05s;
+}
+
+.hero h1 {
+  animation-delay: 0.15s;
+}
+
+.hero .sub {
+  animation-delay: 0.3s;
+}
+
+.hero .tag-row {
+  animation-delay: 0.45s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero .eyebrow,
+  .hero h1,
+  .hero .sub,
+  .hero .tag-row {
+    animation: none;
+  }
+}
+
 .hero h1 {
   font-size: clamp(38px, 6vw, 66px);
   font-weight: 300;
@@ -256,6 +335,28 @@ section.tight {
   align-items: center;
   gap: 10px;
   text-transform: uppercase;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease,
+    background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(10, 22, 32, 0.14);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: none;
+  transition-duration: 0.1s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn:hover,
+  .btn:active {
+    transform: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
 }
 
 .btn-primary {
@@ -505,6 +606,12 @@ section.tight {
   z-index: 50;
   background: var(--foam);
   border-bottom: 1px solid var(--line);
+  box-shadow: 0 0 0 rgba(10, 22, 32, 0);
+  transition: box-shadow 0.3s ease;
+}
+
+.site-header.is-scrolled {
+  box-shadow: 0 8px 24px rgba(10, 22, 32, 0.08);
 }
 
 .site-header__bar {
@@ -514,6 +621,12 @@ section.tight {
   padding-top: 10px;
   padding-bottom: 10px;
   gap: 24px;
+  transition: padding 0.3s ease;
+}
+
+.site-header.is-scrolled .site-header__bar {
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 .site-header__logo {
@@ -525,6 +638,19 @@ section.tight {
   height: 68px;
   width: auto;
   display: block;
+  transition: height 0.3s ease;
+}
+
+.site-header.is-scrolled .site-header__logo img {
+  height: 52px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .site-header__bar,
+  .site-header__logo img {
+    transition: none;
+  }
 }
 
 .site-header__actions {
@@ -615,6 +741,7 @@ section.tight {
 
 .print-card__mat {
   width: 100%;
+  overflow: hidden;
   background: var(--foam);
   border: 1px solid var(--line);
   box-shadow: 0 12px 30px rgba(10, 22, 32, 0.08);
@@ -624,12 +751,31 @@ section.tight {
   justify-content: center;
   cursor: pointer;
   font: inherit;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.print-card__mat:hover {
+  box-shadow: 0 18px 40px rgba(10, 22, 32, 0.16);
+  border-color: var(--tide);
 }
 
 .print-card__mat img {
   display: block;
   width: 100%;
   height: auto;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.print-card__mat:hover img {
+  transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .print-card__mat img,
+  .print-card__mat:hover img {
+    transition: none;
+    transform: none;
+  }
 }
 
 .print-card__info {
@@ -683,12 +829,17 @@ section.tight {
   align-items: center;
   justify-content: center;
   color: var(--ink);
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .print-card__cart-btn:hover {
   background: var(--ink);
   color: var(--foam);
+  transform: scale(1.1);
+}
+
+.print-card__cart-btn:active {
+  transform: scale(0.92);
 }
 
 .print-card__sizes-accordion {
@@ -902,11 +1053,16 @@ section.tight {
   font: inherit;
   text-align: left;
   color: var(--teal);
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .option-pill:hover {
   border-color: var(--tide);
+  transform: translateY(-1px);
+}
+
+.option-pill:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .option-pill.is-selected {
@@ -944,11 +1100,16 @@ section.tight {
   cursor: pointer;
   padding: 0;
   box-shadow: 0 0 0 2px transparent;
-  transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .color-swatch:hover {
   box-shadow: 0 0 0 2px var(--silver);
+  transform: scale(1.1);
+}
+
+.color-swatch:active {
+  transform: scale(0.95);
 }
 
 .color-swatch.is-selected {
@@ -1340,11 +1501,19 @@ section.tight {
   padding: 20px 22px;
   color: inherit;
   text-decoration: none;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
 }
 
 .trade-segment:hover {
   border-color: var(--copper-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(10, 22, 32, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trade-segment:hover {
+    transform: none;
+  }
 }
 
 .trade-segment h3 {
@@ -1485,11 +1654,19 @@ section.tight {
   padding: 24px 26px 26px;
   color: inherit;
   text-decoration: none;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
 }
 
 .journal-card:hover {
   border-color: var(--copper-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(10, 22, 32, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journal-card:hover {
+    transform: none;
+  }
 }
 
 .journal-card h3 {

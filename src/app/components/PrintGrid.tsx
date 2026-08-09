@@ -6,6 +6,7 @@ import { useState } from "react";
 import { SIZE_OPTIONS, type Photo } from "@/app/lib/catalog";
 import { cartItemId, parsePrice, useCart } from "./CartContext";
 import Lightbox from "./Lightbox";
+import Reveal from "./Reveal";
 
 export default function PrintGrid({ photos }: { photos: Photo[] }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -37,7 +38,11 @@ export default function PrintGrid({ photos }: { photos: Photo[] }) {
     <>
       <div className="print-grid">
         {photos.map((photo, index) => (
-          <div key={`${photo.categorySlug}-${photo.src}`} className="print-card">
+          <Reveal
+            key={`${photo.categorySlug}-${photo.src}`}
+            className="print-card"
+            delay={Math.min(index * 60, 300)}
+          >
             <button
               type="button"
               className="print-card__mat"
@@ -110,7 +115,7 @@ export default function PrintGrid({ photos }: { photos: Photo[] }) {
                 </ul>
               </details>
             </div>
-          </div>
+          </Reveal>
         ))}
       </div>
 

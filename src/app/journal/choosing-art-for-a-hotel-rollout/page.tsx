@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JOURNAL_POSTS } from "@/app/lib/journal";
+import Reveal from "@/app/components/Reveal";
 import { BASE_URL, breadcrumbJsonLd } from "@/app/lib/seo";
 
 const post = JOURNAL_POSTS.find((p) => p.slug === "choosing-art-for-a-hotel-rollout")!;
@@ -42,7 +43,7 @@ export default function HotelRolloutPost() {
           <span>{post.title}</span>
         </nav>
 
-        <div className="journal-article__header">
+        <Reveal className="journal-article__header">
           <Link href={post.segmentHref} className="journal-card__segment">
             {post.segment}
           </Link>
@@ -56,7 +57,7 @@ export default function HotelRolloutPost() {
             })}{" "}
             · {post.readTime}
           </div>
-        </div>
+        </Reveal>
 
         <div className="journal-body">
           <p>
@@ -125,7 +126,7 @@ export default function HotelRolloutPost() {
           </p>
         </div>
 
-        <div className="journal-cta">
+        <Reveal className="journal-cta">
           <p>
             Nick Whittaker Imagery works with hospitality projects on exactly this basis — no
             minimum order, phased pricing, and one contact for the whole programme.
@@ -133,7 +134,7 @@ export default function HotelRolloutPost() {
           <Link href="/trade/hospitality" className="btn btn-primary">
             See hospitality trade pricing
           </Link>
-        </div>
+        </Reveal>
       </div>
     </article>
   );

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllCategorySlugs, getCategory } from "@/app/lib/categories";
 import PrintGrid from "@/app/components/PrintGrid";
+import Reveal from "@/app/components/Reveal";
 import { BASE_URL } from "@/app/lib/seo";
 
 export const dynamicParams = false;
@@ -47,10 +48,10 @@ export default async function CategoryPage({
   return (
     <section className="tight">
       <div className="wrap">
-        <div className="section-head">
+        <Reveal className="section-head">
           <h1>{category.label}</h1>
           <p>{category.description}</p>
-        </div>
+        </Reveal>
 
         <PrintGrid photos={category.photos} />
       </div>

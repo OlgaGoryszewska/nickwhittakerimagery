@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { getAllPhotos } from "@/app/lib/categories";
 import PrintGrid from "@/app/components/PrintGrid";
 import GalleryBrowser from "@/app/components/GalleryBrowser";
+import Reveal from "@/app/components/Reveal";
 import { EVENTS } from "@/app/lib/events";
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default async function Home() {
           alt=""
           fill
           priority
+          
           className="hero-bg"
         />
         <div className="hero-overlay" />
@@ -41,32 +43,32 @@ export default async function Home() {
 
       <section className="tight">
         <div className="wrap">
-          <div className="section-head">
+          <Reveal className="section-head">
             <h2>Most Popular</h2>
             <p>The prints people come back for most — click a photo for a closer look.</p>
-          </div>
+          </Reveal>
           <PrintGrid photos={mostPopular} />
         </div>
       </section>
 
       <section className="border-t border-line">
         <div className="wrap">
-          <div className="section-head">
+          <Reveal className="section-head">
             <h2>Explore the work</h2>
             <p>Six bodies of work, from abstract water studies to fine-art prints ready for the wall — filter to find what you&apos;re after.</p>
-          </div>
+          </Reveal>
           <GalleryBrowser photos={allPhotos} limit={10} />
         </div>
       </section>
 
       <section id="upcoming-events" className="tight border-t border-line">
         <div className="wrap">
-          <div className="section-head">
+          <Reveal className="section-head">
             <h2>Upcoming Events</h2>
             <p>Exhibitions and print showings — where to see the work in person.</p>
-          </div>
-          {EVENTS.map((event) => (
-            <div key={event.slug} className="event-card">
+          </Reveal>
+          {EVENTS.map((event, index) => (
+            <Reveal key={event.slug} className="event-card" delay={index * 80}>
               <Image src={event.image} alt={event.imageAlt} fill sizes="100vw" />
               <div className="event-card__overlay" />
               <div className="event-card__content">
@@ -80,23 +82,25 @@ export default async function Home() {
                   Event Details
                 </Link>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       <section className="tight border-t border-line">
         <div className="wrap">
-          <div className="eyebrow">About</div>
-          <p className="lede">
-            Nick Whittaker is an ocean and water photographer based in
-            Auckland, New Zealand. His work holds still what the sea rarely
-            offers twice — light, tide, and timing, caught in a single frame
-            and printed as fine art.
-          </p>
-          <Link href="/biography" className="btn btn-link mt-5 inline-block">
-            Read the story →
-          </Link>
+          <Reveal>
+            <div className="eyebrow">About</div>
+            <p className="lede">
+              Nick Whittaker is an ocean and water photographer based in
+              Auckland, New Zealand. His work holds still what the sea rarely
+              offers twice — light, tide, and timing, caught in a single frame
+              and printed as fine art.
+            </p>
+            <Link href="/biography" className="btn btn-link mt-5 inline-block">
+              Read the story →
+            </Link>
+          </Reveal>
         </div>
       </section>
     </>

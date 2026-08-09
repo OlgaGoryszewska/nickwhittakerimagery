@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Reveal from "@/app/components/Reveal";
 import { BASE_URL } from "@/app/lib/seo";
 
 const TITLE = "Contact — Nick Whittaker Imagery";
@@ -22,14 +23,14 @@ export default function ContactPage() {
   return (
     <section className="tight">
       <div className="wrap">
-        <div className="section-head">
+        <Reveal className="section-head">
           <h1>Contact</h1>
           <p>
             For prints, commissions, collaborations, or anything else — get in touch directly.
           </p>
-        </div>
+        </Reveal>
 
-        <div className="contact-details">
+        <Reveal className="contact-details">
           <div className="contact-detail">
             <div className="trade-subhead">Email</div>
             <a href="mailto:nickjwhittaker@gmail.com" className="contact-detail__value">
@@ -42,9 +43,9 @@ export default function ContactPage() {
               +64 21 507 507
             </a>
           </div>
-        </div>
+        </Reveal>
 
-        <div className="trade-cta">
+        <Reveal className="trade-cta" delay={100}>
           <div className="trade-cta__row">
             <a
               href={`mailto:nickjwhittaker@gmail.com?subject=${encodeURIComponent("General Enquiry")}`}
@@ -56,7 +57,7 @@ export default function ContactPage() {
               Trade &amp; Commercial Enquiries
             </Link>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

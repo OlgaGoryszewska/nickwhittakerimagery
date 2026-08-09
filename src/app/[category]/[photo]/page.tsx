@@ -7,6 +7,7 @@ import PrintGrid from "@/app/components/PrintGrid";
 import DetailGallery from "@/app/components/DetailGallery";
 import PhotoPurchasePanel from "@/app/components/PhotoPurchasePanel";
 import BackButton from "@/app/components/BackButton";
+import Reveal from "@/app/components/Reveal";
 import { BASE_URL, breadcrumbJsonLd } from "@/app/lib/seo";
 
 export const dynamicParams = false;
@@ -121,11 +122,11 @@ export default async function PhotoPage({
           </nav>
 
           <div className="detail-layout">
-            <div className="detail-media">
+            <Reveal className="detail-media">
               <DetailGallery images={galleryImages} title={photo.title} />
-            </div>
+            </Reveal>
 
-            <div className="detail-info">
+            <Reveal className="detail-info" delay={120}>
               <h1>{photo.title}</h1>
               <p className="print-card__location">{photo.location}</p>
 
@@ -136,7 +137,7 @@ export default async function PhotoPage({
               <Link href="/framing-information" className="btn-link detail-framing-link">
                 More on framing options &amp; other styles
               </Link>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -144,10 +145,10 @@ export default async function PhotoPage({
       {related.length > 0 && (
         <section className="border-t border-line">
           <div className="wrap">
-            <div className="section-head">
+            <Reveal className="section-head">
               <h2>More from {category.label}</h2>
               <p>{category.description}</p>
-            </div>
+            </Reveal>
             <PrintGrid photos={related} />
           </div>
         </section>

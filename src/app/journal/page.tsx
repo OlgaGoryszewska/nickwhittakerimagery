@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JOURNAL_POSTS } from "@/app/lib/journal";
+import Reveal from "@/app/components/Reveal";
 import { BASE_URL } from "@/app/lib/seo";
 
 const TITLE = "Journal — Nick Whittaker Imagery";
@@ -27,21 +28,23 @@ export default function JournalPage() {
   return (
     <section className="tight">
       <div className="wrap">
-        <div className="section-head">
+        <Reveal className="section-head">
           <h1>Journal</h1>
           <p>Notes on sourcing and specifying fine-art prints for real projects — hospitality, staging and trade.</p>
-        </div>
+        </Reveal>
 
         <div className="journal-list">
-          {JOURNAL_POSTS.map((post) => (
-            <Link key={post.slug} href={`/journal/${post.slug}`} className="journal-card">
-              <span className="journal-card__segment">{post.segment}</span>
-              <h3>{post.title}</h3>
-              <p>{post.dek}</p>
-              <span className="journal-card__meta">
-                {formatDate(post.date)} · {post.readTime}
-              </span>
-            </Link>
+          {JOURNAL_POSTS.map((post, index) => (
+            <Reveal key={post.slug} delay={index * 80}>
+              <Link href={`/journal/${post.slug}`} className="journal-card">
+                <span className="journal-card__segment">{post.segment}</span>
+                <h3>{post.title}</h3>
+                <p>{post.dek}</p>
+                <span className="journal-card__meta">
+                  {formatDate(post.date)} · {post.readTime}
+                </span>
+              </Link>
+            </Reveal>
           ))}
         </div>
       </div>
