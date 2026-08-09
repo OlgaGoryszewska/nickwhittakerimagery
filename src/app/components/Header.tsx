@@ -12,9 +12,7 @@ const NAV_ITEMS = [
   { label: "Framing Information", href: "/framing-information" },
   { label: "Biography", href: "/biography" },
   { label: "Contact", href: "/contact" },
-  { label: "Shop", href: "/shop" },
   { label: "Events", href: "/events" },
-  { label: "Interactive Room", href: "/interactive-room" },
 ];
 
 export default function Header() {

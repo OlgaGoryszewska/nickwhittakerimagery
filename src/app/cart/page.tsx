@@ -2,10 +2,35 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCart } from "@/app/components/CartContext";
+import { useCart, type CartItem } from "@/app/components/CartContext";
 
 function formatNzd(value: number): string {
   return `$${value.toFixed(0)} NZD`;
+}
+
+function orderRequestHref(items: CartItem[], totalPrice: number): string {
+  const lines = items.map((item) => {
+    const framing =
+      item.framing === "No Frame" ? "No Frame" : `${item.framing}${item.frameColor ? ` — ${item.frameColor}` : ""}`;
+    return `- ${item.title} — ${item.size} (${item.dimensions}), ${framing} — Qty ${item.qty} — ${formatNzd(
+      item.priceValue * item.qty
+    )}`;
+  });
+
+  const body = [
+    "Hi Nick,",
+    "",
+    "I'd like to order the following prints:",
+    "",
+    ...lines,
+    "",
+    `Subtotal: ${formatNzd(totalPrice)}`,
+    "",
+    "Name:",
+    "Delivery address:",
+  ].join("\n");
+
+  return `mailto:nickjwhittaker@gmail.com?subject=${encodeURIComponent("Print Order Request")}&body=${encodeURIComponent(body)}`;
 }
 
 export default function CartPage() {
@@ -99,10 +124,12 @@ export default function CartPage() {
                 <span>Subtotal</span>
                 <span>{formatNzd(totalPrice)}</span>
               </div>
-              <p className="cart-summary__note">Shipping and taxes calculated at checkout.</p>
-              <Link href="/shop" className="btn btn-primary cart-summary__cta">
-                Proceed to Checkout
-              </Link>
+              <p className="cart-summary__note">
+                We&rsquo;ll confirm framing, shipping and payment details by email.
+              </p>
+              <a href={orderRequestHref(items, totalPrice)} className="btn btn-primary cart-summary__cta">
+                Request to Order
+              </a>
               <Link href="/gallery" className="btn-link">
                 Continue Shopping
               </Link>

@@ -436,6 +436,7 @@ section.tight {
   color: var(--copper);
 }
 
+.event-card__content h2,
 .event-card__content h3 {
   font-size: 28px;
   font-weight: 400;
@@ -1597,4 +1598,29 @@ button:focus-visible,
   outline: 2px solid var(--copper-dark);
   outline-offset: 2px;
   border-radius: 2px;
+}
+
+/* Events page */
+.events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.event-card--full {
+  min-height: 520px;
+}
+
+/* Contact page */
+.contact-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  margin-bottom: 12px;
+}
+
+.contact-detail__value {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--ink);
 }

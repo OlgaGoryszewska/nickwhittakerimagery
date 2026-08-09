@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { getAllPhotos } from "@/app/lib/categories";
 import PrintGrid from "@/app/components/PrintGrid";
 import GalleryBrowser from "@/app/components/GalleryBrowser";
+import { EVENTS } from "@/app/lib/events";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -64,28 +65,23 @@ export default async function Home() {
             <h2>Upcoming Events</h2>
             <p>Exhibitions and print showings — where to see the work in person.</p>
           </div>
-          <div className="event-card">
-            <Image
-              src="/Fine%20Art/nick-whittaker-ocean-photography-fisherman-light-trail.jpg"
-              alt="Ocean & Water exhibition, Paris"
-              fill
-              sizes="100vw"
-            />
-            <div className="event-card__overlay" />
-            <div className="event-card__content">
-              <div className="eyebrow">Upcoming Exhibition</div>
-              <h3>Ocean &amp; Water — Paris</h3>
-              <div className="event-date">23–26 November · Paris, France</div>
-              <p>
-                A four-day gallery exhibition of fine-art ocean and water
-                photography, showing a curated selection of prints in
-                central Paris.
-              </p>
-              <Link href="/events" className="btn btn-outline-light">
-                Event Details
-              </Link>
+          {EVENTS.map((event) => (
+            <div key={event.slug} className="event-card">
+              <Image src={event.image} alt={event.imageAlt} fill sizes="100vw" />
+              <div className="event-card__overlay" />
+              <div className="event-card__content">
+                <div className="eyebrow">{event.eyebrow}</div>
+                <h3>{event.title}</h3>
+                <div className="event-date">
+                  {event.dateRange} · {event.location}
+                </div>
+                <p>{event.description}</p>
+                <Link href="/events" className="btn btn-outline-light">
+                  Event Details
+                </Link>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </section>
 
