@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAllCategorySlugs, getCategory } from "@/app/lib/categories";
+import { TRADE_SEGMENTS } from "@/app/lib/trade";
 
 const BASE_URL = "https://www.nickwhittakerimagery.com";
 
@@ -24,10 +25,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }))
     );
 
+  const tradeSegmentRoutes: MetadataRoute.Sitemap = TRADE_SEGMENTS.map((segment) => ({
+    url: `${BASE_URL}${segment.href}`,
+    changeFrequency: "monthly",
+    priority: 0.75,
+  }));
+
   return [
     { url: BASE_URL, changeFrequency: "weekly", priority: 1 },
     { url: `${BASE_URL}/gallery`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE_URL}/trade`, changeFrequency: "monthly", priority: 0.8 },
+    ...tradeSegmentRoutes,
     { url: `${BASE_URL}/framing-information`, changeFrequency: "monthly", priority: 0.5 },
     ...categoryRoutes,
     ...photoRoutes,

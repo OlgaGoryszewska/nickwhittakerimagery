@@ -1332,9 +1332,17 @@ section.tight {
 }
 
 .trade-segment {
+  display: block;
   border: 1px solid var(--line);
   border-radius: 2px;
   padding: 20px 22px;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+
+.trade-segment:hover {
+  border-color: var(--copper-dark);
 }
 
 .trade-segment h3 {
@@ -1347,6 +1355,15 @@ section.tight {
   font-size: 13.5px;
   line-height: 1.6;
   color: var(--teal);
+}
+
+.trade-segment__link {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--copper-dark);
 }
 
 .trade-subhead {
@@ -1410,4 +1427,38 @@ section.tight {
   margin-top: 40px;
   padding-top: 32px;
   border-top: 1px solid var(--line);
+}
+
+/* Trade segment pages */
+.trade-links {
+  display: flex;
+  gap: 20px;
+  margin: -8px 0 44px;
+}
+
+.trade-benefits {
+  list-style: none;
+  margin: 0 0 48px;
+  max-width: 66ch;
+}
+
+.trade-benefits li {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--teal);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.trade-benefits li:last-child {
+  border-bottom: none;
+}
+
+.trade-benefits li strong {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 3px;
+  font-size: 16px;
 }
