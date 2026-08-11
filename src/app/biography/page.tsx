@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/app/components/Reveal";
 import { BASE_URL } from "@/app/lib/seo";
@@ -25,6 +26,18 @@ export default function BiographyPage() {
       <div className="wrap journal-article">
         <Reveal className="section-head">
           <h1>Biography</h1>
+        </Reveal>
+
+        <Reveal className="journal-article__portrait">
+          <Image
+            src="/nick-whittaker-biography.jpg"
+            alt="Nick Whittaker photographed in Whangamata, New Zealand"
+            width={720}
+            height={960}
+            className="journal-article__portrait-img"
+            priority
+          />
+          <span className="journal-article__portrait-caption">Whangamata, New Zealand</span>
         </Reveal>
 
         <div className="journal-body">

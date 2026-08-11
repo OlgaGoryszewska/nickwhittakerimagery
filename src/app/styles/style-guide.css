@@ -1825,6 +1825,25 @@ a.journal-card__segment {
   margin-bottom: 14px;
 }
 
+.journal-article__portrait {
+  margin-bottom: 40px;
+}
+
+.journal-article__portrait-img {
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+}
+
+.journal-article__portrait-caption {
+  display: block;
+  margin-top: 10px;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--tide);
+}
+
 .journal-body p {
   font-size: 16px;
   line-height: 1.75;
