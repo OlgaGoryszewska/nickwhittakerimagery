@@ -52,7 +52,21 @@ const CATEGORY_DEFS: { slug: string; dir: string; label: string; description: st
 // Every photo was shot at Whangamata for now. Add a `"filename.jpg": "Place, New Zealand"`
 // entry here to override the location for individual photos as more shoot locations come in.
 const DEFAULT_LOCATION = "Whangamata, New Zealand";
-const LOCATION_OVERRIDES: Record<string, string> = {};
+const LOCATION_OVERRIDES: Record<string, string> = {
+  "nick-whittaker-ocean-photography-crimson-wave-abstract.jpg": "Muriwai, New Zealand",
+  "nick-whittaker-ocean-photography-golden-grass-silhouette.jpg": "Muriwai, New Zealand",
+  "nick-whittaker-ocean-photography-slate-blue-lines.jpg": "Muriwai, New Zealand",
+  "nick-whittaker-ocean-photography-coastal-palm-treeline.jpg": "Muriwai, New Zealand",
+  "nick-whittaker-ocean-photography-dusk-silhouette-figures.jpg": "Siargao, Philippines",
+  "nick-whittaker-ocean-photography-fisherman-light-trail.jpg": "Ohope Beach, New Zealand",
+  "nick-whittaker-ocean-photography-fisheye-palm-canopy.jpg": "Dickwella Beach, Sri Lanka",
+  "nick-whittaker-ocean-photography-palm-tree-silhouette.jpg": "El Nido, Philippines",
+  "nick-whittaker-ocean-photography-golden-mesh-reflection.jpg": "Madiha, Sri Lanka",
+  "nick-whittaker-ocean-photography-underwater-light-rays.jpg": "Muriwai, New Zealand",
+  "nick-whittaker-ocean-photography-abstract-sunset-lines.jpg": "Hikkaduwa, Sri Lanka",
+  "nick-whittaker-ocean-photography-emerald-storm-break.jpg": "Mangawhai, New Zealand",
+  "nick-whittaker-ocean-photography-soft-pastel-swell.jpg": "Muriwai, New Zealand",
+};
 
 // Hand-tagged from a visual review of every photo (contact-sheet pass, one per
 // category). Keyed by filename; merged with the category's auto-tag (if any)
@@ -232,6 +246,62 @@ const ALT_TEXT: Record<string, string> = {
     "Sunset light forming abstract lines across the water — fine art ocean photography print, Whangamata NZ.",
 };
 
+// Named prints. Keyed by filename; falls back to the generic
+// "{Category} Study NN" title when a photo has no name of its own yet.
+const TITLE_OVERRIDES: Record<string, string> = {
+  "nick-whittaker-ocean-photography-blue-pebble-texture.jpg": "Ocean Motion",
+  "nick-whittaker-ocean-photography-copper-reflection-lines.jpg": "Golden Whip",
+  "nick-whittaker-ocean-photography-cream-foam-texture.jpg": "Gentle Shores",
+  "nick-whittaker-ocean-photography-crimson-wave-abstract.jpg": "Scorch",
+  "nick-whittaker-ocean-photography-fiery-sunset-shoreline.jpg": "Orange Roughie",
+  "nick-whittaker-ocean-photography-golden-flecked-water.jpg": "Sun Dance",
+  "nick-whittaker-ocean-photography-golden-grass-silhouette.jpg": "Illuminate",
+  "nick-whittaker-ocean-photography-golden-sand-foam.jpg": "Home Brew",
+  "nick-whittaker-ocean-photography-motion-blur-abstract.jpg": "Cobalt Current",
+
+  // Abstracts (remaining)
+  "nick-whittaker-ocean-photography-slate-blue-lines.jpg": "Stacked",
+  "nick-whittaker-ocean-photography-stone-mosaic-texture.jpg": "Scatter",
+  "nick-whittaker-ocean-photography-turquoise-water-texture.jpg": "Scales",
+
+  // Fine Art
+  "nick-whittaker-ocean-photography-palm-tree-silhouette.jpg": "Paradiso",
+  "nick-whittaker-ocean-photography-fisheye-palm-canopy.jpg": "Palm Spin",
+  "nick-whittaker-ocean-photography-dusk-silhouette-figures.jpg": "Time Out",
+  "nick-whittaker-ocean-photography-coastal-palm-treeline.jpg": "Palm View",
+  "nick-whittaker-ocean-photography-fisherman-light-trail.jpg": "Dropping Anchor",
+
+  // Reflections
+  "nick-whittaker-ocean-photography-golden-mesh-reflection.jpg": "Sunkissed",
+  "nick-whittaker-ocean-photography-golden-streak-wave.jpg": "In Between",
+  "nick-whittaker-ocean-photography-hazy-gold-horizon.jpg": "Yin/Yang",
+  "nick-whittaker-ocean-photography-muted-blue-reflection.jpg": "Velvet Seas",
+
+  // Textures
+  "nick-whittaker-ocean-photography-amber-horizon-blur.jpg": "Split Screen",
+  "nick-whittaker-ocean-photography-minimalist-wave-line.jpg": "Boundless",
+  "nick-whittaker-ocean-photography-underwater-light-rays.jpg": "Underworld",
+
+  // Waves
+  "nick-whittaker-ocean-photography-azure-breaking-wave.jpg": "Shore Speak",
+  "nick-whittaker-ocean-photography-deep-teal-curl.jpg": "Velocity",
+  "nick-whittaker-ocean-photography-dynamic-spray-splash.jpg": "Wave Break",
+  "nick-whittaker-ocean-photography-emerald-storm-break.jpg": "Head On",
+  "nick-whittaker-ocean-photography-forest-coast-wave.jpg": "Waterwall",
+  "nick-whittaker-ocean-photography-golden-spray-burst.jpg": "Ocean Haze",
+  "nick-whittaker-ocean-photography-misty-teal-barrel.jpg": "East Coast Curl",
+  "nick-whittaker-ocean-photography-abstract-sunset-lines.jpg": "Smooth Lines",
+  "nick-whittaker-ocean-photography-dreamy-sunset-horizon.jpg": "Pastel Horizons",
+  "nick-whittaker-ocean-photography-pastel-dawn-wave.jpg": "Shimmer",
+  "nick-whittaker-ocean-photography-soft-pastel-swell.jpg": "Offshore",
+  "nick-whittaker-ocean-photography-sunset-shore-swell.jpg": "Sorbet",
+  "nick-whittaker-ocean-photography-sunset-wave-lines.jpg": "Afterglow",
+};
+
+function resolveTitle(file: string, categoryLabel: string, index: number): string {
+  return TITLE_OVERRIDES[file] ?? `${categoryLabel} Study ${String(index + 1).padStart(2, "0")}`;
+}
+
 function resolveTags(file: string, categoryTag?: string): string[] {
   const tags = new Set(TAG_OVERRIDES[file] ?? []);
   if (categoryTag) tags.add(categoryTag);
@@ -269,7 +339,7 @@ export async function getCategory(slug: string): Promise<Category | null> {
   const photos: Photo[] = await Promise.all(
     files.map(async (file, index) => {
       const { width, height } = await imageSizeFromFile(path.join(dirPath, file));
-      const title = `${def.label} Study ${String(index + 1).padStart(2, "0")}`;
+      const title = resolveTitle(file, def.label, index);
       const location = LOCATION_OVERRIDES[file] ?? DEFAULT_LOCATION;
       return {
         slug: slugify(title),

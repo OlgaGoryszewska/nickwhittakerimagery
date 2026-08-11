@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 
 export type LightboxImage = {
   key: string;
@@ -26,6 +27,29 @@ export default function Lightbox({
   onNavigate: (index: number) => void;
 }) {
   const image = images[index];
+  const pointerStart = useRef<{ x: number; y: number } | null>(null);
+
+  function handlePointerDown(e: React.PointerEvent) {
+    pointerStart.current = { x: e.clientX, y: e.clientY };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }
+
+  function handlePointerUp(e: React.PointerEvent) {
+    const start = pointerStart.current;
+    pointerStart.current = null;
+    if (!start) return;
+
+    const dx = e.clientX - start.x;
+    const dy = e.clientY - start.y;
+
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+
+    if (dx < 0) {
+      onNavigate((index + 1) % images.length);
+    } else {
+      onNavigate((index - 1 + images.length) % images.length);
+    }
+  }
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -46,7 +70,7 @@ export default function Lightbox({
 
   if (!image) return null;
 
-  return (
+  return createPortal(
     <div
       className="lightbox"
       role="dialog"
@@ -70,7 +94,12 @@ export default function Lightbox({
         ‹
       </button>
 
-      <div className="lightbox__stage" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="lightbox__stage"
+        onClick={(e) => e.stopPropagation()}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+      >
         <Image
           key={image.key}
           src={image.src}
@@ -79,6 +108,7 @@ export default function Lightbox({
           height={image.height}
           sizes="90vw"
           priority
+          draggable={false}
           className="lightbox__image"
         />
         <div className="lightbox__caption">
@@ -98,6 +128,7 @@ export default function Lightbox({
       >
         ›
       </button>
-    </div>
+    </div>,
+    document.body
   );
 }

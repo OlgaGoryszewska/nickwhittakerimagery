@@ -29,18 +29,11 @@ export default function BiographyPage() {
 
         <div className="journal-body">
           <p>
-            Nick Whittaker is an ocean and water photographer based in Auckland, New Zealand,
-            working primarily around Whangamata. His work holds still what the sea rarely offers
-            twice — light, tide, and timing, caught in a single frame and printed as fine art.
+           Nick Whittaker is a contemporary fine art photographer based in Tāmaki Makaurau (Auckland), Aotearoa New Zealand. Specialising in limited-edition ocean wave photography and coastal art prints, Nick captures a fresh perspective on the marine environment by masterfully experimenting with water, light, and vibrant color. His abstract surf and seascape photography actively challenges visual perceptions, transforming the ocean into modern wall decor. Deeply connected to his roots in Whangamata and Ōtautahi (Christchurch), he frequently documents the dynamic surf and beaches across the Coromandel peninsula and Auckland region.
           </p>
 
           <p>
-            The water is the constant subject, but rarely the same water twice. A morning tide
-            can read as glass one day and as motion-blurred abstraction the next, depending on
-            wind, light, and how close the camera sits to the surface. That range is why the
-            catalogue is organised into distinct bodies of work rather than one continuous
-            series — Abstracts, Fine Art, Reflections, Textures, and Waves each look at the same
-            coastline from a different distance and a different temperament.
+            Nick&rsquo;s work has been featured in numerous exhibitions, including the prestigious Paris Photo Fair, and has been published in leading photography magazines. His photographs are held in private collections worldwide, and he is recognized for his innovative approach to capturing the essence of the ocean. Through his lens, Nick invites viewers to experience the beauty and power of the sea, making his work a sought-after addition to any art collection.
           </p>
 
           <p>
