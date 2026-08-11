@@ -1,15 +1,27 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart, type CartItem } from "@/app/components/CartContext";
 import Reveal from "@/app/components/Reveal";
+import { SHIPPING_ESTIMATE_OPTIONS } from "@/app/lib/shipping";
 
 function formatNzd(value: number): string {
-  return `$${value.toFixed(0)} NZD`;
+  return `$${value.toFixed(2).replace(/\.00$/, "")} NZD`;
 }
 
-function orderRequestHref(items: CartItem[], totalPrice: number): string {
+function orderRequestHref(
+  items: CartItem[],
+  totalPrice: number,
+  extras: {
+    discountCode: string;
+    shippingCost: number | null;
+    shippingLabel: string;
+    name: string;
+    address: string;
+  }
+): string {
   const lines = items.map((item) => {
     const framing =
       item.framing === "No Frame" ? "No Frame" : `${item.framing}${item.frameColor ? ` — ${item.frameColor}` : ""}`;
@@ -17,6 +29,8 @@ function orderRequestHref(items: CartItem[], totalPrice: number): string {
       item.priceValue * item.qty
     )}`;
   });
+
+  const total = totalPrice + (extras.shippingCost ?? 0);
 
   const body = [
     "Hi Nick,",
@@ -26,9 +40,14 @@ function orderRequestHref(items: CartItem[], totalPrice: number): string {
     ...lines,
     "",
     `Subtotal: ${formatNzd(totalPrice)}`,
+    ...(extras.shippingCost !== null
+      ? [`Shipping (${extras.shippingLabel}): ${extras.shippingCost === 0 ? "Free" : formatNzd(extras.shippingCost)}`]
+      : []),
+    ...(extras.discountCode ? [`Discount code: ${extras.discountCode}`] : []),
+    ...(extras.shippingCost !== null ? [`Total: ${formatNzd(total)}`] : []),
     "",
-    "Name:",
-    "Delivery address:",
+    `Name: ${extras.name}`,
+    `Delivery address: ${extras.address}`,
   ].join("\n");
 
   return `mailto:nickjwhittaker@gmail.com?subject=${encodeURIComponent("Print Order Request")}&body=${encodeURIComponent(body)}`;
@@ -36,6 +55,29 @@ function orderRequestHref(items: CartItem[], totalPrice: number): string {
 
 export default function CartPage() {
   const { items, removeItem, setQty, totalCount, totalPrice } = useCart();
+
+  const [discountCode, setDiscountCode] = useState("");
+  const [discountApplied, setDiscountApplied] = useState("");
+
+  const [shippingRegion, setShippingRegion] = useState(SHIPPING_ESTIMATE_OPTIONS[0].value);
+  const [shippingName, setShippingName] = useState("");
+  const [shippingAddress, setShippingAddress] = useState("");
+  const [shippingCost, setShippingCost] = useState<number | null>(null);
+
+  const selectedRegion = SHIPPING_ESTIMATE_OPTIONS.find((option) => option.value === shippingRegion);
+
+  function handleDiscountSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!discountCode.trim()) return;
+    setDiscountApplied(discountCode.trim());
+  }
+
+  function handleCalculateShipping(e: React.FormEvent) {
+    e.preventDefault();
+    setShippingCost(selectedRegion?.price ?? 0);
+  }
+
+  const total = totalPrice + (shippingCost ?? 0);
 
   return (
     <section className="tight">
@@ -125,10 +167,97 @@ export default function CartPage() {
                 <span>Subtotal</span>
                 <span>{formatNzd(totalPrice)}</span>
               </div>
+              {shippingCost !== null && (
+                <div className="cart-summary__row">
+                  <span>Shipping</span>
+                  <span>{shippingCost === 0 ? "Free" : formatNzd(shippingCost)}</span>
+                </div>
+              )}
+              {shippingCost !== null && (
+                <div className="cart-summary__row cart-summary__row--total">
+                  <span>Total</span>
+                  <span>{formatNzd(total)}</span>
+                </div>
+              )}
+
+              <form className="cart-discount" onSubmit={handleDiscountSubmit}>
+                <label htmlFor="discount-code" className="purchase-field__label">
+                  Discount code or gift card
+                </label>
+                <div className="cart-discount__row">
+                  <input
+                    id="discount-code"
+                    type="text"
+                    className="field-input"
+                    placeholder="Enter code"
+                    value={discountCode}
+                    onChange={(e) => setDiscountCode(e.target.value)}
+                  />
+                  <button type="submit" className="btn btn-outline">
+                    Submit
+                  </button>
+                </div>
+                {discountApplied && (
+                  <p className="cart-summary__note">
+                    &ldquo;{discountApplied}&rdquo; added — we&rsquo;ll apply it when we confirm your order.
+                  </p>
+                )}
+              </form>
+
+              <form className="cart-shipping" onSubmit={handleCalculateShipping}>
+                <p className="purchase-field__label">Shipping</p>
+                <p className="cart-shipping__hint">
+                  Enter your shipping address to estimate delivery cost.
+                </p>
+                <input
+                  type="text"
+                  className="field-input"
+                  placeholder="Full name"
+                  aria-label="Full name"
+                  value={shippingName}
+                  onChange={(e) => setShippingName(e.target.value)}
+                />
+                <input
+                  type="text"
+                  className="field-input"
+                  placeholder="Shipping address"
+                  aria-label="Shipping address"
+                  value={shippingAddress}
+                  onChange={(e) => setShippingAddress(e.target.value)}
+                />
+                <select
+                  className="field-input"
+                  aria-label="Shipping region"
+                  value={shippingRegion}
+                  onChange={(e) => {
+                    setShippingRegion(e.target.value);
+                    setShippingCost(null);
+                  }}
+                >
+                  {SHIPPING_ESTIMATE_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <button type="submit" className="btn btn-outline cart-shipping__cta">
+                  Calculate Shipping
+                </button>
+              </form>
+
               <p className="cart-summary__note">
                 We&rsquo;ll confirm framing, shipping and payment details by email.
               </p>
-              <a href={orderRequestHref(items, totalPrice)} className="btn btn-primary cart-summary__cta">
+              <a
+                href={orderRequestHref(items, totalPrice, {
+                  discountCode: discountApplied,
+                  shippingCost,
+                  shippingLabel: selectedRegion?.label ?? "",
+                  name: shippingName,
+                  address: shippingAddress,
+                })}
+                className="btn btn-primary cart-summary__cta"
+              >
                 Request to Order
               </a>
               <Link href="/gallery" className="btn-link">

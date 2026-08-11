@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { label: "Trade", href: "/trade" },
   { label: "Journal", href: "/journal" },
   { label: "Framing Information", href: "/framing-information" },
+  { label: "Shipping", href: "/shipping" },
   { label: "Biography", href: "/biography" },
   { label: "Contact", href: "/contact" },
   { label: "Events", href: "/events" },
