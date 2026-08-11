@@ -63,7 +63,7 @@ export default function DetailGallery({
             ‹
           </button>
           <span className="detail-gallery__label">
-            {current.label} — {index + 1}/{images.length}
+            {index + 1}/{images.length}
           </span>
           <button
             type="button"

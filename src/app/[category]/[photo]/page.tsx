@@ -137,6 +137,11 @@ export default async function PhotoPage({
               <Link href="/framing-information" className="btn-link detail-framing-link">
                 More on framing options &amp; other styles
               </Link>
+
+              <div className="detail-about">
+                <h2>About this print</h2>
+                <p>Printed by endemicworld on mid-weight acid-free paper with archival inks.</p>
+              </div>
             </Reveal>
           </div>
         </div>

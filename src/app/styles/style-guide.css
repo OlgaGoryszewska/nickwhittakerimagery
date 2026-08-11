@@ -1005,6 +1005,26 @@ section.tight {
   margin: 16px 0 24px;
 }
 
+.detail-about {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.detail-about h2 {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 10px;
+}
+
+.detail-about p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
 .detail-tags .pill {
   text-decoration: none;
 }
