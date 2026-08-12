@@ -557,6 +557,12 @@ section.tight {
   margin-bottom: 28px;
 }
 
+.event-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
 /* Site footer */
 .site-footer {
   background: var(--abyss);
@@ -1911,6 +1917,51 @@ button:focus-visible,
 
 .event-card--full {
   min-height: 520px;
+}
+
+.past-events-head {
+  margin-top: 64px;
+}
+
+.past-events-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.past-event-card {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 24px 26px 26px;
+}
+
+.past-event-card .eyebrow {
+  color: var(--copper-dark);
+}
+
+.past-event-card h3 {
+  font-size: 20px;
+  font-weight: 400;
+  margin: 10px 0 8px;
+}
+
+.past-event-card p {
+  color: var(--teal);
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.past-event-card__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+
+.past-event-card__links a {
+  color: var(--copper-dark);
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* Contact page */

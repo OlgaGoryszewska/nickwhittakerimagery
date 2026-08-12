@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { EVENTS } from "@/app/lib/events";
+import { EVENTS, getPastEvents, getUpcomingEvents } from "@/app/lib/events";
 import Reveal from "@/app/components/Reveal";
 import { BASE_URL } from "@/app/lib/seo";
 
@@ -42,6 +42,9 @@ function eventJsonLd(event: (typeof EVENTS)[number]) {
 }
 
 export default function EventsPage() {
+  const upcomingEvents = getUpcomingEvents();
+  const pastEvents = getPastEvents();
+
   return (
     <section className="tight">
       <div className="wrap">
@@ -50,11 +53,11 @@ export default function EventsPage() {
           <p>Exhibitions and print showings — where to see the work in person.</p>
         </Reveal>
 
-        {EVENTS.length === 0 ? (
+        {upcomingEvents.length === 0 ? (
           <p className="lede">No upcoming events right now — check back soon.</p>
         ) : (
           <div className="events-list">
-            {EVENTS.map((event, index) => (
+            {upcomingEvents.map((event, index) => (
               <Reveal key={event.slug} className="event-card event-card--full" delay={index * 100}>
                 <script
                   type="application/ld+json"
@@ -69,18 +72,65 @@ export default function EventsPage() {
                     {event.dateRange} · {event.location}
                   </div>
                   <p>{event.description}</p>
-                  <a
-                    href={`mailto:nickjwhittaker@gmail.com?subject=${encodeURIComponent(
-                      `RSVP — ${event.title}`
-                    )}`}
-                    className="btn btn-outline-light"
-                  >
-                    Enquire About This Event
-                  </a>
+                  <div className="event-card__actions">
+                    <a
+                      href={`mailto:nickjwhittaker@gmail.com?subject=${encodeURIComponent(
+                        `RSVP — ${event.title}`
+                      )}`}
+                      className="btn btn-outline-light"
+                    >
+                      Enquire About This Event
+                    </a>
+                    {event.links?.map((link) => (
+                      <a
+                        key={link.href}
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-outline-light"
+                      >
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
                 </div>
               </Reveal>
             ))}
           </div>
+        )}
+
+        {pastEvents.length > 0 && (
+          <>
+            <Reveal className="section-head past-events-head">
+              <h2>Previous Events</h2>
+            </Reveal>
+
+            <div className="past-events-list">
+              {pastEvents.map((event, index) => (
+                <Reveal key={event.slug} className="past-event-card" delay={index * 80}>
+                  <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd(event)) }}
+                  />
+                  <div className="eyebrow">Past Exhibition</div>
+                  <h3>{event.title}</h3>
+                  <div className="event-date">
+                    {event.dateRange} · {event.location}
+                  </div>
+                  <p>{event.description}</p>
+                  {event.links && event.links.length > 0 && (
+                    <div className="past-event-card__links">
+                      {event.links.map((link) => (
+                        <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">
+                          {link.label}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </Reveal>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </section>

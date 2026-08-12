@@ -5,7 +5,7 @@ import { getAllPhotos } from "@/app/lib/categories";
 import PrintGrid from "@/app/components/PrintGrid";
 import GalleryBrowser from "@/app/components/GalleryBrowser";
 import Reveal from "@/app/components/Reveal";
-import { EVENTS } from "@/app/lib/events";
+import { getUpcomingEvents } from "@/app/lib/events";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 export default async function Home() {
   const allPhotos = await getAllPhotos();
   const mostPopular = allPhotos.filter((photo) => photo.tags.includes("most-popular"));
+  const upcomingEvents = getUpcomingEvents();
 
   return (
     <>
@@ -67,7 +68,7 @@ export default async function Home() {
             <h2>Upcoming Events</h2>
             <p>Exhibitions and print showings — where to see the work in person.</p>
           </Reveal>
-          {EVENTS.map((event, index) => (
+          {upcomingEvents.map((event, index) => (
             <Reveal key={event.slug} className="event-card" delay={index * 80}>
               <Image src={event.image} alt={event.imageAlt} fill sizes="100vw" />
               <div className="event-card__overlay" />

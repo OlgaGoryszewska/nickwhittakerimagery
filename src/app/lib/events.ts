@@ -3,6 +3,11 @@
 // can't drift out of sync. Array-based so more events can be added later
 // without changing the page structure.
 
+export type EventLink = {
+  label: string;
+  href: string;
+};
+
 export type EventItem = {
   slug: string;
   title: string;
@@ -14,7 +19,20 @@ export type EventItem = {
   description: string;
   image: string;
   imageAlt: string;
+  links?: EventLink[];
 };
+
+export function isPastEvent(event: EventItem): boolean {
+  return new Date(event.endDate).getTime() < Date.now();
+}
+
+export function getUpcomingEvents(): EventItem[] {
+  return EVENTS.filter((event) => !isPastEvent(event));
+}
+
+export function getPastEvents(): EventItem[] {
+  return EVENTS.filter(isPastEvent);
+}
 
 export const EVENTS: EventItem[] = [
   {
@@ -29,5 +47,9 @@ export const EVENTS: EventItem[] = [
       "A four-day gallery exhibition of fine-art ocean and water photography, showing a curated selection of prints in central Paris.",
     image: "/Fine%20Art/nick-whittaker-ocean-photography-fisherman-light-trail.jpg",
     imageAlt: "Ocean & Water exhibition, Paris",
+    links: [
+      { label: "Gallery — Photo Art Paris", href: "https://photo-artparis.com/en/artiste/nick-whittaker/" },
+      { label: "Photodays Paris", href: "https://photodays.paris/" },
+    ],
   },
 ];

@@ -46,10 +46,6 @@ export default function BiographyPage() {
           </p>
 
           <p>
-            Nick&rsquo;s work has been featured in numerous exhibitions, including the prestigious Paris Photo Fair, and has been published in leading photography magazines. His photographs are held in private collections worldwide, and he is recognized for his innovative approach to capturing the essence of the ocean. Through his lens, Nick invites viewers to experience the beauty and power of the sea, making his work a sought-after addition to any art collection.
-          </p>
-
-          <p>
             Prints are made available across sizes from A3 through A0, framed to order, and the
             work is open to commissions, collaborations, and trade projects — from a single print
             for a home to a full programme for a hospitality or commercial space. Nick&rsquo;s
