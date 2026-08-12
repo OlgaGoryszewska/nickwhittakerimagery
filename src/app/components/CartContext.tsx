@@ -67,10 +67,6 @@ export function cartItemId(photoSrc: string, size: string, framing: string, colo
   return `${photoSrc}__${size}__${framing}__${color}`;
 }
 
-export function parsePrice(price: string): number {
-  return parseFloat(price.replace(/[^0-9.]/g, "")) || 0;
-}
-
 function addItemToStore(item: Omit<CartItem, "qty">, qty: number) {
   const existing = cartItems.find((i) => i.id === item.id);
   cartItems = existing

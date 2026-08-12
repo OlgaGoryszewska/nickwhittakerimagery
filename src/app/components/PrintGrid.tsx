@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { SIZE_OPTIONS, type Photo } from "@/app/lib/catalog";
-import { cartItemId, parsePrice, useCart } from "./CartContext";
+import { SIZE_OPTIONS, parsePrice, type Photo } from "@/app/lib/catalog";
+import { cartItemId, useCart } from "./CartContext";
 import Lightbox from "./Lightbox";
 import Reveal from "./Reveal";
 

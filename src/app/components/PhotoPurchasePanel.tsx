@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { SIZE_OPTIONS, type Photo } from "@/app/lib/catalog";
-import { FRAME_COLORS, PURCHASABLE_FRAMING_STYLES } from "@/app/lib/framing";
-import { cartItemId, parsePrice, useCart } from "./CartContext";
-
-const NO_FRAME = "No Frame";
+import { SIZE_OPTIONS, parsePrice, type Photo } from "@/app/lib/catalog";
+import { FRAME_COLORS, NO_FRAME, PURCHASABLE_FRAMING_STYLES } from "@/app/lib/framing";
+import { cartItemId, useCart } from "./CartContext";
 
 export default function PhotoPurchasePanel({ photo }: { photo: Photo }) {
   const [selectedSize, setSelectedSize] = useState(SIZE_OPTIONS[0].size);

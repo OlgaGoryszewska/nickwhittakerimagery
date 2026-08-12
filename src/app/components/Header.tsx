@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCart } from "./CartContext";
 
@@ -16,10 +17,11 @@ const NAV_ITEMS = [
   { label: "Events", href: "/events" },
 ];
 
-export default function Header() {
+export default function Header({ loggedIn = false }: { loggedIn?: boolean }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { totalCount } = useCart();
+  const pathname = usePathname();
 
   useEffect(() => {
     function handleScroll() {
@@ -44,6 +46,14 @@ export default function Header() {
         </Link>
 
         <div className="site-header__actions">
+          <Link
+            href={loggedIn ? "/account" : `/auth/login?returnTo=${encodeURIComponent(pathname || "/")}`}
+            className="account-link"
+            onClick={() => setOpen(false)}
+          >
+            {loggedIn ? "Account" : "Sign In"}
+          </Link>
+
           <Link
             href="/cart"
             className="cart-toggle"

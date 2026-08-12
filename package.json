@@ -2,11 +2,13 @@
   "name": "nickwhittakerimagery",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "shopify:sync-products": "node --env-file=.env.local scripts/shopify/sync-products.ts"
   },
   "dependencies": {
     "image-size": "^2.0.2",

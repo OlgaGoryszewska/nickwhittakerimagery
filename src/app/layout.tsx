@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { CartProvider } from "./components/CartContext";
 import { BASE_URL } from "@/app/lib/seo";
+import { getCustomerSession } from "@/app/lib/shopify/customer-account/session";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,11 +58,13 @@ const organizationJsonLd = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getCustomerSession();
+
   return (
     <html
       lang="en"
@@ -73,7 +76,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         <CartProvider>
-          <Header />
+          <Header loggedIn={Boolean(session)} />
           <main className="flex-1">{children}</main>
           <Footer />
         </CartProvider>

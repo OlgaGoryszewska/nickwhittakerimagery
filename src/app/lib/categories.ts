@@ -1,10 +1,10 @@
 import { readdir } from "fs/promises";
 import path from "path";
 import { imageSizeFromFile } from "image-size/fromFile";
-import type { Photo, Category } from "@/app/lib/catalog";
+import type { Photo, Category } from "./catalog.ts";
 
-export type { Photo, Category } from "@/app/lib/catalog";
-export { TAGS, SIZE_OPTIONS } from "@/app/lib/catalog";
+export type { Photo, Category } from "./catalog.ts";
+export { TAGS, SIZE_OPTIONS } from "./catalog.ts";
 
 const IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png"]);
 
