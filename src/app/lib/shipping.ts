@@ -34,19 +34,22 @@ function parsePrice(price: string): number {
   return parseFloat(price.replace(/[^0-9.]/g, "")) || 0;
 }
 
-export type ShippingEstimateOption = { value: string; label: string; price: number };
+export type ShippingEstimateOption = { value: string; label: string; price: number; domestic: boolean };
 
 // Estimator options for the cart's shipping calculator — standard-sized prints only
 // (the catalogue's largest purchasable size is A0, below the "oversized" threshold).
+// `domestic` drives whether NZ GST applies at checkout (see lib/pricing.ts).
 export const SHIPPING_ESTIMATE_OPTIONS: ShippingEstimateOption[] = [
   ...NZ_STANDARD_RATES.map((rate) => ({
     value: rate.region.toLowerCase().replace(/\s+/g, "-"),
     label: `${rate.region}, New Zealand`,
     price: parsePrice(rate.price),
+    domestic: true,
   })),
   ...INTERNATIONAL_RATES.map((rate) => ({
     value: rate.destination.toLowerCase().replace(/\s+/g, "-"),
     label: rate.destination,
     price: parsePrice(rate.price),
+    domestic: false,
   })),
 ];

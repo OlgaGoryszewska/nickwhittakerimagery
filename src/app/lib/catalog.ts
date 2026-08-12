@@ -43,9 +43,9 @@ export const SIZE_OPTIONS: { size: string; dimensions: string; price: string }[]
   { size: "A0", dimensions: "84.1 × 118.9 cm", price: "$595 NZD" },
 ];
 
-// Shared by the client cart, the purchase panel, and the (Node-run) Shopify
-// sync script — kept out of the "use client" CartContext so a plain Node
-// script can import it too.
+// Shared by the client cart, the purchase panel, and server-side order
+// pricing — kept out of the "use client" CartContext so non-client code can
+// import it too.
 export function parsePrice(price: string): number {
   return parseFloat(price.replace(/[^0-9.]/g, "")) || 0;
 }

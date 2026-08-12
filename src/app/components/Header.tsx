@@ -47,7 +47,7 @@ export default function Header({ loggedIn = false }: { loggedIn?: boolean }) {
 
         <div className="site-header__actions">
           <Link
-            href={loggedIn ? "/account" : `/auth/login?returnTo=${encodeURIComponent(pathname || "/")}`}
+            href={loggedIn ? "/account" : `/login?returnTo=${encodeURIComponent(pathname || "/")}`}
             className="account-link"
             onClick={() => setOpen(false)}
           >

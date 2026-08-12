@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart, type CartItem } from "@/app/components/CartContext";
 import Reveal from "@/app/components/Reveal";
-import { createCheckout } from "@/app/lib/shopify/checkout";
 import { SHIPPING_ESTIMATE_OPTIONS } from "@/app/lib/shipping";
 
 function formatNzd(value: number): string {
@@ -65,10 +64,6 @@ export default function CartPage() {
   const [shippingAddress, setShippingAddress] = useState("");
   const [shippingCost, setShippingCost] = useState<number | null>(null);
 
-  const [checkingOut, setCheckingOut] = useState(false);
-  const [checkoutError, setCheckoutError] = useState<string | null>(null);
-  const [unavailableIds, setUnavailableIds] = useState<Set<string>>(new Set());
-
   const selectedRegion = SHIPPING_ESTIMATE_OPTIONS.find((option) => option.value === shippingRegion);
 
   function handleDiscountSubmit(e: React.FormEvent) {
@@ -80,22 +75,6 @@ export default function CartPage() {
   function handleCalculateShipping(e: React.FormEvent) {
     e.preventDefault();
     setShippingCost(selectedRegion?.price ?? 0);
-  }
-
-  async function handleCheckout() {
-    setCheckingOut(true);
-    setCheckoutError(null);
-
-    const result = await createCheckout(items);
-
-    if (result.ok) {
-      window.location.href = result.checkoutUrl;
-      return;
-    }
-
-    setCheckoutError(result.error);
-    setUnavailableIds(new Set(result.unavailableItemIds ?? []));
-    setCheckingOut(false);
   }
 
   const total = totalPrice + (shippingCost ?? 0);
@@ -124,12 +103,6 @@ export default function CartPage() {
             <Reveal as="ul" className="cart-items">
               {items.map((item) => (
                 <li key={item.id} className="cart-item">
-                  {unavailableIds.has(item.id) && (
-                    <p className="cart-item__unavailable">
-                      Temporarily unavailable — remove this item or{" "}
-                      <Link href="/contact">contact us</Link> to order it.
-                    </p>
-                  )}
                   <Link
                     href={`/${item.categorySlug}/${item.photoSlug}`}
                     className="cart-item__mat"
@@ -272,16 +245,9 @@ export default function CartPage() {
                 </button>
               </form>
 
-              {checkoutError && <p className="cart-summary__note cart-summary__note--error">{checkoutError}</p>}
-
-              <button
-                type="button"
-                className="btn btn-primary cart-summary__cta"
-                onClick={handleCheckout}
-                disabled={checkingOut}
-              >
-                {checkingOut ? "Starting checkout…" : "Checkout"}
-              </button>
+              <Link href="/checkout" className="btn btn-primary cart-summary__cta">
+                Checkout
+              </Link>
 
               <a
                 href={orderRequestHref(items, totalPrice, {

@@ -2,85 +2,61 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import Reveal from "@/app/components/Reveal";
-import { customerAccountGraphql } from "@/app/lib/shopify/customer-account/customer-graphql";
-import { getCustomerSession, getRefreshToken } from "@/app/lib/shopify/customer-account/session";
+import { createClient, getCurrentUser } from "@/app/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "My Account — Nick Whittaker Imagery",
   robots: { index: false, follow: false },
 };
 
-// Field names below follow Shopify's documented Customer Account API schema
-// conventions but haven't been verified against a live store yet — the
-// Customer Account API isn't reachable until SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID
-// is filled in via the Headless channel setup. Confirm against the live
-// schema (e.g. via a GraphiQL introspection) the first time login is tested.
-const CUSTOMER_QUERY = `
-  query CustomerAccount {
-    customer {
-      firstName
-      lastName
-      emailAddress {
-        emailAddress
-      }
-      orders(first: 10, sortKey: PROCESSED_AT, reverse: true) {
-        nodes {
-          id
-          name
-          processedAt
-          financialStatus
-          fulfillmentStatus
-          totalPrice {
-            amount
-            currencyCode
-          }
-        }
-      }
-    }
-  }
-`;
-
-type CustomerAccountData = {
-  customer: {
-    firstName: string | null;
-    lastName: string | null;
-    emailAddress: { emailAddress: string } | null;
-    orders: {
-      nodes: {
-        id: string;
-        name: string;
-        processedAt: string;
-        financialStatus: string | null;
-        fulfillmentStatus: string | null;
-        totalPrice: { amount: string; currencyCode: string };
-      }[];
-    };
-  };
+type OrderItemRow = {
+  id: string;
+  title: string;
+  size: string;
+  framing: string;
+  frame_color: string | null;
+  qty: number;
+  line_total: number;
 };
 
-export default async function AccountPage() {
-  const session = await getCustomerSession();
+type OrderRow = {
+  id: string;
+  status: string;
+  total: number;
+  created_at: string;
+  order_items: OrderItemRow[];
+};
 
-  if (!session) {
-    const refreshToken = await getRefreshToken();
-    redirect(refreshToken ? "/auth/refresh?returnTo=/account" : "/auth/login?returnTo=/account");
+function formatNzd(value: number): string {
+  return `$${value.toFixed(2).replace(/\.00$/, "")} NZD`;
+}
+
+export default async function AccountPage() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/login?returnTo=/account");
   }
 
-  const { customer } = await customerAccountGraphql<CustomerAccountData>(session.accessToken, CUSTOMER_QUERY);
+  const supabase = await createClient();
+  const { data: orders } = await supabase
+    .from("orders")
+    .select("id, status, total, created_at, order_items(id, title, size, framing, frame_color, qty, line_total)")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false })
+    .returns<OrderRow[]>();
 
   return (
     <section className="tight">
       <div className="wrap journal-article">
         <Reveal className="section-head">
           <h1>My Account</h1>
-          {customer.firstName && <p className="lede">Welcome back, {customer.firstName}.</p>}
+          <p className="lede">{user.email}</p>
         </Reveal>
 
         <div className="journal-body">
-          {customer.emailAddress && <p>{customer.emailAddress.emailAddress}</p>}
-
           <h2>Order history</h2>
-          {customer.orders.nodes.length === 0 ? (
+          {!orders || orders.length === 0 ? (
             <p>
               No orders yet — browse the <Link href="/gallery">gallery</Link> to place your first order.
             </p>
@@ -89,23 +65,19 @@ export default async function AccountPage() {
               <table className="account-orders">
                 <thead>
                   <tr>
-                    <th>Order</th>
                     <th>Date</th>
-                    <th>Payment</th>
-                    <th>Fulfillment</th>
+                    <th>Items</th>
+                    <th>Status</th>
                     <th>Total</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {customer.orders.nodes.map((order) => (
+                  {orders.map((order) => (
                     <tr key={order.id}>
-                      <td>{order.name}</td>
-                      <td>{new Date(order.processedAt).toLocaleDateString("en-NZ")}</td>
-                      <td>{order.financialStatus ?? "—"}</td>
-                      <td>{order.fulfillmentStatus ?? "—"}</td>
-                      <td>
-                        {order.totalPrice.currencyCode} {order.totalPrice.amount}
-                      </td>
+                      <td>{new Date(order.created_at).toLocaleDateString("en-NZ")}</td>
+                      <td>{order.order_items.map((item) => `${item.title} (${item.size})`).join(", ")}</td>
+                      <td>{order.status}</td>
+                      <td>{formatNzd(order.total)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -114,7 +86,7 @@ export default async function AccountPage() {
           )}
         </div>
 
-        <form action="/auth/logout" method="post" className="trade-links">
+        <form action="/auth/signout" method="post" className="trade-links">
           <button type="submit" className="btn-link">
             Sign out
           </button>

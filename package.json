@@ -7,10 +7,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "shopify:sync-products": "node --env-file=.env.local scripts/shopify/sync-products.ts"
+    "lint": "eslint"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.4",
+    "@supabase/supabase-js": "^2.112.3",
     "image-size": "^2.0.2",
     "next": "16.2.10",
     "react": "19.2.4",

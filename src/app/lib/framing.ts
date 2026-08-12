@@ -3,8 +3,8 @@
 // the sizes we actually sell (A3–A0, see catalog.ts SIZE_OPTIONS).
 
 // Sentinel framing selection meaning "print only, no frame" — shared by the
-// purchase panel, the Shopify variant sync script, and cart resolution so
-// all three agree on one literal instead of drifting independently.
+// purchase panel and order pricing so both agree on one literal instead of
+// drifting independently.
 export const NO_FRAME = "No Frame";
 
 export type FramingPrice = { size: string; price: string };
