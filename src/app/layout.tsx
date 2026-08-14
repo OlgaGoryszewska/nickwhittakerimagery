@@ -48,7 +48,7 @@ const organizationJsonLd = {
   name: "Nick Whittaker Imagery",
   url: BASE_URL,
   logo: `${BASE_URL}/nick-logo.svg`,
-  email: "nickjwhittaker@gmail.com",
+  email: "order@nickwhittakerimagery.com",
   telephone: "+64-21-507-507",
   sameAs: ["https://www.instagram.com/nickwhittaker.oceanimagery/"],
   address: {
@@ -64,6 +64,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const user = await getCurrentUser();
+  const isAdmin = Boolean(user && user.email === process.env.ADMIN_EMAIL);
 
   return (
     <html
@@ -76,7 +77,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         <CartProvider>
-          <Header loggedIn={Boolean(user)} />
+          <Header loggedIn={Boolean(user)} isAdmin={isAdmin} />
           <main className="flex-1">{children}</main>
           <Footer />
         </CartProvider>

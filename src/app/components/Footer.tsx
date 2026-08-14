@@ -29,7 +29,7 @@ export default function Footer() {
         </div>
 
         <address>
-          <a href="mailto:nickjwhittaker@gmail.com">nickjwhittaker@gmail.com</a>
+          <a href="mailto:order@nickwhittakerimagery.com">order@nickwhittakerimagery.com</a>
           <a href="tel:+6421507507">+64 21 507 507</a>
         </address>
 

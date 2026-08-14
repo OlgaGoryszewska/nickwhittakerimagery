@@ -74,7 +74,7 @@ export default function EventsPage() {
                   <p>{event.description}</p>
                   <div className="event-card__actions">
                     <a
-                      href={`mailto:nickjwhittaker@gmail.com?subject=${encodeURIComponent(
+                      href={`mailto:order@nickwhittakerimagery.com?subject=${encodeURIComponent(
                         `RSVP — ${event.title}`
                       )}`}
                       className="btn btn-outline-light"

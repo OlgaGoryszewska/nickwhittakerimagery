@@ -1504,6 +1504,13 @@ section.tight {
   padding: 20px;
 }
 
+.checkout-confirmation__order-nr {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--copper-dark);
+  margin: 8px 0 24px;
+}
+
 /* Login page */
 .login-form {
   max-width: 400px;
@@ -1513,6 +1520,12 @@ section.tight {
   font-size: 12px;
   color: var(--tide);
   margin: 20px 0;
+}
+
+.login-forgot-password {
+  align-self: flex-end;
+  font-size: 12px;
+  padding: 0 0 16px;
 }
 
 .login-switch .btn-link {

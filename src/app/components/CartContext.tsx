@@ -89,11 +89,18 @@ function setQtyInStore(id: string, qty: number) {
   notify();
 }
 
+function clearCartStore() {
+  cartItems = EMPTY_ITEMS;
+  persist();
+  notify();
+}
+
 type CartContextValue = {
   items: CartItem[];
   addItem: (item: Omit<CartItem, "qty">, qty?: number) => void;
   removeItem: (id: string) => void;
   setQty: (id: string, qty: number) => void;
+  clearCart: () => void;
   totalCount: number;
   totalPrice: number;
 };
@@ -111,6 +118,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       addItem: (item, qty = 1) => addItemToStore(item, qty),
       removeItem: removeItemFromStore,
       setQty: setQtyInStore,
+      clearCart: clearCartStore,
       totalCount,
       totalPrice,
     };

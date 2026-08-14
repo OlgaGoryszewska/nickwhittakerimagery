@@ -45,11 +45,11 @@ function orderRequestHref(
     `Delivery address: ${customer.address}`,
   ].join("\n");
 
-  return `mailto:nickjwhittaker@gmail.com?subject=${encodeURIComponent("Print Order Request")}&body=${encodeURIComponent(body)}`;
+  return `mailto:order@nickwhittakerimagery.com?subject=${encodeURIComponent("Print Order Request")}&body=${encodeURIComponent(body)}`;
 }
 
 export default function CheckoutPage() {
-  const { items } = useCart();
+  const { items, clearCart } = useCart();
 
   const [shippingRegion, setShippingRegion] = useState(SHIPPING_ESTIMATE_OPTIONS[0].value);
   const [name, setName] = useState("");
@@ -57,6 +57,7 @@ export default function CheckoutPage() {
   const [address, setAddress] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [placedOrderId, setPlacedOrderId] = useState<string | null>(null);
   const mailtoLinkRef = useRef<HTMLAnchorElement>(null);
 
   const selectedRegion = SHIPPING_ESTIMATE_OPTIONS.find((option) => option.value === shippingRegion);
@@ -76,6 +77,33 @@ export default function CheckoutPage() {
 
     mailtoLinkRef.current?.click();
     setSubmitting(false);
+    // Clear after building the mailto link (which reads `items`) — otherwise
+    // the email body would go out empty.
+    clearCart();
+    setPlacedOrderId(result.orderId);
+  }
+
+  if (placedOrderId) {
+    return (
+      <section className="tight">
+        <div className="wrap">
+          <Reveal className="section-head">
+            <h1>Order received</h1>
+            <p className="lede">{`Thanks${name ? `, ${name}` : ""} — we’ve got your order request.`}</p>
+          </Reveal>
+          <p className="checkout-confirmation__order-nr">
+            Order #{placedOrderId.slice(0, 8).toUpperCase()}
+          </p>
+          <p>
+            We&rsquo;ll be in touch at {email} shortly to confirm payment details. Keep your order number handy
+            if you need to reach us about it.
+          </p>
+          <Link href="/gallery" className="btn btn-outline">
+            Continue Shopping
+          </Link>
+        </div>
+      </section>
+    );
   }
 
   if (items.length === 0) {

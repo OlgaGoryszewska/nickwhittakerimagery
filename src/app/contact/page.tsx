@@ -33,8 +33,8 @@ export default function ContactPage() {
         <Reveal className="contact-details">
           <div className="contact-detail">
             <div className="trade-subhead">Email</div>
-            <a href="mailto:nickjwhittaker@gmail.com" className="contact-detail__value">
-              nickjwhittaker@gmail.com
+            <a href="mailto:order@nickwhittakerimagery.com" className="contact-detail__value">
+              order@nickwhittakerimagery.com
             </a>
           </div>
           <div className="contact-detail">
@@ -48,7 +48,7 @@ export default function ContactPage() {
         <Reveal className="trade-cta" delay={100}>
           <div className="trade-cta__row">
             <a
-              href={`mailto:nickjwhittaker@gmail.com?subject=${encodeURIComponent("General Enquiry")}`}
+              href={`mailto:order@nickwhittakerimagery.com?subject=${encodeURIComponent("General Enquiry")}`}
               className="btn btn-primary"
             >
               Send an Enquiry

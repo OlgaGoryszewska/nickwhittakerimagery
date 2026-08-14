@@ -1,6 +1,7 @@
 "use server";
 
 import type { CartItem } from "@/app/components/CartContext";
+import { sendOrderConfirmationEmail } from "@/app/lib/email";
 import { createOrder, type OrderCustomer } from "@/app/lib/orders";
 import { calculateOrderTotals } from "@/app/lib/pricing";
 import { createClient } from "@/app/lib/supabase/server";
@@ -42,6 +43,14 @@ export async function submitOrderRequest(
     console.error("submitOrderRequest failed:", result.error);
     return { ok: false, error: "Couldn't record your order. Please try again or contact us directly." };
   }
+
+  await sendOrderConfirmationEmail({
+    to: customer.email,
+    orderId: result.orderId,
+    customerName: customer.name,
+    items,
+    totals,
+  });
 
   return { ok: true, orderId: result.orderId };
 }

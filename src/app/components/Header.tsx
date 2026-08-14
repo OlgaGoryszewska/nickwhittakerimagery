@@ -17,7 +17,7 @@ const NAV_ITEMS = [
   { label: "Events", href: "/events" },
 ];
 
-export default function Header({ loggedIn = false }: { loggedIn?: boolean }) {
+export default function Header({ loggedIn = false, isAdmin = false }: { loggedIn?: boolean; isAdmin?: boolean }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { totalCount } = useCart();
@@ -46,6 +46,12 @@ export default function Header({ loggedIn = false }: { loggedIn?: boolean }) {
         </Link>
 
         <div className="site-header__actions">
+          {isAdmin && (
+            <Link href="/admin" className="account-link" onClick={() => setOpen(false)}>
+              Admin
+            </Link>
+          )}
+
           <Link
             href={loggedIn ? "/account" : `/login?returnTo=${encodeURIComponent(pathname || "/")}`}
             className="account-link"
@@ -101,6 +107,13 @@ export default function Header({ loggedIn = false }: { loggedIn?: boolean }) {
                   </Link>
                 </li>
               ))}
+              {isAdmin && (
+                <li>
+                  <Link href="/admin" onClick={() => setOpen(false)}>
+                    Admin
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </nav>

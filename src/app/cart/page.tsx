@@ -50,7 +50,7 @@ function orderRequestHref(
     `Delivery address: ${extras.address}`,
   ].join("\n");
 
-  return `mailto:nickjwhittaker@gmail.com?subject=${encodeURIComponent("Print Order Request")}&body=${encodeURIComponent(body)}`;
+  return `mailto:order@nickwhittakerimagery.com?subject=${encodeURIComponent("Print Order Request")}&body=${encodeURIComponent(body)}`;
 }
 
 export default function CartPage() {
