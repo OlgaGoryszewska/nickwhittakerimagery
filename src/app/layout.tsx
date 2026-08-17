@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 import { CartProvider } from "./components/CartContext";
 import { BASE_URL } from "@/app/lib/seo";
 import { getCurrentUser } from "@/app/lib/supabase/server";
@@ -80,6 +81,7 @@ export default async function RootLayout({
           <Header loggedIn={Boolean(user)} isAdmin={isAdmin} />
           <main className="flex-1">{children}</main>
           <Footer />
+          <ScrollToTopButton />
         </CartProvider>
       </body>
     </html>
