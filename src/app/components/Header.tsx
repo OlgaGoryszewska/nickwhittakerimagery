@@ -53,14 +53,6 @@ export default function Header({ loggedIn = false, isAdmin = false }: { loggedIn
           )}
 
           <Link
-            href={loggedIn ? "/account" : `/login?returnTo=${encodeURIComponent(pathname || "/")}`}
-            className="account-link"
-            onClick={() => setOpen(false)}
-          >
-            {loggedIn ? "Account" : "Sign In"}
-          </Link>
-
-          <Link
             href="/cart"
             className="cart-toggle"
             aria-label={`View cart, ${totalCount} item${totalCount === 1 ? "" : "s"}`}
@@ -114,6 +106,15 @@ export default function Header({ loggedIn = false, isAdmin = false }: { loggedIn
                   </Link>
                 </li>
               )}
+              <li>
+                <Link
+                  href={loggedIn ? "/account" : `/login?returnTo=${encodeURIComponent(pathname || "/")}`}
+                  className="mobile-nav__account"
+                  onClick={() => setOpen(false)}
+                >
+                  {loggedIn ? "Account" : "Sign In"}
+                </Link>
+              </li>
             </ul>
           </div>
         </nav>
