@@ -846,7 +846,6 @@ section.tight {
 
 .print-card__mat:hover {
   box-shadow: 0 18px 40px rgba(10, 22, 32, 0.16);
-  border-color: var(--tide);
 }
 
 .print-card__mat img {
@@ -2263,7 +2262,16 @@ a.journal-card__segment {
   margin-bottom: 8px;
 }
 
-/* Focus visibility */
+/* Focus visibility — the copper ring above is the only focus indicator we
+   want; some browsers (notably Safari) still draw their own default blue
+   outline on plain :focus (e.g. after a mouse click) unless it's suppressed
+   explicitly here. */
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+[tabindex]:focus:not(:focus-visible) {
+  outline: none;
+}
+
 a:focus-visible,
 button:focus-visible,
 [tabindex]:focus-visible {

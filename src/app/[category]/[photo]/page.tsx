@@ -139,11 +139,6 @@ export default async function PhotoPage({
               </Link>
 
               <div className="detail-about">
-                <h2>About this print</h2>
-                <p>Printed by endemicworld on mid-weight acid-free paper with archival inks.</p>
-              </div>
-
-              <div className="detail-about">
                 <h2>Shipping</h2>
                 <p>
                   Free shipping to Auckland on standard sizes; flat-rate NZ-wide from $5.99. See{" "}
