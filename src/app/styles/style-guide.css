@@ -800,7 +800,7 @@ section.tight {
   background: var(--foam);
   border: 1px solid var(--line);
   box-shadow: 0 12px 30px rgba(10, 22, 32, 0.08);
-  padding: 24px;
+  padding: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
