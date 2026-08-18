@@ -2,15 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-export default function HeroVideo({
-  src,
-  poster,
-  playbackRate = 0.35,
-}: {
-  src: string;
-  poster: string;
-  playbackRate?: number;
-}) {
+export default function HeroVideo({ src, poster }: { src: string; poster: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -18,7 +10,6 @@ export default function HeroVideo({
     if (!video) return;
 
     video.muted = true;
-    video.playbackRate = playbackRate;
 
     // Autoplay is driven from here rather than the `autoplay` attribute so
     // playback never starts at all for anyone who has asked their OS for
@@ -40,7 +31,7 @@ export default function HeroVideo({
     sync();
     reducedMotion.addEventListener("change", sync);
     return () => reducedMotion.removeEventListener("change", sync);
-  }, [playbackRate]);
+  }, []);
 
   return (
     <video
