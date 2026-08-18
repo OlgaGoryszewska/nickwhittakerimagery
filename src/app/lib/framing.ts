@@ -96,7 +96,7 @@ export type FrameColor = { name: string; swatch: string };
 
 export const FRAME_COLORS: FrameColor[] = [
   { name: "Black", swatch: "#1a1d1e" },
-  { name: "White", swatch: "#f7f5f0" },
+  { name: "White", swatch: "#fff" },
   { name: "Natural Oak", swatch: "#c9a06c" },
 ];
 
