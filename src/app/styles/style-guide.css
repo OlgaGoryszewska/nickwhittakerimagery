@@ -241,6 +241,10 @@ section.tight {
 }
 
 .hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   z-index: 0;
 }
@@ -250,8 +254,8 @@ section.tight {
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(ellipse at 20% 0%, rgba(10, 22, 32, 0.5), rgba(10, 22, 32, 0.75) 55%),
-    linear-gradient(180deg, rgba(10, 22, 32, 0.55) 0%, rgba(15, 37, 48, 0.65) 55%, rgba(22, 59, 71, 0.7) 100%);
+    radial-gradient(ellipse at 20% 0%, rgba(10, 22, 32, 0.42), rgba(10, 22, 32, 0.68) 55%),
+    linear-gradient(180deg, rgba(10, 22, 32, 0.46) 0%, rgba(15, 37, 48, 0.56) 55%, rgba(22, 59, 71, 0.62) 100%);
 }
 
 .hero .eyebrow {
@@ -787,6 +791,37 @@ section.tight {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 40px;
+}
+
+/* Horizontal-scroll variant — used for the home page's Most Popular row */
+.print-grid--scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 32px;
+  padding-bottom: 16px;
+  margin-bottom: -16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--tide) transparent;
+}
+
+.print-grid--scroll .print-card {
+  flex: 0 0 280px;
+  scroll-snap-align: start;
+}
+
+.print-grid--scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.print-grid--scroll::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 999px;
+}
+
+.print-grid--scroll::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .print-card {

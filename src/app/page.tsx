@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { getAllPhotos } from "@/app/lib/categories";
 import PrintGrid from "@/app/components/PrintGrid";
 import GalleryBrowser from "@/app/components/GalleryBrowser";
+import HeroVideo from "@/app/components/HeroVideo";
 import Reveal from "@/app/components/Reveal";
 import { getUpcomingEvents } from "@/app/lib/events";
 
@@ -19,13 +20,9 @@ export default async function Home() {
   return (
     <>
       <header className="hero">
-        <Image
-          src="/Waves/nick-whittaker-ocean-photography-azure-breaking-wave.jpg"
-          alt=""
-          fill
-          priority
-
-          className="hero-bg"
+        <HeroVideo
+          src="/hero-video.MP4"
+          poster="/Waves/nick-whittaker-ocean-photography-azure-breaking-wave.jpg"
         />
         <div className="hero-overlay" />
         <div className="wrap">
@@ -48,7 +45,7 @@ export default async function Home() {
             <h2>Most Popular</h2>
             <p>The prints people come back for most — click a photo for a closer look.</p>
           </Reveal>
-          <PrintGrid photos={mostPopular} />
+          <PrintGrid photos={mostPopular} className="print-grid--scroll" />
         </div>
       </section>
 

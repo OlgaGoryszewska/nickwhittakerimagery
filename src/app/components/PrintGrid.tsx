@@ -9,7 +9,7 @@ import { cartItemId, useCart } from "./CartContext";
 import Lightbox from "./Lightbox";
 import Reveal from "./Reveal";
 
-export default function PrintGrid({ photos }: { photos: Photo[] }) {
+export default function PrintGrid({ photos, className }: { photos: Photo[]; className?: string }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [addedSrc, setAddedSrc] = useState<string | null>(null);
   const { addItem } = useCart();
@@ -39,7 +39,7 @@ export default function PrintGrid({ photos }: { photos: Photo[] }) {
 
   return (
     <>
-      <div className="print-grid">
+      <div className={`print-grid${className ? ` ${className}` : ""}`}>
         {photos.map((photo, index) => (
           <Reveal
             key={`${photo.categorySlug}-${photo.src}`}

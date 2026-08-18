@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import { TAGS, type Photo } from "@/app/lib/catalog";
 import PrintGrid from "@/app/components/PrintGrid";
@@ -17,11 +16,13 @@ export default function GalleryBrowser({
   const [activeTags, setActiveTags] = useState<string[]>(
     initialTag && TAGS.some((t) => t.slug === initialTag) ? [initialTag] : []
   );
+  const [visibleCount, setVisibleCount] = useState(limit);
 
   function toggleTag(slug: string) {
     setActiveTags((current) =>
       current.includes(slug) ? current.filter((t) => t !== slug) : [...current, slug]
     );
+    setVisibleCount(limit);
   }
 
   const filtered = useMemo(() => {
@@ -29,8 +30,7 @@ export default function GalleryBrowser({
     return photos.filter((photo) => photo.tags.some((tag) => activeTags.includes(tag)));
   }, [photos, activeTags]);
 
-  const visible = limit ? filtered.slice(0, limit) : filtered;
-  const moreHref = activeTags.length === 1 ? `/gallery?tag=${activeTags[0]}` : "/gallery";
+  const visible = visibleCount ? filtered.slice(0, visibleCount) : filtered;
 
   return (
     <>
@@ -38,7 +38,10 @@ export default function GalleryBrowser({
         <button
           type="button"
           className={`pill ${activeTags.length === 0 ? "on" : ""}`}
-          onClick={() => setActiveTags([])}
+          onClick={() => {
+            setActiveTags([]);
+            setVisibleCount(limit);
+          }}
         >
           All
         </button>
@@ -60,11 +63,11 @@ export default function GalleryBrowser({
 
       <PrintGrid photos={visible} />
 
-      {limit && filtered.length > limit && (
+      {visibleCount && filtered.length > visibleCount && (
         <div className="gallery-more">
-          <Link href={moreHref} className="btn btn-outline">
+          <button type="button" className="btn btn-outline" onClick={() => setVisibleCount(filtered.length)}>
             See More
-          </Link>
+          </button>
         </div>
       )}
     </>
