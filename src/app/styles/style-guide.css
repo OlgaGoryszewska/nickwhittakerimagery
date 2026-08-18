@@ -174,6 +174,33 @@ section.tight {
   margin-bottom: 22px;
 }
 
+.home-section-head {
+  padding-bottom: 40px;
+  margin-bottom: 64px;
+}
+
+.home-section-head h2 {
+  font-size: clamp(28px, 3.8vw, 40px);
+}
+
+.home-section-head p {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--teal);
+  max-width: 440px;
+}
+
+.home-about__lede {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 21px;
+  line-height: 1.7;
+  color: var(--teal);
+  max-width: 680px;
+}
+
 .note {
   font-size: 13px;
   color: var(--tide);
@@ -717,6 +744,12 @@ section.tight {
   cursor: pointer;
   padding: 0;
   flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-toggle:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--copper-dark);
 }
 
 .nav-toggle span {
@@ -825,13 +858,13 @@ section.tight {
 }
 
 .print-card__info {
-  padding-top: 20px;
+  padding-top: 24px;
 }
 
 .print-card__info h3 {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 400;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .print-card__info h3 a {
@@ -844,9 +877,11 @@ section.tight {
 }
 
 .print-card__location {
-  font-size: 12px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--tide);
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 }
 
 .print-card__price-row {
@@ -854,12 +889,15 @@ section.tight {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 16px;
+  padding-top: 16px;
+  margin-bottom: 18px;
+  border-top: 1px solid var(--line);
 }
 
 .print-card__price {
   font-family: var(--font-display);
-  font-size: 16px;
+  font-style: italic;
+  font-size: 17px;
   color: var(--ink);
 }
 
@@ -868,20 +906,22 @@ section.tight {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--line);
   background: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--ink);
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease,
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .print-card__cart-btn:hover {
-  background: var(--ink);
+  background: var(--copper-dark);
+  border-color: var(--copper-dark);
   color: var(--foam);
-  transform: scale(1.1);
+  transform: scale(1.06);
 }
 
 .print-card__cart-btn:active {
@@ -896,10 +936,10 @@ section.tight {
 .print-card__sizes-accordion summary {
   list-style: none;
   cursor: pointer;
-  padding: 12px 0;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  padding: 14px 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
   color: var(--teal);
   position: relative;
   padding-right: 20px;
@@ -913,7 +953,7 @@ section.tight {
   content: "+";
   position: absolute;
   right: 0;
-  top: 12px;
+  top: 14px;
   font-size: 14px;
   color: var(--copper-dark);
 }
@@ -928,10 +968,10 @@ section.tight {
 
 .print-card__sizes li {
   display: grid;
-  grid-template-columns: 32px 1fr auto;
+  grid-template-columns: 36px 1fr auto;
   align-items: baseline;
   gap: 12px;
-  padding: 8px 0;
+  padding: 10px 0;
   border-bottom: 1px solid var(--line);
   font-size: 13px;
   color: var(--teal);
@@ -1044,8 +1084,28 @@ section.tight {
 }
 
 .detail-info h1 {
-  font-size: clamp(28px, 4vw, 40px);
-  margin-bottom: 8px;
+  font-size: clamp(30px, 4.2vw, 44px);
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+
+.detail-info .print-card__location {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tide);
+  margin-bottom: 24px;
+}
+
+.detail-info .lede {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.65;
+  color: var(--teal);
+  margin-bottom: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
 }
 
 .detail-tags {
@@ -1053,23 +1113,25 @@ section.tight {
 }
 
 .detail-about {
-  margin-top: 32px;
-  padding-top: 24px;
+  margin-top: 40px;
+  padding-top: 28px;
   border-top: 1px solid var(--line);
 }
 
 .detail-about h2 {
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--teal);
-  margin-bottom: 10px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  margin-bottom: 12px;
 }
 
 .detail-about p {
   font-size: 14px;
-  line-height: 1.6;
-  color: var(--ink);
+  line-height: 1.75;
+  color: var(--tide);
 }
 
 .detail-tags .pill {
@@ -1213,6 +1275,7 @@ section.tight {
 .detail-framing-link {
   display: inline-block;
   margin-top: 20px;
+  color: var(--copper-dark);
 }
 
 /* Lightbox */

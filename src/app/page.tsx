@@ -44,7 +44,7 @@ export default async function Home() {
 
       <section className="tight">
         <div className="wrap">
-          <Reveal className="section-head">
+          <Reveal className="section-head home-section-head">
             <h2>Most Popular</h2>
             <p>The prints people come back for most — click a photo for a closer look.</p>
           </Reveal>
@@ -54,7 +54,7 @@ export default async function Home() {
 
       <section className="border-t border-line">
         <div className="wrap">
-          <Reveal className="section-head">
+          <Reveal className="section-head home-section-head">
             <h2>Explore the work</h2>
             <p>Six bodies of work, from abstract water studies to fine-art prints ready for the wall — filter to find what you&apos;re after.</p>
           </Reveal>
@@ -64,7 +64,7 @@ export default async function Home() {
 
       <section id="upcoming-events" className="tight border-t border-line">
         <div className="wrap">
-          <Reveal className="section-head">
+          <Reveal className="section-head home-section-head">
             <h2>Upcoming Events</h2>
             <p>Exhibitions and print showings — where to see the work in person.</p>
           </Reveal>
@@ -90,9 +90,9 @@ export default async function Home() {
 
       <section className="tight border-t border-line">
         <div className="wrap">
-          <Reveal>
+          <Reveal className="home-about">
             <div className="eyebrow">About</div>
-            <p className="lede">
+            <p className="lede home-about__lede">
               Nick Whittaker is an ocean and water photographer based in
               Auckland, New Zealand. His work holds still what the sea rarely
               offers twice — light, tide, and timing, caught in a single frame
