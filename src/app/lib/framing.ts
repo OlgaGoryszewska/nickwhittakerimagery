@@ -100,6 +100,25 @@ export const FRAME_COLORS: FrameColor[] = [
   { name: "Natural Oak", swatch: "#c9a06c" },
 ];
 
+export type PaperFinish = { name: string; description: string };
+
+// First entry is the artist's recommended default for these prints — kept
+// first in the list intentionally, and pre-selected in the purchase panel.
+export const PAPER_FINISHES: PaperFinish[] = [
+  {
+    name: "Metallic",
+    description: "A luminous, pearlescent finish that adds depth and shimmer to water and light — the artist's choice for these prints.",
+  },
+  {
+    name: "Matte",
+    description: "A soft, non-reflective finish with rich, true-to-life colour.",
+  },
+  {
+    name: "Gloss",
+    description: "A vivid, high-shine finish that deepens contrast and colour saturation.",
+  },
+];
+
 export const FRAME_MOULDINGS: FrameMoulding[] = [
   {
     name: "Skinny Frames",

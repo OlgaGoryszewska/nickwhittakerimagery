@@ -2,17 +2,19 @@
 
 import { useState } from "react";
 import { SIZE_OPTIONS, parsePrice, type Photo } from "@/app/lib/catalog";
-import { FRAME_COLORS, NO_FRAME, PURCHASABLE_FRAMING_STYLES } from "@/app/lib/framing";
+import { FRAME_COLORS, NO_FRAME, PAPER_FINISHES, PURCHASABLE_FRAMING_STYLES } from "@/app/lib/framing";
 import { cartItemId, useCart } from "./CartContext";
 
 export default function PhotoPurchasePanel({ photo }: { photo: Photo }) {
   const [selectedSize, setSelectedSize] = useState(SIZE_OPTIONS[0].size);
+  const [selectedPaper, setSelectedPaper] = useState(PAPER_FINISHES[0].name);
   const [selectedFraming, setSelectedFraming] = useState(NO_FRAME);
   const [selectedColor, setSelectedColor] = useState(FRAME_COLORS[0].name);
   const [added, setAdded] = useState(false);
   const { addItem } = useCart();
 
   const sizeOption = SIZE_OPTIONS.find((o) => o.size === selectedSize) ?? SIZE_OPTIONS[0];
+  const paperOption = PAPER_FINISHES.find((p) => p.name === selectedPaper) ?? PAPER_FINISHES[0];
   const framingStyle = PURCHASABLE_FRAMING_STYLES.find((f) => f.name === selectedFraming);
   const framingPrice = framingStyle?.pricing.find((p) => p.size === selectedSize)?.price;
   const isFramed = selectedFraming !== NO_FRAME;
@@ -23,7 +25,7 @@ export default function PhotoPurchasePanel({ photo }: { photo: Photo }) {
 
   function handleAddToCart() {
     addItem({
-      id: cartItemId(photo.src, sizeOption.size, selectedFraming, isFramed ? selectedColor : ""),
+      id: cartItemId(photo.src, sizeOption.size, selectedFraming, isFramed ? selectedColor : "", selectedPaper),
       photoSrc: photo.src,
       title: photo.title,
       location: photo.location,
@@ -33,6 +35,7 @@ export default function PhotoPurchasePanel({ photo }: { photo: Photo }) {
       dimensions: sizeOption.dimensions,
       framing: selectedFraming,
       frameColor: isFramed ? selectedColor : undefined,
+      paper: selectedPaper,
       price: `$${totalValue} NZD`,
       priceValue: totalValue,
     });
@@ -60,6 +63,26 @@ export default function PhotoPurchasePanel({ photo }: { photo: Photo }) {
             </button>
           ))}
         </div>
+      </div>
+
+      <div className="purchase-field">
+        <span className="purchase-field__label">Paper — {selectedPaper}</span>
+        <div className="option-row" role="radiogroup" aria-label="Paper finish">
+          {PAPER_FINISHES.map((paper, i) => (
+            <button
+              key={paper.name}
+              type="button"
+              role="radio"
+              aria-checked={selectedPaper === paper.name}
+              className={`option-pill${selectedPaper === paper.name ? " is-selected" : ""}`}
+              onClick={() => setSelectedPaper(paper.name)}
+            >
+              <span className="option-pill__name">{paper.name}</span>
+              {i === 0 && <span className="option-pill__badge">Artist&apos;s Choice</span>}
+            </button>
+          ))}
+        </div>
+        <p className="note">{paperOption.description}</p>
       </div>
 
       <div className="purchase-field">

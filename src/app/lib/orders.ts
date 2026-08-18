@@ -69,6 +69,7 @@ export async function createOrder({
       size: item.size,
       framing: item.framing,
       frame_color: item.frameColor ?? null,
+      paper: item.paper,
       qty: item.qty,
       unit_price: item.qty > 0 ? lineTotal(item) / item.qty : 0,
       line_total: lineTotal(item),

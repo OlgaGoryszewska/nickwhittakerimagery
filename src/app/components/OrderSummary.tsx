@@ -26,7 +26,7 @@ export default function OrderSummary({ items }: { items: CartItem[] }) {
           <div className="order-summary__info">
             <h3>{item.title}</h3>
             <p className="order-summary__meta">
-              {item.size} —{" "}
+              {item.size} — {item.paper} —{" "}
               {item.framing === "No Frame"
                 ? "No Frame"
                 : `${item.framing}${item.frameColor ? ` — ${item.frameColor}` : ""}`}

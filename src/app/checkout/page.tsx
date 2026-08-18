@@ -23,9 +23,9 @@ function orderRequestHref(
   const lines = items.map((item) => {
     const framing =
       item.framing === "No Frame" ? "No Frame" : `${item.framing}${item.frameColor ? ` — ${item.frameColor}` : ""}`;
-    return `- ${item.title} — ${item.size} (${item.dimensions}), ${framing} — Qty ${item.qty} — ${formatNzd(
-      item.priceValue * item.qty
-    )}`;
+    return `- ${item.title} — ${item.size} (${item.dimensions}), ${item.paper} paper, ${framing} — Qty ${
+      item.qty
+    } — ${formatNzd(item.priceValue * item.qty)}`;
   });
 
   const body = [

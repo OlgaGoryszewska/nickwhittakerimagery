@@ -15,6 +15,7 @@ type OrderItemRow = {
   size: string;
   framing: string;
   frame_color: string | null;
+  paper: string | null;
   qty: number;
   line_total: number;
 };
@@ -46,7 +47,7 @@ export default async function AdminOrdersPage() {
   const { data: orders, error } = await supabase
     .from("orders")
     .select(
-      "id, email, name, address, shipping_region, status, total, created_at, order_items(id, title, size, framing, frame_color, qty, line_total)"
+      "id, email, name, address, shipping_region, status, total, created_at, order_items(id, title, size, framing, frame_color, paper, qty, line_total)"
     )
     .order("created_at", { ascending: false })
     .returns<OrderRow[]>();
@@ -94,6 +95,7 @@ export default async function AdminOrdersPage() {
                         {order.order_items.map((item) => (
                           <div key={item.id}>
                             {item.title} — {item.size}
+                            {item.paper ? `, ${item.paper}` : ""}
                             {item.framing !== "No Frame"
                               ? `, ${item.framing}${item.frame_color ? ` (${item.frame_color})` : ""}`
                               : ""}{" "}

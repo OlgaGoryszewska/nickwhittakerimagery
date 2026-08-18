@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { SIZE_OPTIONS, parsePrice, type Photo } from "@/app/lib/catalog";
+import { PAPER_FINISHES } from "@/app/lib/framing";
 import { cartItemId, useCart } from "./CartContext";
 import Lightbox from "./Lightbox";
 import Reveal from "./Reveal";
@@ -15,8 +16,9 @@ export default function PrintGrid({ photos }: { photos: Photo[] }) {
 
   function handleAddToCart(photo: Photo) {
     const size = SIZE_OPTIONS[0];
+    const paper = PAPER_FINISHES[0].name;
     addItem({
-      id: cartItemId(photo.src, size.size, "No Frame"),
+      id: cartItemId(photo.src, size.size, "No Frame", "", paper),
       photoSrc: photo.src,
       title: photo.title,
       location: photo.location,
@@ -25,6 +27,7 @@ export default function PrintGrid({ photos }: { photos: Photo[] }) {
       size: size.size,
       dimensions: size.dimensions,
       framing: "No Frame",
+      paper,
       price: size.price,
       priceValue: parsePrice(size.price),
     });

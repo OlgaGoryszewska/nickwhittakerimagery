@@ -13,6 +13,7 @@ export type CartItem = {
   dimensions: string;
   framing: string;
   frameColor?: string;
+  paper: string;
   price: string;
   priceValue: number;
   qty: number;
@@ -63,8 +64,14 @@ function getServerSnapshot() {
   return EMPTY_ITEMS;
 }
 
-export function cartItemId(photoSrc: string, size: string, framing: string, color = ""): string {
-  return `${photoSrc}__${size}__${framing}__${color}`;
+export function cartItemId(
+  photoSrc: string,
+  size: string,
+  framing: string,
+  color = "",
+  paper = ""
+): string {
+  return `${photoSrc}__${size}__${framing}__${color}__${paper}`;
 }
 
 function addItemToStore(item: Omit<CartItem, "qty">, qty: number) {

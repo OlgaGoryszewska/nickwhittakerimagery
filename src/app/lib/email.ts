@@ -78,7 +78,7 @@ export async function sendOrderConfirmationEmail({
     .map((item) => {
       const framing =
         item.framing === "No Frame" ? "No Frame" : `${item.framing}${item.frameColor ? ` — ${item.frameColor}` : ""}`;
-      return `<li>${escapeHtml(item.title)} — ${escapeHtml(item.size)}, ${escapeHtml(framing)} — Qty ${item.qty} — ${formatNzd(item.priceValue * item.qty)}</li>`;
+      return `<li>${escapeHtml(item.title)} — ${escapeHtml(item.size)}, ${escapeHtml(item.paper)} paper, ${escapeHtml(framing)} — Qty ${item.qty} — ${formatNzd(item.priceValue * item.qty)}</li>`;
     })
     .join("");
 
