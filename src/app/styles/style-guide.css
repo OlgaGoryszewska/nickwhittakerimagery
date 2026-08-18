@@ -797,6 +797,8 @@ section.tight {
 .print-grid--scroll {
   display: flex;
   overflow-x: auto;
+  overflow-y: hidden;
+  touch-action: pan-x;
   scroll-snap-type: x mandatory;
   gap: 32px;
   padding-bottom: 16px;
