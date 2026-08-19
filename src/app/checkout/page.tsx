@@ -1,55 +1,20 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/app/components/CartContext";
 import OrderSummary from "@/app/components/OrderSummary";
 import Reveal from "@/app/components/Reveal";
-import { submitOrderRequest } from "@/app/checkout/actions";
+import { startCheckout } from "@/app/checkout/actions";
 import { calculateOrderTotals } from "@/app/lib/pricing";
 import { SHIPPING_ESTIMATE_OPTIONS } from "@/app/lib/shipping";
-import type { CartItem } from "@/app/components/CartContext";
 
 function formatNzd(value: number): string {
   return `$${value.toFixed(2).replace(/\.00$/, "")} NZD`;
 }
 
-function orderRequestHref(
-  items: CartItem[],
-  totals: ReturnType<typeof calculateOrderTotals>,
-  shippingLabel: string,
-  customer: { name: string; email: string; address: string }
-): string {
-  const lines = items.map((item) => {
-    const framing =
-      item.framing === "No Frame" ? "No Frame" : `${item.framing}${item.frameColor ? ` — ${item.frameColor}` : ""}`;
-    return `- ${item.title} — ${item.size} (${item.dimensions}), ${item.paper} paper, ${framing} — Qty ${
-      item.qty
-    } — ${formatNzd(item.priceValue * item.qty)}`;
-  });
-
-  const body = [
-    "Hi Nick,",
-    "",
-    "I'd like to order the following prints:",
-    "",
-    ...lines,
-    "",
-    `Subtotal: ${formatNzd(totals.subtotal)}`,
-    `Shipping (${shippingLabel}): ${totals.shipping === 0 ? "Free" : formatNzd(totals.shipping)}`,
-    ...(totals.tax > 0 ? [`Includes GST: ${formatNzd(totals.tax)}`] : []),
-    `Total: ${formatNzd(totals.total)}`,
-    "",
-    `Name: ${customer.name}`,
-    `Email: ${customer.email}`,
-    `Delivery address: ${customer.address}`,
-  ].join("\n");
-
-  return `mailto:order@nickwhittakerimagery.com?subject=${encodeURIComponent("Print Order Request")}&body=${encodeURIComponent(body)}`;
-}
-
 export default function CheckoutPage() {
-  const { items, clearCart } = useCart();
+  const { items } = useCart();
 
   const [shippingRegion, setShippingRegion] = useState(SHIPPING_ESTIMATE_OPTIONS[0].value);
   const [name, setName] = useState("");
@@ -57,17 +22,14 @@ export default function CheckoutPage() {
   const [address, setAddress] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [placedOrderId, setPlacedOrderId] = useState<string | null>(null);
-  const mailtoLinkRef = useRef<HTMLAnchorElement>(null);
 
-  const selectedRegion = SHIPPING_ESTIMATE_OPTIONS.find((option) => option.value === shippingRegion);
   const totals = calculateOrderTotals(items, shippingRegion);
 
-  async function handleSubmitOrder() {
+  async function handlePayNow() {
     setSubmitting(true);
     setSubmitError(null);
 
-    const result = await submitOrderRequest(items, { name, email, address }, shippingRegion);
+    const result = await startCheckout(items, { name, email, address }, shippingRegion);
 
     if (!result.ok) {
       setSubmitError(result.error);
@@ -75,35 +37,10 @@ export default function CheckoutPage() {
       return;
     }
 
-    mailtoLinkRef.current?.click();
-    setSubmitting(false);
-    // Clear after building the mailto link (which reads `items`) — otherwise
-    // the email body would go out empty.
-    clearCart();
-    setPlacedOrderId(result.orderId);
-  }
-
-  if (placedOrderId) {
-    return (
-      <section className="tight">
-        <div className="wrap">
-          <Reveal className="section-head">
-            <h1>Order received</h1>
-            <p className="lede">{`Thanks${name ? `, ${name}` : ""} — we’ve got your order request.`}</p>
-          </Reveal>
-          <p className="checkout-confirmation__order-nr">
-            Order #{placedOrderId.slice(0, 8).toUpperCase()}
-          </p>
-          <p>
-            We&rsquo;ll be in touch at {email} shortly to confirm payment details. Keep your order number handy
-            if you need to reach us about it.
-          </p>
-          <Link href="/gallery" className="btn btn-outline">
-            Continue Shopping
-          </Link>
-        </div>
-      </section>
-    );
+    // Cart is cleared on the success page once the customer actually lands
+    // back from Stripe — not here, so an abandoned/cancelled payment leaves
+    // the cart intact.
+    window.location.href = result.url;
   }
 
   if (items.length === 0) {
@@ -198,8 +135,7 @@ export default function CheckoutPage() {
             <div className="checkout-section">
               <h2>Payment</h2>
               <p className="checkout-payment-placeholder">
-                Secure card payment is coming soon. In the meantime, submit your order request below and
-                we&rsquo;ll confirm payment details by email.
+                You&rsquo;ll be securely redirected to Stripe to complete payment by card.
               </p>
             </div>
           </Reveal>
@@ -223,22 +159,13 @@ export default function CheckoutPage() {
 
             {submitError && <p className="cart-summary__note cart-summary__note--error">{submitError}</p>}
 
-            <a
-              ref={mailtoLinkRef}
-              href={orderRequestHref(items, totals, selectedRegion?.label ?? "", { name, email, address })}
-              className="hidden"
-              aria-hidden
-              tabIndex={-1}
-            >
-              Email order request
-            </a>
             <button
               type="button"
               className="btn btn-primary cart-summary__cta"
-              onClick={handleSubmitOrder}
+              onClick={handlePayNow}
               disabled={submitting}
             >
-              {submitting ? "Submitting…" : "Submit Order Request"}
+              {submitting ? "Redirecting…" : "Proceed to Payment"}
             </button>
             <Link href="/cart" className="btn-link">
               Back to Cart

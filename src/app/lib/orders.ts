@@ -84,3 +84,61 @@ export async function createOrder({
 
   return { ok: true, orderId: order.id };
 }
+
+export type MarkOrderPaidResult = { ok: true } | { ok: false; error: string };
+
+// Called only from the Stripe webhook once `checkout.session.completed`
+// actually fires — this is the sole source of truth for "did the customer
+// pay," never the client-side redirect back to the success page.
+export async function markOrderPaid(orderId: string, stripePaymentIntentId: string): Promise<MarkOrderPaidResult> {
+  const supabase = createAdminClient();
+
+  const { error } = await supabase
+    .from("orders")
+    .update({ status: "paid", stripe_payment_intent_id: stripePaymentIntentId })
+    .eq("id", orderId);
+
+  if (error) {
+    return { ok: false, error: error.message };
+  }
+
+  return { ok: true };
+}
+
+export type OrderEmailItem = {
+  title: string;
+  size: string;
+  paper: string;
+  framing: string;
+  frame_color: string | null;
+  qty: number;
+  line_total: number;
+};
+
+export type OrderWithItems = {
+  id: string;
+  email: string;
+  name: string;
+  subtotal: number;
+  shipping: number;
+  tax: number;
+  total: number;
+  order_items: OrderEmailItem[];
+};
+
+// Reads back what was recorded at checkout time (never trusts anything from
+// the webhook payload beyond the order id) so the confirmation email always
+// reflects what's actually in the database.
+export async function getOrderWithItems(orderId: string): Promise<OrderWithItems | null> {
+  const supabase = createAdminClient();
+
+  const { data, error } = await supabase
+    .from("orders")
+    .select("id, email, name, subtotal, shipping, tax, total, order_items(title, size, paper, framing, frame_color, qty, line_total)")
+    .eq("id", orderId)
+    .single()
+    .returns<OrderWithItems>();
+
+  if (error || !data) return null;
+  return data;
+}
