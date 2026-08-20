@@ -6,6 +6,7 @@ import { SIZE_OPTIONS } from "@/app/lib/catalog";
 import PrintGrid from "@/app/components/PrintGrid";
 import DetailGallery from "@/app/components/DetailGallery";
 import PhotoPurchasePanel from "@/app/components/PhotoPurchasePanel";
+import RecordPhotoView from "@/app/components/RecordPhotoView";
 import BackButton from "@/app/components/BackButton";
 import Reveal from "@/app/components/Reveal";
 import { BASE_URL, breadcrumbJsonLd } from "@/app/lib/seo";
@@ -109,6 +110,8 @@ export default async function PhotoPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
+      <RecordPhotoView photo={photo} />
+
       <section className="tight">
         <div className="wrap">
           <BackButton />
@@ -132,7 +135,7 @@ export default async function PhotoPage({
 
               <p className="lede">{category.description}</p>
 
-              <PhotoPurchasePanel photo={photo} />
+              <PhotoPurchasePanel photo={photo} fallbackPhotos={category.photos} />
 
               <Link href="/framing-information" className="btn-link detail-framing-link">
                 More on framing options &amp; other styles

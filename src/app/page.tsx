@@ -59,6 +59,23 @@ export default async function Home() {
         </div>
       </section>
 
+      <section className="tight border-t border-line">
+        <div className="wrap">
+          <Reveal className="card-feature">
+            <div className="eyebrow">Trade Program</div>
+            <h3>Trade pricing that scales with your project.</h3>
+            <p>
+              From a single room to a full rollout — interior designers, stagers,
+              hospitality and commercial teams order at trade rates, framed to order,
+              on one consolidated invoice.
+            </p>
+            <Link href="/trade" className="link">
+              See trade pricing →
+            </Link>
+          </Reveal>
+        </div>
+      </section>
+
       <section id="upcoming-events" className="tight border-t border-line">
         <div className="wrap">
           <Reveal className="section-head home-section-head">

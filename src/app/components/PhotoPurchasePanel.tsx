@@ -4,13 +4,21 @@ import { useState } from "react";
 import { SIZE_OPTIONS, parsePrice, type Photo } from "@/app/lib/catalog";
 import { FRAME_COLORS, NO_FRAME, PAPER_FINISHES, PURCHASABLE_FRAMING_STYLES } from "@/app/lib/framing";
 import { cartItemId, useCart } from "./CartContext";
+import AddedToCartPanel from "./AddedToCartPanel";
 
-export default function PhotoPurchasePanel({ photo }: { photo: Photo }) {
+export default function PhotoPurchasePanel({
+  photo,
+  fallbackPhotos = [],
+}: {
+  photo: Photo;
+  fallbackPhotos?: Photo[];
+}) {
   const [selectedSize, setSelectedSize] = useState(SIZE_OPTIONS[0].size);
   const [selectedPaper, setSelectedPaper] = useState(PAPER_FINISHES[0].name);
   const [selectedFraming, setSelectedFraming] = useState(NO_FRAME);
   const [selectedColor, setSelectedColor] = useState(FRAME_COLORS[0].name);
   const [added, setAdded] = useState(false);
+  const [showAddedPanel, setShowAddedPanel] = useState(false);
   const { addItem } = useCart();
 
   const sizeOption = SIZE_OPTIONS.find((o) => o.size === selectedSize) ?? SIZE_OPTIONS[0];
@@ -41,6 +49,7 @@ export default function PhotoPurchasePanel({ photo }: { photo: Photo }) {
     });
     setAdded(true);
     window.setTimeout(() => setAdded(false), 1800);
+    setShowAddedPanel(true);
   }
 
   return (
@@ -147,6 +156,16 @@ export default function PhotoPurchasePanel({ photo }: { photo: Photo }) {
       <button type="button" className="btn btn-primary detail-cta" onClick={handleAddToCart}>
         {added ? "Added to Cart" : "Add to Cart"}
       </button>
+
+      {showAddedPanel && (
+        <AddedToCartPanel
+          photo={photo}
+          size={sizeOption.size}
+          price={`$${totalValue} NZD`}
+          fallbackPhotos={fallbackPhotos}
+          onClose={() => setShowAddedPanel(false)}
+        />
+      )}
     </div>
   );
 }
