@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getAllPhotos } from "@/app/lib/categories";
+import { getAllPhotos, getPhotoMockups } from "@/app/lib/categories";
 import PrintGrid from "@/app/components/PrintGrid";
 import GalleryBrowser from "@/app/components/GalleryBrowser";
 import HeroVideo from "@/app/components/HeroVideo";
@@ -16,6 +16,12 @@ export default async function Home() {
   const allPhotos = await getAllPhotos();
   const mostPopular = allPhotos.filter((photo) => photo.tags.includes("most-popular"));
   const upcomingEvents = getUpcomingEvents();
+
+  // Room-mockup images per photo, keyed by src — shown as an in-card carousel
+  // on the home page's print grids (see PrintCard) instead of just the
+  // single canonical shot.
+  const mockupLists = await Promise.all(allPhotos.map((photo) => getPhotoMockups(photo)));
+  const mockupsBySrc = Object.fromEntries(allPhotos.map((photo, i) => [photo.src, mockupLists[i]]));
 
   return (
     <>
@@ -42,20 +48,25 @@ export default async function Home() {
       <section className="tight">
         <div className="wrap">
           <Reveal className="section-head home-section-head">
-            <h2>Most Popular</h2>
-            <p>The prints people come back for most — click a photo for a closer look.</p>
-          </Reveal>
-          <PrintGrid photos={mostPopular} className="print-grid--scroll" />
-        </div>
-      </section>
-
-      <section className="border-t border-line">
-        <div className="wrap">
-          <Reveal className="section-head home-section-head">
             <h2>Explore the work</h2>
             <p>Six bodies of work, from abstract water studies to fine-art prints ready for the wall — filter to find what you&apos;re after.</p>
           </Reveal>
-          <GalleryBrowser photos={allPhotos} limit={10} />
+          <GalleryBrowser photos={allPhotos} linkToDetail mockupsBySrc={mockupsBySrc} />
+        </div>
+      </section>
+
+      <section className="tight border-t border-line">
+        <div className="wrap">
+          <Reveal className="section-head home-section-head">
+            <h2>Most Popular</h2>
+            <p>The prints people come back for most — click through for sizes, framing and pricing.</p>
+          </Reveal>
+          <PrintGrid
+            photos={mostPopular}
+            className="print-grid--scroll"
+            linkToDetail
+            mockupsBySrc={mockupsBySrc}
+          />
         </div>
       </section>
 
@@ -105,16 +116,27 @@ export default async function Home() {
       <section className="tight border-t border-line">
         <div className="wrap">
           <Reveal className="home-about">
-            <div className="eyebrow">About</div>
-            <p className="lede home-about__lede">
-              Nick Whittaker is an ocean and water photographer based in
-              Auckland, New Zealand. His work holds still what the sea rarely
-              offers twice — light, tide, and timing, caught in a single frame
-              and printed as fine art.
-            </p>
-            <Link href="/biography" className="btn btn-link mt-5 inline-block">
-              Read the story →
-            </Link>
+            <div className="home-about__media">
+              <Image
+                src="/nick-whittaker-biography.jpg"
+                alt="Nick Whittaker, ocean and water photographer"
+                width={480}
+                height={640}
+                className="home-about__portrait"
+              />
+            </div>
+            <div className="home-about__content">
+              <div className="eyebrow">About</div>
+              <p className="lede home-about__lede">
+                Nick Whittaker is an ocean and water photographer based in
+                Auckland, New Zealand. His work holds still what the sea rarely
+                offers twice — light, tide, and timing, caught in a single frame
+                and printed as fine art.
+              </p>
+              <Link href="/biography" className="btn btn-link mt-5 inline-block">
+                Read the story →
+              </Link>
+            </div>
           </Reveal>
         </div>
       </section>

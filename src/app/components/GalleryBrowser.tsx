@@ -2,16 +2,21 @@
 
 import { useMemo, useState } from "react";
 import { TAGS, type Photo } from "@/app/lib/catalog";
+import type { PhotoMockup } from "@/app/lib/categories";
 import PrintGrid from "@/app/components/PrintGrid";
 
 export default function GalleryBrowser({
   photos,
   initialTag,
   limit,
+  linkToDetail = false,
+  mockupsBySrc = {},
 }: {
   photos: Photo[];
   initialTag?: string;
   limit?: number;
+  linkToDetail?: boolean;
+  mockupsBySrc?: Record<string, PhotoMockup[]>;
 }) {
   const [activeTags, setActiveTags] = useState<string[]>(
     initialTag && TAGS.some((t) => t.slug === initialTag) ? [initialTag] : []
@@ -61,7 +66,7 @@ export default function GalleryBrowser({
         {filtered.length} of {photos.length} photos
       </p>
 
-      <PrintGrid photos={visible} />
+      <PrintGrid photos={visible} linkToDetail={linkToDetail} mockupsBySrc={mockupsBySrc} />
 
       {visibleCount && filtered.length > visibleCount && (
         <div className="gallery-more">

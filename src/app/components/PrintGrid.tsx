@@ -1,40 +1,33 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import { SIZE_OPTIONS, parsePrice, type Photo } from "@/app/lib/catalog";
 import { PAPER_FINISHES } from "@/app/lib/framing";
+import type { PhotoMockup } from "@/app/lib/categories";
 import { cartItemId, useCart } from "./CartContext";
 import Lightbox from "./Lightbox";
 import Reveal from "./Reveal";
 import AddedToCartPanel from "./AddedToCartPanel";
+import PrintCard, { type PrintCardImage } from "./PrintCard";
 import { recordPhotoView } from "./RecentlyViewed";
 
 function defaultCartId(photo: Photo): string {
   return cartItemId(photo.src, SIZE_OPTIONS[0].size, "No Frame", "", PAPER_FINISHES[0].name);
 }
 
-function CheckIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <path d="M5 12.5 10 17 19 7" />
-    </svg>
-  );
-}
-
-function CartIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-      <path d="M4 8h16l-1.4 11.2a2 2 0 0 1-2 1.8H7.4a2 2 0 0 1-2-1.8L4 8Z" />
-      <path d="M8 8V6a4 4 0 0 1 8 0v2" />
-      <line x1="9" y1="12" x2="9" y2="16" />
-      <line x1="15" y1="12" x2="15" y2="16" />
-    </svg>
-  );
-}
-
-export default function PrintGrid({ photos, className }: { photos: Photo[]; className?: string }) {
+export default function PrintGrid({
+  photos,
+  className,
+  linkToDetail = false,
+  mockupsBySrc = {},
+}: {
+  photos: Photo[];
+  className?: string;
+  /** When true, clicking a card's image goes to its detail page instead of opening the lightbox. */
+  linkToDetail?: boolean;
+  /** Extra images (room mockups) per photo, keyed by `photo.src`, shown as an in-card carousel. */
+  mockupsBySrc?: Record<string, PhotoMockup[]>;
+}) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [addedPanelPhoto, setAddedPanelPhoto] = useState<Photo | null>(null);
   const { items, addItem } = useCart();
@@ -59,6 +52,14 @@ export default function PrintGrid({ photos, className }: { photos: Photo[]; clas
     setAddedPanelPhoto(photo);
   }
 
+  function imagesFor(photo: Photo): PrintCardImage[] {
+    const mockups = mockupsBySrc[photo.src] ?? [];
+    return [
+      { src: photo.src, width: photo.width, height: photo.height, alt: photo.alt },
+      ...mockups.map((m) => ({ src: m.src, width: m.width, height: m.height, alt: m.alt })),
+    ];
+  }
+
   return (
     <>
       <div className={`print-grid${className ? ` ${className}` : ""}`}>
@@ -70,58 +71,17 @@ export default function PrintGrid({ photos, className }: { photos: Photo[]; clas
               className="print-card"
               delay={Math.min(index * 60, 300)}
             >
-              <button
-                type="button"
-                className="print-card__mat"
-                onClick={() => {
+              <PrintCard
+                photo={photo}
+                images={imagesFor(photo)}
+                linkToDetail={linkToDetail}
+                inCart={inCart}
+                onAddToCart={() => handleAddToCart(photo)}
+                onOpenLightbox={() => {
                   setLightboxIndex(index);
                   recordPhotoView(photo);
                 }}
-                aria-label={`View ${photo.title} larger`}
-              >
-                <Image
-                  src={photo.src}
-                  alt={photo.alt}
-                  width={photo.width}
-                  height={photo.height}
-                  sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                />
-              </button>
-              <div className="print-card__info">
-                <h3>
-                  <Link href={`/${photo.categorySlug}/${photo.slug}`}>{photo.title}</Link>
-                </h3>
-                <p className="print-card__location">{photo.location}</p>
-
-                <div className="print-card__price-row">
-                  <span className="print-card__price">From {SIZE_OPTIONS[0].price}</span>
-                  <button
-                    type="button"
-                    className={`print-card__cart-btn${inCart ? " is-in-cart" : ""}`}
-                    aria-label={
-                      inCart
-                        ? `${photo.title} (${SIZE_OPTIONS[0].size}) is in your cart — add another`
-                        : `Add ${photo.title} (${SIZE_OPTIONS[0].size}) to cart`
-                    }
-                    onClick={() => handleAddToCart(photo)}
-                  >
-                    {inCart ? <CheckIcon /> : <CartIcon />}
-                  </button>
-                </div>
-
-                <details className="print-card__sizes-accordion">
-                  <summary>Sizes &amp; Pricing</summary>
-                  <ul className="print-card__sizes">
-                    {SIZE_OPTIONS.map((option) => (
-                      <li key={option.size}>
-                        <span className="print-card__size-name">{option.size}</span>
-                        <span className="print-card__size-dims">{option.dimensions}</span>
-                        <span className="print-card__size-price">{option.price}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </details>
-              </div>
+              />
             </Reveal>
           );
         })}

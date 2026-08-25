@@ -192,6 +192,41 @@ section.tight {
   max-width: 440px;
 }
 
+.home-about {
+  display: flex;
+  align-items: center;
+  gap: 56px;
+}
+
+.home-about__media {
+  flex: 0 0 280px;
+}
+
+.home-about__portrait {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 2px;
+}
+
+.home-about__content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@media (max-width: 780px) {
+  .home-about {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+  }
+
+  .home-about__media {
+    flex: none;
+    width: 200px;
+  }
+}
+
 .home-about__lede {
   font-family: var(--font-display);
   font-style: italic;
@@ -850,6 +885,8 @@ section.tight {
   justify-content: center;
   cursor: pointer;
   font: inherit;
+  touch-action: pan-y;
+  user-select: none;
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
@@ -898,6 +935,23 @@ section.tight {
   display: block;
   width: 100%;
   height: auto;
+}
+
+/* In-card image carousel — room mockups shown alongside the original shot,
+   e.g. on the home page's print grids (see PrintCard). No visible arrows —
+   swipe/drag on the image to change frames; this is just the position label. */
+.print-card__media {
+  display: flex;
+  flex-direction: column;
+}
+
+.print-card__media-counter {
+  align-self: center;
+  margin-top: 10px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tide);
 }
 
 .print-card__info {
