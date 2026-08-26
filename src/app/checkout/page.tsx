@@ -20,6 +20,7 @@ export default function CheckoutPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [postcode, setPostcode] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -29,7 +30,7 @@ export default function CheckoutPage() {
     setSubmitting(true);
     setSubmitError(null);
 
-    const result = await startCheckout(items, { name, email, address }, shippingRegion);
+    const result = await startCheckout(items, { name, email, address, postcode }, shippingRegion);
 
     if (!result.ok) {
       setSubmitError(result.error);
@@ -110,6 +111,18 @@ export default function CheckoutPage() {
                     className="field-input"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
+                  />
+                </div>
+                <div className="purchase-field">
+                  <label className="purchase-field__label" htmlFor="checkout-postcode">
+                    Postcode
+                  </label>
+                  <input
+                    id="checkout-postcode"
+                    type="text"
+                    className="field-input"
+                    value={postcode}
+                    onChange={(e) => setPostcode(e.target.value)}
                   />
                 </div>
                 <div className="purchase-field">

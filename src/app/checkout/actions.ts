@@ -24,8 +24,8 @@ export async function startCheckout(
   if (items.length === 0) {
     return { ok: false, error: "Your cart is empty." };
   }
-  if (!customer.name.trim() || !customer.email.trim() || !customer.address.trim()) {
-    return { ok: false, error: "Please fill in your name, email, and delivery address." };
+  if (!customer.name.trim() || !customer.email.trim() || !customer.address.trim() || !customer.postcode.trim()) {
+    return { ok: false, error: "Please fill in your name, email, delivery address, and postcode." };
   }
 
   const shippingOption = SHIPPING_ESTIMATE_OPTIONS.find((option) => option.value === shippingRegion);

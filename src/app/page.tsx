@@ -7,6 +7,7 @@ import GalleryBrowser from "@/app/components/GalleryBrowser";
 import HeroVideo from "@/app/components/HeroVideo";
 import Reveal from "@/app/components/Reveal";
 import { getUpcomingEvents } from "@/app/lib/events";
+import { groupPhotosByRoom } from "@/app/lib/rooms";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -22,6 +23,7 @@ export default async function Home() {
   // single canonical shot.
   const mockupLists = await Promise.all(allPhotos.map((photo) => getPhotoMockups(photo)));
   const mockupsBySrc = Object.fromEntries(allPhotos.map((photo, i) => [photo.src, mockupLists[i]]));
+  const roomGroups = groupPhotosByRoom(allPhotos, mockupsBySrc);
 
   return (
     <>
@@ -65,8 +67,36 @@ export default async function Home() {
             photos={mostPopular}
             className="print-grid--scroll"
             linkToDetail
-            mockupsBySrc={mockupsBySrc}
+            enableCardCarousel={false}
           />
+        </div>
+      </section>
+
+      <section className="tight border-t border-line">
+        <div className="wrap">
+          <Reveal className="section-head home-section-head">
+            <h2>Shop by Room</h2>
+            <p>See a print styled where it&apos;ll actually hang — pick the room you&apos;re decorating.</p>
+          </Reveal>
+          <div className="room-tiles">
+            {roomGroups.map((group, index) => (
+              <Reveal key={group.room.slug} delay={index * 100}>
+                <Link href={`/shop-by-room/${group.room.slug}`} className="event-card room-tile">
+                  <Image
+                    src={group.hero.mockup.src}
+                    alt={`${group.hero.photo.title} styled in a ${group.room.label.toLowerCase()}`}
+                    fill
+                    sizes="(max-width: 700px) 100vw, 50vw"
+                  />
+                  <div className="event-card__overlay" />
+                  <div className="event-card__content">
+                    <h3>{group.room.label}</h3>
+                    <span className="room-tile__cta">Shop prints →</span>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 

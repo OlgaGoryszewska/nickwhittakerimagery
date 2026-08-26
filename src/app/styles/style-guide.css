@@ -636,6 +636,63 @@ section.tight {
   gap: 14px;
 }
 
+/* Shop by Room — two teaser tiles reusing the .event-card look (image +
+   gradient overlay + bottom-anchored content), side by side instead of
+   stacked. The whole tile is the link (not just a button in the corner), so
+   the CTA is a plain hint rather than a repeat of the room name already in
+   the heading. */
+.room-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.room-tile {
+  min-height: 420px;
+}
+
+.room-tile img {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.room-tile:hover img {
+  transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .room-tile img,
+  .room-tile:hover img {
+    transition: none;
+    transform: none;
+  }
+}
+
+.room-tile__cta {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  color: var(--copper);
+  transition: color 0.2s ease;
+}
+
+.room-tile:hover .room-tile__cta {
+  color: var(--foam);
+}
+
+@media (max-width: 700px) {
+  .room-tiles {
+    grid-template-columns: 1fr;
+  }
+
+  .room-tile {
+    min-height: 340px;
+  }
+}
+
 /* Site footer */
 .site-footer {
   background: var(--abyss);
@@ -885,9 +942,19 @@ section.tight {
   justify-content: center;
   cursor: pointer;
   font: inherit;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Only applied when this card's image-swipe carousel is active (see
+   PrintCard's `swipeEnabled`). Deliberately NOT on the base .print-card__mat
+   rule: `touch-action: pan-y` tells the browser "don't natively pan
+   horizontally here, JS will handle it" — fine inside a plain vertical grid,
+   but inside a horizontally-scrolling row (.print-grid--scroll) it blocks
+   the row's own native horizontal touch-scroll from ever engaging, since
+   both would be fighting over the same touch gesture. */
+.print-card__mat--swipeable {
   touch-action: pan-y;
   user-select: none;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .print-card__mat:hover {

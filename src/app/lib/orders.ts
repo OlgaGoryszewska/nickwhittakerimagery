@@ -13,6 +13,7 @@ export type OrderCustomer = {
   name: string;
   email: string;
   address: string;
+  postcode: string;
 };
 
 export type CreateOrderParams = {
@@ -43,6 +44,7 @@ export async function createOrder({
       email: customer.email,
       name: customer.name,
       address: customer.address,
+      postcode: customer.postcode,
       shipping_region: shippingRegion,
       subtotal: totals.subtotal,
       shipping: totals.shipping,

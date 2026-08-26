@@ -35,6 +35,7 @@ export default function PrintCard({
   photo,
   images,
   linkToDetail = false,
+  swipeEnabled = true,
   inCart,
   onAddToCart,
   onOpenLightbox,
@@ -43,12 +44,24 @@ export default function PrintCard({
   images: PrintCardImage[];
   /** When true, clicking the image navigates to the detail page instead of opening the lightbox. */
   linkToDetail?: boolean;
+  /**
+   * Disable the in-card image swipe/carousel. Needed when this card sits inside a
+   * horizontally-scrolling row (e.g. the home page's "Most Popular" strip): the
+   * swipe gesture requires `touch-action: pan-y` on the image, which blocks the
+   * row's own native horizontal touch-scroll from ever engaging — two competing
+   * horizontal gestures on one touch input is a well-known source of janky,
+   * broken-feeling scroll on mobile. In a horizontally-scrolling context, the row
+   * itself should own horizontal touch gestures, so per-card swipe is turned off
+   * and the card just shows its first image.
+   */
+  swipeEnabled?: boolean;
   inCart: boolean;
   onAddToCart: () => void;
   onOpenLightbox: () => void;
 }) {
+  const carouselActive = swipeEnabled && images.length > 1;
   const [imageIndex, setImageIndex] = useState(0);
-  const current = images[imageIndex] ?? images[0];
+  const current = carouselActive ? (images[imageIndex] ?? images[0]) : images[0];
   const detailHref = `/${photo.categorySlug}/${photo.slug}`;
 
   // Finger/pointer swipe between images. The swipeable element is also the
@@ -58,12 +71,13 @@ export default function PrintCard({
   const didSwipe = useRef(false);
 
   function handlePointerDown(e: React.PointerEvent) {
-    if (images.length < 2) return;
+    if (!carouselActive) return;
     pointerStart.current = { x: e.clientX, y: e.clientY };
     e.currentTarget.setPointerCapture(e.pointerId);
   }
 
   function handlePointerUp(e: React.PointerEvent) {
+    if (!carouselActive) return;
     const start = pointerStart.current;
     pointerStart.current = null;
     if (!start) return;
@@ -98,7 +112,7 @@ export default function PrintCard({
         {linkToDetail ? (
           <Link
             href={detailHref}
-            className="print-card__mat"
+            className={`print-card__mat${carouselActive ? " print-card__mat--swipeable" : ""}`}
             aria-label={`View ${photo.title} details`}
             draggable={false}
             onDragStart={(e) => e.preventDefault()}
@@ -117,7 +131,7 @@ export default function PrintCard({
         ) : (
           <button
             type="button"
-            className="print-card__mat"
+            className={`print-card__mat${carouselActive ? " print-card__mat--swipeable" : ""}`}
             aria-label={`View ${photo.title} larger`}
             onClick={(e) => {
               if (!handleClick(e)) onOpenLightbox();
@@ -137,7 +151,7 @@ export default function PrintCard({
           </button>
         )}
 
-        {images.length > 1 && (
+        {carouselActive && (
           <span className="print-card__media-counter">
             {imageIndex + 1}/{images.length}
           </span>

@@ -20,6 +20,7 @@ export default function PrintGrid({
   className,
   linkToDetail = false,
   mockupsBySrc = {},
+  enableCardCarousel = true,
 }: {
   photos: Photo[];
   className?: string;
@@ -27,6 +28,13 @@ export default function PrintGrid({
   linkToDetail?: boolean;
   /** Extra images (room mockups) per photo, keyed by `photo.src`, shown as an in-card carousel. */
   mockupsBySrc?: Record<string, PhotoMockup[]>;
+  /**
+   * Set to false when `photos` renders inside a horizontally-scrolling row
+   * (`className="print-grid--scroll"`) — the per-card swipe carousel competes
+   * with the row's own horizontal touch-scroll for the same gesture. See the
+   * comment on PrintCard's `swipeEnabled` prop for the full explanation.
+   */
+  enableCardCarousel?: boolean;
 }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [addedPanelPhoto, setAddedPanelPhoto] = useState<Photo | null>(null);
@@ -75,6 +83,7 @@ export default function PrintGrid({
                 photo={photo}
                 images={imagesFor(photo)}
                 linkToDetail={linkToDetail}
+                swipeEnabled={enableCardCarousel}
                 inCart={inCart}
                 onAddToCart={() => handleAddToCart(photo)}
                 onOpenLightbox={() => {

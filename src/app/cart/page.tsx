@@ -20,6 +20,7 @@ function orderRequestHref(
     shippingLabel: string;
     name: string;
     address: string;
+    postcode: string;
   }
 ): string {
   const lines = items.map((item) => {
@@ -48,6 +49,7 @@ function orderRequestHref(
     "",
     `Name: ${extras.name}`,
     `Delivery address: ${extras.address}`,
+    `Postcode: ${extras.postcode}`,
   ].join("\n");
 
   return `mailto:order@nickwhittakerimagery.com?subject=${encodeURIComponent("Print Order Request")}&body=${encodeURIComponent(body)}`;
@@ -62,6 +64,7 @@ export default function CartPage() {
   const [shippingRegion, setShippingRegion] = useState(SHIPPING_ESTIMATE_OPTIONS[0].value);
   const [shippingName, setShippingName] = useState("");
   const [shippingAddress, setShippingAddress] = useState("");
+  const [shippingPostcode, setShippingPostcode] = useState("");
   const [shippingCost, setShippingCost] = useState<number | null>(null);
 
   const selectedRegion = SHIPPING_ESTIMATE_OPTIONS.find((option) => option.value === shippingRegion);
@@ -226,6 +229,14 @@ export default function CartPage() {
                   value={shippingAddress}
                   onChange={(e) => setShippingAddress(e.target.value)}
                 />
+                <input
+                  type="text"
+                  className="field-input"
+                  placeholder="Postcode"
+                  aria-label="Postcode"
+                  value={shippingPostcode}
+                  onChange={(e) => setShippingPostcode(e.target.value)}
+                />
                 <select
                   className="field-input"
                   aria-label="Shipping region"
@@ -257,6 +268,7 @@ export default function CartPage() {
                   shippingLabel: selectedRegion?.label ?? "",
                   name: shippingName,
                   address: shippingAddress,
+                  postcode: shippingPostcode,
                 })}
                 className="btn-link"
               >
